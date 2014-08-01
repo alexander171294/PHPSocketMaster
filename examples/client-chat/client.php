@@ -7,7 +7,7 @@ require('../../src/iSocketMaster.php');
 include('socket.php');
 
 // enter a text in console
-function getText()
+function getInputText()
 {
 	return trim(fgets(STDIN));
 }
@@ -29,7 +29,7 @@ while($text != '/exit')
 	// new messages?
 	$sock->refresh();
 	// get text
-	$text = getText();
+	$text = getInputText();
 	// refresh or send menssage?
 	if($text!='/exit' and $text!='!')
 		$sock->send($text); //send text :)

@@ -4,25 +4,25 @@
 class Socket extends SocketMaster
 {
 	// on Connect event
-	private function onConnect()
+	public function onConnect()
 	{
 		echo '> Connected success!';
 	}
 
 	// on disconnect event
-	private function onDisconnect()
+	public function onDisconnect()
 	{
 		echo '> Disconnected :(';
 	}
 
 	// on receive message event
-	private function onReceiveMessage($message)
+	public function onReceiveMessage($message)
 	{
 		echo '< '.$message;
 	}
 
 	// on error message event
-	private function onError($errorMessage)
+	public function onError($errorMessage)
 	{
 		echo 'Oops error ocurred: '.$errorMessage;
 		die(); // finish
