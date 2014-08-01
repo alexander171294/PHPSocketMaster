@@ -1,13 +1,7 @@
 <?php
 
-// cambiar por su interface;
-require('aSocketEventReceptor.php');
-// cambiar por su interface;
-require('../iSocketBridge.php');
-
-
 // clase principal de manipulacion de sockets
-class SocketMaster implements iSocketMaster
+abstract class SocketMaster implements iSocketMaster
 {
 
 	protected $address = '000.000.000.000';
@@ -125,13 +119,13 @@ class SocketMaster implements iSocketMaster
 	}
 
 	// call to be connected
-	abstract private function onConnect();
+	abstract public function onConnect();
 	// call to be disconnected
-	abstract private function onDisconnect();
+	abstract public function onDisconnect();
 	// call to receive message
-	abstract private function onReceiveMessage($message);
+	abstract public function onReceiveMessage($message);
 	// call on error xD
-	abstract private function onError($errorMessage); 
+	abstract public function onError($errorMessage); 
 
 	final private function getError()
 	{

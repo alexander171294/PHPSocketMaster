@@ -1,14 +1,18 @@
 <?php
 
 // requerimos la clase socketMaster
-require('class/SocketMaster.php');
+require('SocketMaster.php');
+// cambiar por su interface;
+require('aSocketEventReceptor.php');
+// cambiar por su interface;
+require('iSocketBridge.php');
 
 // interface SocketMaster
 interface iSocketMaster
 {
 
 	// Socket Constructor
-	public function __construct($address, $port);
+	//public function __construct($address, $port);
 
 	// Socket Destructor
 	public function __destruct();
