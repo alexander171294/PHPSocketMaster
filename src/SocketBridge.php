@@ -12,25 +12,25 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 		$this->onConnect(); 
 	}
 
-	private function onError($errorMessage)
+	public function onError($errorMessage)
 	{
 		if($obj == null) throw new exception('Not Set Callback in Socket Bridge');
 		$this->obj->onError($errorMessage);
 	}
 
-	private function onConnect()
+	public function onConnect()
 	{
 		if($obj == null) throw new exception('Not Set Callback in Socket Bridge');
 		$this->obj->onConnect();
 	}
 
-	private function onDiconnect()
+	public function onDisconnect()
 	{
 		if($obj == null) throw new exception('Not Set Callback in Socket Bridge');
 		$this->obj->onDisconnect();
 	}
 
-	private function onReceiveMessage($message)
+	public function onReceiveMessage($message)
 	{
 		$this->obj->onReceiveMessage($message);
 	}
