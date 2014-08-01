@@ -5,7 +5,7 @@
 require('../../src/iSocketMaster.php');
 
 // import implementation of SocketMaster as Socket
-include('listen.php');
+include('Listen.php');
 // import implementation of SocketEventReceptor as newClient
 include('newClient.php');
 
@@ -16,4 +16,5 @@ $sock = new Socket('localhost', '2025');
 $clients = array();
 
 $sock->listen();
-$sock->accept();
+$client = new newClient();
+$clients[] = $sock->accept($client);

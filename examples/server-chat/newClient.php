@@ -6,23 +6,23 @@ class newClient extends SocketEventReceptor
 	private $name = 'Noname';
 	private $requested = false;
 
-	private function onError()
+	public function onError()
 	{
 		echo '> oOps error in client: '.$this->name;
 	}
 
-	private function onConnect()
+	public function onConnect()
 	{
 		echo '> New client... Requesting Name';
 		$this->Socket->send('What is your nick?');
 	}
 
-	private function onDisconnect()
+	public function onDisconnect()
 	{
 		echo '> disconnect client: '.$this->name;
 	}
 
-	private function onReceiveMessage($message)
+	public function onReceiveMessage($message)
 	{
 		if($requested)
 		{

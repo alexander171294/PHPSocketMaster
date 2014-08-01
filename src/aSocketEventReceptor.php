@@ -5,6 +5,7 @@ abstract class SocketEventReceptor
 
 	private $Socket;
 
+	// cambiar esto por constructor //////////////////////////////////////////
 	public function setMother(SocketBridge $mother)
 	{
 		$this->Socket = $mother;
