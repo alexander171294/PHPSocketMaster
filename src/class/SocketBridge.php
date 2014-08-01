@@ -23,6 +23,12 @@ class SocketBridge extends SocketMaster
 		$this->obj->onConnect();
 	}
 
+	private function onDiconnect()
+	{
+		if($obj == null) throw new exception('Not Set Callback in Socket Bridge');
+		$this->obj->onDisconnect();
+	}
+
 	private function onReceiveMessage($message)
 	{
 		$this->obj->onReceiveMessage($message);

@@ -36,6 +36,7 @@ class SocketMaster
 		try
 		{
 			socket_close($this->socketRef);
+			$this->onDisconnect();
 		} catch (exception $error) {
 			$this->onError($error->getMessage);
 		}
@@ -101,18 +102,13 @@ class SocketMaster
 	//detect new messages
 	final public function refresh()
 	{
-		try
-		{
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
 			if($result = socket_select($read, $write, $exceptions, 0) === false)
-				throw new exception('Socket Refresh Failed :: '.$this->getError);
+				$this->onDisconnect();
 			if($result > 0) 
 				$this->read();
-		} catch (exception $error) {
-			$this->onError($error->getMessage);
-		} 
 	}
 
 	//recive a message by socket
@@ -129,6 +125,7 @@ class SocketMaster
 	}
 
 	abstract private function onConnect();
+	abstract private function onDisconnect();
 	abstract private function onReceiveMessage($message);
 	abstract private function onError($errorMessage); 
 
