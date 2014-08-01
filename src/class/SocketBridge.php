@@ -1,6 +1,6 @@
 <?php
 
-class SocketBridge extends SocketMaster
+class SocketBridge extends SocketMaster implements iSocketBridge
 {
 	private $obj = null;
 
