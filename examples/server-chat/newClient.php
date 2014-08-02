@@ -26,6 +26,7 @@ class newClient extends SocketEventReceptor
 	{
 		if($requested)
 		{
+			ServerManager::Resend($this->name.': '.$message);
 			// aca tengo el mensaje
 		} else { $this->name = $message; $this->socket->send('Hello '.$this->name.', welcome to example chat server v1.0'); }
 	}

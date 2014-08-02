@@ -36,6 +36,9 @@ interface iSocketMaster
 	//detect new messages
 	public function refresh();
 
+	//detect new request external connections
+	public function refreshListen(SocketEventReceptor $Callback);
+
 	// call to be connected
 	//abstract private function onConnect();
 	// call to be disconnected
@@ -43,5 +46,7 @@ interface iSocketMaster
 	// call to receive message
 	//abstract private function onReceiveMessage($message);
 	// call on error xD
-	//abstract private function onError($errorMessage); 
+	//abstract private function onError($errorMessage);
+	// call on new connection accepted by listen
+	//abstract public function onNewConnection(SocketBridge $socket); 
 }

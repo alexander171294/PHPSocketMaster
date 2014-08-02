@@ -27,4 +27,10 @@ class Socket extends SocketMaster
 		echo 'Oops SERVER error ocurred: '.$errorMessage;
 		die(); // finish
 	}
+
+	public function onNewConnection(SocketBridge $socket)
+	{
+		ServerManager::AddNewClient();
+		ServerManager::AddClient($socket);
+	}
 }

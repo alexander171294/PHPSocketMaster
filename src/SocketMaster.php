@@ -106,9 +106,23 @@ abstract class SocketMaster implements iSocketMaster
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
 				$this->onDisconnect();
-			var_dump($result);
 			if($result > 0) 
 				$this->read();
+	}
+
+	//detect new request external connections
+	final public function refreshListen(SocketEventReceptor $Callback)
+	{
+			$read = array($this->socketRef);
+			$write = null;
+			$exceptions = null;
+			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+				$this->onDisconnect();
+			if($result > 0) 
+			{
+				$res = $this->accept($Callback);
+				$this->onNewConnection($res);
+			}
 	}
 
 	// recive a message by socket
@@ -132,6 +146,8 @@ abstract class SocketMaster implements iSocketMaster
 	abstract public function onReceiveMessage($message);
 	// call on error xD
 	abstract public function onError($errorMessage); 
+	// call on new connection accepted by listen
+	abstract public function onNewConnection(SocketBridge $socket);
 
 	final private function getError()
 	{

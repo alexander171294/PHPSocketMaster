@@ -27,4 +27,6 @@ class Socket extends SocketMaster
 		echo 'Oops error ocurred: '.$errorMessage;
 		die(); // finish
 	}
+
+	public function onNewConnection(SocketBridge $socket) { }
 }
