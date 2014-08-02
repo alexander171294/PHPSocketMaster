@@ -24,10 +24,10 @@ class newClient extends SocketEventReceptor
 
 	public function onReceiveMessage($message)
 	{
-		if($requested)
+		if($this->requested)
 		{
 			ServerManager::Resend($this->name.': '.$message);
 			// aca tengo el mensaje
-		} else { $this->name = $message; $this->socket->send('Hello '.$this->name.', welcome to example chat server v1.0'); }
+		} else {$this->requested = true; $this->name = $message; parent::getBridge()->send('Hello '.$this->name.', welcome to example chat server v1.0'); }
 	}
 }
