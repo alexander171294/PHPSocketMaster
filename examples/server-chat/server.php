@@ -44,6 +44,7 @@ class ServerManager
 
 	static public function AddClient($sock)
 	{
+		$sock->id = count(self::$clients); // add te id
 		self::$clients[] = $sock;
 	}
 
@@ -53,6 +54,11 @@ class ServerManager
 			{
 				self::$clients[$i]->send($message);
 			}	
+	}
+
+	static public function DeleteClient($id)
+	{
+		unset(self::$clients[$id]);
 	}
 
 }

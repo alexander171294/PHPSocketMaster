@@ -5,6 +5,7 @@ class newClient extends SocketEventReceptor
 
 	private $name = 'Noname';
 	private $requested = false;
+	public $id;
 
 	public function onError()
 	{
@@ -20,6 +21,7 @@ class newClient extends SocketEventReceptor
 	public function onDisconnect()
 	{
 		echo '> disconnect client: '.$this->name;
+		ServerManager::DeleteClient($id);
 	}
 
 	public function onReceiveMessage($message)
