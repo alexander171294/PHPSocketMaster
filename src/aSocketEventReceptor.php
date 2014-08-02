@@ -3,13 +3,14 @@
 abstract class SocketEventReceptor
 {
 
-	public $socket;
+	private $bridge;
 
-	// cambiar esto por constructor //////////////////////////////////////////
-	public function setMother(SocketBridge $mother)
+	final public function setMother(SocketBridge &$bridge)
 	{
-		$this->socket = $mother;
+		$this->bridge = $bridge;
 	}
+
+	final public function getBridge() { return $this->bridge; }
 
 	abstract public function onError();
 	abstract public function onConnect();

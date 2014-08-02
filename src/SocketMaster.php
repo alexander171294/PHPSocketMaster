@@ -77,7 +77,7 @@ abstract class SocketMaster implements iSocketMaster
 			$newSocketRef = socket_accept($this->socketRef);
 			if($newSocketRef === false) throw new exception('Socket Accept Failed :: '.$this->getError());
 			$instance = new SocketBridge($newSocketRef, $Callback);
-			$Callback->setMother($instance);
+			var_dump($instance->socketRef);echo'c';			$Callback->setMother($instance);
 			$instance->onConnect();
 			return $instance;
 		} catch (exception $error) {

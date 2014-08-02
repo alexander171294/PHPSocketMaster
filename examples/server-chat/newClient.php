@@ -14,7 +14,7 @@ class newClient extends SocketEventReceptor
 	public function onConnect()
 	{
 		echo '> New client... Requesting Name';
-		//$this->socket->send('What is your nick?');
+		parent::getBridge()->send('What is your nick?');
 	}
 
 	public function onDisconnect()

@@ -7,6 +7,6 @@ require('SocketBridge.php');
 interface iSocketBridge
 {
 
-	public function __construct($socket, SocketEventReceptor $callback);
+	public function __construct($socket, SocketEventReceptor &$callback);
 
 }
