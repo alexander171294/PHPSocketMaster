@@ -6,6 +6,7 @@ abstract class SocketMaster implements iSocketMaster
 
 	protected $address = '000.000.000.000';
 	protected $port = 0;
+	protected $readcontrol = "\n";
 
 	private $socketRef = null;
 
@@ -76,7 +77,7 @@ abstract class SocketMaster implements iSocketMaster
 			$newSocketRef = socket_accept($this->socketRef);
 			if($newSocketRef === false) throw new exception('Socket Accept Failed :: '.$this->getError());
 			$instance = new SocketBridge($newSocketRef, $Callback);
-			var_dump($instance->socketRef);echo'c';			$Callback->setMother($instance);
+			$Callback->setMother($instance);
 			$instance->onConnect();
 			return $instance;
 		} catch (exception $error) {
@@ -89,6 +90,7 @@ abstract class SocketMaster implements iSocketMaster
 	{
 		try
 		{
+			$message = $message.$this->readcontrol;
 			if(socket_write($this->socketRef, $message, strlen($message)) == false)
 				throw new exception('Socket Send Message Failed :: '.$this->getError());
 		} catch (exception $error) {
@@ -102,8 +104,9 @@ abstract class SocketMaster implements iSocketMaster
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
-			if($result = socket_select($read, $write, $exceptions, 0) === false)
+			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
 				$this->onDisconnect();
+			var_dump($result);
 			if($result > 0) 
 				$this->read();
 	}

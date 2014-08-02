@@ -16,8 +16,12 @@ $sock = new Socket('localhost', '2026');
 $clients = array();
 
 
-$sock->listen();
+$sock->listen(); 
 echo '** listen **';
-$client = new newClient();
-$clients[] = $sock->accept($client);
-echo '** enter-client **';
+while(true)
+{
+	$client = new newClient();
+	$clients[] = $sock->accept($client); //** Abría que cambiar por el selectSocket para ver si hay conexiones entrantes
+	// o ver que hacer para que se pueda hacer refresh a los clientes sin tener que esperar a que esto pase
+	echo '** enter-client **';
+}
