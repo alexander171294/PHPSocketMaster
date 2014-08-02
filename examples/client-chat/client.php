@@ -13,7 +13,7 @@ function getInputText()
 }
 
 // create a new socket
-$sock = new Socket('localhost', '2025');
+$sock = new Socket('localhost', '2026');
 
 // connect to localhost server
 $sock->connect();

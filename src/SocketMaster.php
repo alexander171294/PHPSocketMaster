@@ -21,7 +21,7 @@ abstract class SocketMaster implements iSocketMaster
 			$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 			if($this->socketRef == false) throw new exception('Failed to create socket :: '.$this->getError());
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -29,10 +29,11 @@ abstract class SocketMaster implements iSocketMaster
 	{
 		try
 		{
-			socket_close($this->socketRef);
+			if(!empty($this->socketRef))
+				socket_close($this->socketRef);
 			$this->onDisconnect();
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -47,7 +48,7 @@ abstract class SocketMaster implements iSocketMaster
 			if (socket_listen($this->socketRef, 5) === false)
 				throw new exception('Failed Listening :: '.$this->getError());
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -60,7 +61,7 @@ abstract class SocketMaster implements iSocketMaster
 				throw new exception('Failed to connect :: '.$this->getError());
 			$this->onConnect();
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -75,9 +76,12 @@ abstract class SocketMaster implements iSocketMaster
 		{
 			$newSocketRef = socket_accept($this->socketRef);
 			if($newSocketRef === false) throw new exception('Socket Accept Failed :: '.$this->getError());
-			return new SocketBridge($newSocketRef, $Callback);
+			$instance = new SocketBridge($newSocketRef, $Callback);
+			$Callback->setMother($instance);
+			$instance->onConnect();
+			return $instance;
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -89,7 +93,7 @@ abstract class SocketMaster implements iSocketMaster
 			if(socket_write($this->socketRef, $message, strlen($message)) == false)
 				throw new exception('Socket Send Message Failed :: '.$this->getError());
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -114,7 +118,7 @@ abstract class SocketMaster implements iSocketMaster
 				throw new exception('Socket Read Failed :: '.$this->getError());
 			$this->onReceiveMessage($buf);
 		} catch (exception $error) {
-			$this->onError($error->getMessage);
+			$this->onError($error->getMessage());
 		}
 	}
 
@@ -129,6 +133,6 @@ abstract class SocketMaster implements iSocketMaster
 
 	final private function getError()
 	{
-		return socket_strerror(socket_last_error($sock));
+		return socket_strerror(socket_last_error($this->socketRef));
 	}
 }

@@ -12,7 +12,7 @@ class Socket extends SocketMaster
 	// on disconnect event
 	public function onDisconnect()
 	{
-		echo '> Server Disconnect event o.O';
+		echo '> Server destruct!';
 	}
 
 	// on receive message event
