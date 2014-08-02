@@ -27,6 +27,7 @@ $text = null;
 while($text != '/exit')
 {
 	// new messages?
+	echo "\n".'** refreshing'."\n";
 	$sock->refresh();
 	// get text
 	$text = getInputText();

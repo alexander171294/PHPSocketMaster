@@ -7,7 +7,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 	public function __construct($socket, SocketEventReceptor &$callback) 
 	{ 
 		$this->obj = $callback;
-		$this->socketRef = $socket; 
+		parent::setSocketRef($socket);
 	}
 
 	public function onError($errorMessage)

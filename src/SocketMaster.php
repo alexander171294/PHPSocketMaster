@@ -16,7 +16,6 @@ abstract class SocketMaster implements iSocketMaster
 			// seteamos variables fundamentales
 			$this->address = $address;
 			$this->port = $port;
-
 			// creamos el socket
 			$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 			if($this->socketRef == false) throw new exception('Failed to create socket :: '.$this->getError());
@@ -135,4 +134,6 @@ abstract class SocketMaster implements iSocketMaster
 	{
 		return socket_strerror(socket_last_error($this->socketRef));
 	}
+
+	final public function setSocketRef($sref) { $this->socketRef = $sref; }
 }
