@@ -28,7 +28,7 @@ interface iSocketMaster
 	 * @param integer $port
 	 * funcion constructora del socket
 	 */
-	public function __construct($address, $port);
+	//public function __construct($address, $port);
 
 	/**
 	 * Function __destruct
