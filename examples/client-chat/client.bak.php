@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/Socket-en-modo-cliente
- */
-
 // Cliente de ejemplo
 require('../../src/iSocketMaster.php');
 

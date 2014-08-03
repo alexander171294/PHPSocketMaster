@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/Socket-en-modo-Servidor
+ */
+
 // example of chat server cli.
 
 require('../../src/iSocketMaster.php');

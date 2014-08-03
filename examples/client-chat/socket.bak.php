@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/onEvent-Funciones
- */
-
 // example of implementation of Class Socket Master
 class Socket extends SocketMaster
 {

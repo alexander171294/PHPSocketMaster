@@ -9,6 +9,7 @@ require('iSocketBridge.php');
  * @abstract SocketMaster
  * @author Alexander
  * @version 1.0
+ * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/Funciones-del-Socket
  * Clase diseñada como modelo de socket orientado a objetos
  * con eventos.
  * Cuenta con la finalidad de escuchar y conectarse.
