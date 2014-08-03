@@ -1,6 +1,16 @@
 <?php
 
-// clase principal de manipulacion de sockets
+/**
+ * @abstract SocketMaster
+ * @author Alexander
+ * @version 1.0
+ * Clase diseñada como modelo de socket orientado a objetos
+ * con eventos.
+ * Cuenta con la finalidad de escuchar y conectarse.
+ *
+ * @example server-chat listen.php
+ * @example client-chat socket.php
+ */
 abstract class SocketMaster implements iSocketMaster
 {
 
