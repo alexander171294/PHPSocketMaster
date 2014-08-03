@@ -63,6 +63,8 @@ class ServerManager
 	static public function DeleteClient($id)
 	{
 		unset(self::$clients[$id]);
+		// reordenamos indices del arreglo
+		self::$clients = array_values(self::$clients);
 	}
 
 }
