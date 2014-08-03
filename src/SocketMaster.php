@@ -107,7 +107,7 @@ abstract class SocketMaster implements iSocketMaster
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
 				$this->onDisconnect();
 			if($result > 0) 
-				$this->read();
+				$this->ErrorControl(array($this, 'read'));
 	}
 
 	//detect new request external connections
@@ -128,8 +128,6 @@ abstract class SocketMaster implements iSocketMaster
 	// recive a message by socket
 	final private function read()
 	{
-		try
-		{
 			if (false === ($buf = socket_read($this->socketRef, 2048, PHP_NORMAL_READ)))
 				throw new exception('Socket Read Failed :: '.$this->getError());
 			if($buf === '') // esto estaba literalmente así en la documentación
@@ -138,6 +136,14 @@ abstract class SocketMaster implements iSocketMaster
 			} else {
 				$this->onReceiveMessage($buf);	
 			}
+	}
+	
+	// wrapper try
+	private function ErrorControl($call, $args = null)
+	{
+		try
+		{
+			call_user_func($call, $args);
 		} catch (exception $error) {
 			$this->onError($error->getMessage());
 		}
