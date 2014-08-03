@@ -132,7 +132,7 @@ abstract class SocketMaster implements iSocketMaster
 		{
 			if (false === ($buf = socket_read($this->socketRef, 2048, PHP_NORMAL_READ)))
 				throw new exception('Socket Read Failed :: '.$this->getError());
-			if($buf === '') 
+			if($buf === '') // esto estaba literalmente así en la documentación
 			{ 
 				$this->onDisconnect();
 			} else {
