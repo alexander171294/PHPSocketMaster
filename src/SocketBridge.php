@@ -41,5 +41,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 	}
 
 	public function onNewConnection(SocketBridge $socket) { }
+	
+	public function getSocketEventReceptor() { return $this->obj; }
 
 }

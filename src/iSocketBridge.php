@@ -22,4 +22,9 @@ interface iSocketBridge
 	 */
 	public function __construct($socket, SocketEventReceptor &$callback);
 
+	/**
+	 * Function getSocketEventReceptor
+	 * @return object of SocketEventReceptor class
+	 */
+	public function getSocketEventReceptor();
 }

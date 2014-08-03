@@ -12,8 +12,6 @@ class newClient extends SocketEventReceptor
 		echo '> oOps error in client: '.$this->name;
 		// borramos el cliente con el error
 		ServerManager::DeleteClient($this->id); 
-		var_dump($this->id);
-		die();
 	}
 
 	public function onConnect()

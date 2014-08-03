@@ -48,8 +48,7 @@ class ServerManager
 
 	static public function AddClient($sock)
 	{
-		$sock->id = count(self::$clients); // add te id
-		var_dump($sock-id);
+		$sock->getSocketEventReceptor()->id = count(self::$clients); // add te id
 		self::$clients[] = $sock;
 	}
 
