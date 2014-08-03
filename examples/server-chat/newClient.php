@@ -11,7 +11,9 @@ class newClient extends SocketEventReceptor
 	{
 		echo '> oOps error in client: '.$this->name;
 		// borramos el cliente con el error
-		ServerManager::DeleteClient($id); 
+		ServerManager::DeleteClient($this->id); 
+		var_dump($this->id);
+		die();
 	}
 
 	public function onConnect()
@@ -23,11 +25,13 @@ class newClient extends SocketEventReceptor
 	public function onDisconnect()
 	{
 		echo '> disconnect client: '.$this->name;
-		ServerManager::DeleteClient($id);
+		ServerManager::DeleteClient($this->id);
 	}
 
 	public function onReceiveMessage($message)
 	{
+		// fix for windows sockets message
+		$message = is_array($message) ? $message[0] : $message;
 		if($this->requested)
 		{
 			ServerManager::Resend($this->name.': '.$message);
