@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 class SocketBridge extends SocketMaster implements iSocketBridge
 {

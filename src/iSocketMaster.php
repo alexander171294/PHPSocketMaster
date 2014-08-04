@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 // Dependencias principales
 require('SocketMaster.php');

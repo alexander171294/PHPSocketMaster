@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 /**
  * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/Socket-en-modo-cliente

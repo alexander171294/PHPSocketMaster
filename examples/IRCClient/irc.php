@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 define('NL', "\r\n");
 

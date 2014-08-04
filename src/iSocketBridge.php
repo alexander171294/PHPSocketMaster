@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 // requerimos la clase socketMaster
 require('SocketBridge.php');

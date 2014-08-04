@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 require('../../src/iSocketMaster.php');
 

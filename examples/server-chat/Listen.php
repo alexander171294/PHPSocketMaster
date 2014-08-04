@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 // example of implementation of Class Socket Master for listen
 class Socket extends SocketMaster

@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 // Cliente de ejemplo
 require('../../src/iSocketMaster.php');
