@@ -24,7 +24,6 @@ $(document).ready(function(){
         var msg = {
         message: mymessage,
         name: myname,
-        color : '<?php echo $colours[$user_colour]; ?>'
         };
         //convert and send data to server
         websocket.send(JSON.stringify(msg));
