@@ -8,9 +8,10 @@ class newWebClient extends SocketEventReceptor
 	private $code = null;
 	private $magicString = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 	private $requested = false;
-	private $host = '127.0.0.0'; //ip or domain of server
+	private $host = 'localhost'; //ip or domain of server
 	private $port = 80;
-	private $fileMaster = 'server.php';
+	private $fileMaster = null;
+	private $counts = 0;
 	
 	public $id;
 
@@ -38,19 +39,36 @@ class newWebClient extends SocketEventReceptor
 		$message = is_array($message) ? $message[0] : $message;
 		if($this->requested)
 		{
+			echo $message;
 			$this->ParseReceptor($message);
 		} else {
-			$this->requested = true; 
-			$this->code = $this->getHandCode($message);
-			// send response of handshacke
-			parent::getBridge()->send($this->generateResponse());
+			echo '[*]';
+			if($this->isHandCode($message))
+			{
+				$this->code = $this->getHandCode($message);
+			} 
+			if($message == "\n" || $message == "\r")
+			{
+				$this->counts++; 
+			} else { $this->counts = 0; }
+			if($this->counts == 2) 
+			{
+				$this->requested = true;
+				echo 'End-HandShacke';
+				$this->getBridge()->send($this->generateResponse());
+			}
 		}
 	}
 	
 	private function getHandCode($message)
 	{
-		$header = http_parse_headers($message);
-		return $header['Sec-WebSocket-Key'];
+		$header = str_replace("\r", null, str_replace('Sec-WebSocket-Key: ', null, $message));
+		return $header;
+	}
+	
+	private function isHandCode($message)
+	{
+		return (strpos($message, 'Sec-WebSocket-Key: ')!== false);
 	}
 	
 	private function generateResponse()
@@ -60,7 +78,7 @@ class newWebClient extends SocketEventReceptor
 				"Upgrade: websocket\r\n" .
 				"Connection: Upgrade\r\n" .
 				"WebSocket-Origin: $this->host\r\n" .
-				"WebSocket-Location: ws://$this->host:$this->port/$this->fileMaster\r\n".
+				"WebSocket-Location: ws://$this->host:$this->port$this->fileMaster\r\n".
 				"Sec-WebSocket-Accept:$secAccept\r\n\r\n";
 		return $upgrade;
 	}
