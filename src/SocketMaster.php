@@ -177,15 +177,17 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	// @todo: revisar por qué puse esta función, donde la uso y la viabilidad de cambiarla por su setter
-	final public function setSocketRef($sref) { $this->socketRef = $sref; }
+	//final public function setSocketRef($sref) { $this->socketRef = $sref; }
 
 	// GETTERS
 	final public function get_address() { return $this->address; }
 	final public function get_port() { return $this->port; }
-	final public function get_socketRef() { throw new exception('Invalid accesible attrib $socketRef'); }
+	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
+	final private function get_socketRef() { return $this->socketRef; }
 	
 	// AND SETTERS :)
 	final public function set_address($val) { $this->address = $val; }
 	final public function set_port($val) { $this->port = $val; }
-	final public function set_socketRef($val) { throw new exception('Invalid accesible attrib $socketRef'); }
+	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
+	final private function set_socketRef($val) { $this->socketRef = $sref; }
 }

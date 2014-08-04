@@ -110,7 +110,8 @@ interface iSocketMaster
 	 * @return EXCEPTION
 	 * WARN: esta función es únicamente simbólica, por el momento solo arrojará una excepcion
 	 */
-	public function get_socketRef();
+	// change to private for the moment
+	//public function get_socketRef();
 	
 	// AND SETTERS :)
 	/**
@@ -134,7 +135,8 @@ interface iSocketMaster
 	 * @return EXCEPTION
 	 * WARN: esta función es únicamente simbólica, por el momento solo arrojará una excepcion
 	 */
-	public function set_socketRef($val);
+	// change to private for the moment
+	//public function set_socketRef($val);
 	
 	// call to be connected
 	// funcion llamada al conectarse
