@@ -1,6 +1,7 @@
 <?php namespace PHPSocketMaster;
 
 // Dependencias principales
+require('resources/property.php');
 require('SocketMaster.php');
 require('aSocketEventReceptor.php');
 require('iSocketBridge.php');

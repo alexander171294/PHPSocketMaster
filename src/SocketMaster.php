@@ -13,6 +13,7 @@
  */
 abstract class SocketMaster implements iSocketMaster
 {
+	use Property;
 
 	protected $address = '000.000.000.000';
 	protected $port = 0;
@@ -176,4 +177,16 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	final public function setSocketRef($sref) { $this->socketRef = $sref; }
+
+	// GETTERS
+	final private function get_address() { return $this->address; }
+	final private function get_port() { return $this->port; }
+	final private function get_readcontrol() { throw new exception('Invalid accesible attrib $readcontrol'); }
+	final private function get_socketRef() { throw new exception('Invalid accesible attrib $socketRef'); }
+	
+	// AND SETTERS :)
+	final private function set_address($val) { $this->address = $val; }
+	final private function set_port($val) { $this->port = $val; }
+	final private function set_readcontrol($val) { throw new exception('Invalid accesible attrib $readcontrol'); }
+	final private function set_socketRef($val) { throw new exception('Invalid accesible attrib $socketRef'); }
 }
