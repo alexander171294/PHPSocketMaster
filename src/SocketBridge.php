@@ -30,7 +30,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 		return $this->ValidateObj(array($this->obj, 'onReceiveMessage'), array($message));
 	}
 	
-	// wrapper
+	// wrapper, agradecimiento a Destructor.cs por la idea
 	private function ValidateObj($call, $args = null)
 	{
 		if($this->obj != null)

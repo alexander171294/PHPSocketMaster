@@ -148,7 +148,7 @@ abstract class SocketMaster implements iSocketMaster
 			}
 	}
 	
-	// wrapper try
+	// wrapper try, agradecimientos a Destructor.cs por la idea
 	private function ErrorControl($call, $args = null)
 	{
 		try
