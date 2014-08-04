@@ -2,38 +2,39 @@
 
 class SocketBridge extends SocketMaster implements iSocketBridge
 {
-	private $obj = null;
+	// use property; // teorícamente está cargado del traite de socket master
+	private $SocketEventReceptor = null;
 
 	public function __construct($socket, SocketEventReceptor &$callback) 
 	{ 
-		$this->obj = $callback;
+		$this->SocketEventReceptor = $callback;
 		parent::setSocketRef($socket);
 	}
 
 	public function onError($errorMessage)
 	{
-		return $this->ValidateObj(array($this->obj, 'onError'), array($errorMessage));
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onError'), array($errorMessage));
 	}
 
 	public function onConnect()
 	{
-		return $this->ValidateObj(array($this->obj, 'onConnect'));
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onConnect'));
 	}
 
 	public function onDisconnect()
 	{
-		return $this->ValidateObj(array($this->obj, 'onDisconnect'));
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onDisconnect'));
 	}
 
 	public function onReceiveMessage($message)
 	{
-		return $this->ValidateObj(array($this->obj, 'onReceiveMessage'), array($message));
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($message));
 	}
 	
 	// wrapper, agradecimiento a Destructor.cs por la idea
 	private function ValidateObj($call, $args = null)
 	{
-		if($this->obj != null)
+		if($this->SocketEventReceptor != null)
 		{ 
 			call_user_func($call, $args);
 			return true;
@@ -42,6 +43,12 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 
 	public function onNewConnection(SocketBridge $socket) { }
 	
-	public function getSocketEventReceptor() { return $this->obj; }
+	// @todo : esta funcion hay que quitarla, para eso está el property
+	public function getSocketEventReceptor() { return $this->SocketEventReceptor; }
+	
+	// GETTERS
+	final private function get_SocketEventReceptor() { return $this->SocketEventReceptor; }
+	// SETTER
+	final private function set_SocketEventReceptor($val) { throw new exception('Not writable attrib $SocketEventReceptor'); }
 
 }
