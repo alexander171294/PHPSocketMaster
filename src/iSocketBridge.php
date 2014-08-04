@@ -26,5 +26,24 @@ interface iSocketBridge
 	 * Function getSocketEventReceptor
 	 * @return object of SocketEventReceptor class
 	 */
+	// @todo : esta funcion hay que quitarla, para eso está el property
 	public function getSocketEventReceptor();
+	
+	/**
+	 * Function get_SocketEventReceptor
+	 * @return object of SocketEventReceptor class
+	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
+	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
+	 */
+	public function get_SocketEventReceptor();
+	
+	/**
+	 * Function set_SocketEventReceptor
+	 * @return none
+	 * WARN!!: esta función es únicamente simbólica para cumplir con los requisitos
+	 * del atributo, pero se maneja a dicho atributo como solo lectura por lo que esta función
+	 * emite una excepcion catchable, de igual manera como la anterior no es necesario llamarla
+	 * directamente, también al setear este atributo como si de un público se tratara, será llamada esta función
+	 */
+	public function set_SocketEventReceptor($val);
 }

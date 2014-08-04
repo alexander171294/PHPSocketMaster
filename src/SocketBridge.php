@@ -47,8 +47,8 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 	public function getSocketEventReceptor() { return $this->SocketEventReceptor; }
 	
 	// GETTERS
-	final private function get_SocketEventReceptor() { return $this->SocketEventReceptor; }
+	final public function get_SocketEventReceptor() { return $this->SocketEventReceptor; }
 	// SETTER
-	final private function set_SocketEventReceptor($val) { throw new exception('Not writable attrib $SocketEventReceptor'); }
+	final public function set_SocketEventReceptor($val) { throw new exception('Not writable attrib $SocketEventReceptor'); }
 
 }
