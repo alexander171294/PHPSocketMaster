@@ -88,6 +88,54 @@ interface iSocketMaster
 	 */
 	public function refreshListen(SocketEventReceptor $Callback);
 
+	
+	// GETTERS
+	/**
+	 * Function get_address
+	 * @return string of ip or host name
+	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
+	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
+	 */
+	public function get_address();
+	/**
+	 * Function get_port
+	 * @return integer of port
+	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
+	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
+	 */
+	public function get_port();
+
+	/**
+	 * Function get_socketRef
+	 * @return EXCEPTION
+	 * WARN: esta función es únicamente simbólica, por el momento solo arrojará una excepcion
+	 */
+	public function get_socketRef();
+	
+	// AND SETTERS :)
+	/**
+	 * Function set_address
+	 * @param string $val new value for the property
+	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
+	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
+	 */
+	public function set_address($val);
+	
+	/**
+	 * Function set_port
+	 * @param integer $val new value for the property
+	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
+	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
+	 */
+	public function set_port($val);
+	
+	/**
+	 * Function set_socketRef
+	 * @return EXCEPTION
+	 * WARN: esta función es únicamente simbólica, por el momento solo arrojará una excepcion
+	 */
+	public function set_socketRef($val);
+	
 	// call to be connected
 	// funcion llamada al conectarse
 	//abstract private function onConnect();
