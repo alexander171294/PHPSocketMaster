@@ -8,3 +8,4 @@ ADD - NameSpaces, a sugerencia de "hhs" se implementaron los NameSpaces
 FIX - Cambiamos todas las funciones set.. por su Setter al implementar el Property
 ADD - Implementamos la idea de Destructor.cs utilizada en python conocida como Wrappers
 FIX - había un problema al cerrar el cliente generaba un loop de errores infinitos en los ejemplos originales
+Reestructuración de directorios en src (class and resources)

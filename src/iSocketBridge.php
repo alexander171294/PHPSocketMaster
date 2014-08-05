@@ -1,7 +1,7 @@
 <?php namespace PHPSocketMaster;
 
 // requerimos la clase socketMaster
-require('SocketBridge.php');
+require('class/SocketBridge.php');
 
 /**
  * @abstract interface iSocketBridge
