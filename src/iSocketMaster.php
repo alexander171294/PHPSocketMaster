@@ -73,7 +73,7 @@ interface iSocketMaster
 	 * send a message by socket
 	 * enviar un mensaje por el socket
 	 */
-	public function send($message, $readControl = true);
+	public function send($message, $readControl);
 
 	/**
 	 * Function refresh

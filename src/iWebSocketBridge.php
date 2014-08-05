@@ -52,14 +52,14 @@ interface iWebSocketBridge
 	 * @param string $message
 	 * enviar mensajes a traves del socket
 	 */
-	public function send($message);
+	public function send($message, $readControl);
 	
 	/**
 	 * Function sendUnmasked
 	 * @param string $message
 	 * enviar mensajes a traves del socket sin enmascarar
 	 */
-	public function sendUnmasked($message);
+	public function sendUnmasked($message, $readControl);
 	
 	
 }

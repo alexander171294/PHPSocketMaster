@@ -38,7 +38,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 		{ 
 			call_user_func($call, $args);
 			return true;
-		} else {  throw new exception('Not Set Callback in Socket Bridge');  return false; }
+		} else {  throw new \Exception('Not Set Callback in Socket Bridge');  return false; }
 	}
 
 	public function onNewConnection(SocketBridge $socket) { }

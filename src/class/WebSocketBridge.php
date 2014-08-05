@@ -1,6 +1,6 @@
 <?php namespace PHPSocketMaster;
 
-class WebSocketBridge extends SocketMaster implements iWebSocketBridge
+class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 {
 	// use property; // teorícamente está cargado del traite de socket master
 	private $SocketEventReceptor = null;
@@ -13,21 +13,6 @@ class WebSocketBridge extends SocketMaster implements iWebSocketBridge
 		$this->SocketRef = $socket;
 		$this->address = $address;
 		$this->port = $port;
-	}
-
-	public function onError($errorMessage)
-	{
-		return $this->ValidateObj(array($this->SocketEventReceptor, 'onError'), array($errorMessage));
-	}
-
-	public function onConnect()
-	{
-		return $this->ValidateObj(array($this->SocketEventReceptor, 'onConnect'));
-	}
-
-	public function onDisconnect()
-	{
-		return $this->ValidateObj(array($this->SocketEventReceptor, 'onDisconnect'));
 	}
 
 	public function onReceiveMessage($message)
@@ -45,14 +30,14 @@ class WebSocketBridge extends SocketMaster implements iWebSocketBridge
 		}
 	}
 	
-	public function send($message)
+	public function send($message, $readControl = false)
 	{
-		parent::send($this->Mask($message), false);
+		parent::send($this->Mask($message), $readControl);
 	}
 	
-	public function sendUnmasked($message)
+	public function sendUnmasked($message, $readControl = false)
 	{
-		parent::send($message, false);
+		parent::send($message, $readControl);
 	}
 	
 	// mask message
@@ -122,24 +107,4 @@ class WebSocketBridge extends SocketMaster implements iWebSocketBridge
 		return $out;
 	}
 	
-	// wrapper, agradecimiento a Destructor.cs por la idea
-	private function ValidateObj($call, $args = null)
-	{
-		if($this->SocketEventReceptor != null)
-		{ 
-			call_user_func($call, $args);
-			return true;
-		} else {  throw new exception('Not Set Callback in Socket Bridge');  return false; }
-	}
-
-	public function onNewConnection(SocketBridge $socket) { }
-	
-	// @todo : esta funcion hay que quitarla, para eso está el property
-	public function getSocketEventReceptor() { return $this->SocketEventReceptor; }
-	
-	// GETTERS
-	final public function get_SocketEventReceptor() { return $this->SocketEventReceptor; }
-	// SETTER
-	final public function set_SocketEventReceptor($val) { throw new exception('Not writable attrib $SocketEventReceptor'); }
-
 }

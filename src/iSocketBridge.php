@@ -13,29 +13,6 @@ require('class/SocketBridge.php');
  */
 interface iSocketBridge
 {
-
-	/**
-	 * Function __construct of SocketBridge
-	 * @param resource $socket of socket_create();
-	 * @param SocketEventReceptor $callback
-	 * @return object of SocketBridge class
-	 */
-	public function __construct($socket, SocketEventReceptor &$callback);
-
-	/**
-	 * Function getSocketEventReceptor
-	 * @return object of SocketEventReceptor class
-	 */
-	// @todo : esta funcion hay que quitarla, para eso está el property
-	public function getSocketEventReceptor();
-	
-	/**
-	 * Function get_SocketEventReceptor
-	 * @return object of SocketEventReceptor class
-	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
-	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
-	 */
-	public function get_SocketEventReceptor();
 	
 	/**
 	 * Function set_SocketEventReceptor
