@@ -2,8 +2,6 @@
 
 class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 {
-	// use property; // teorícamente está cargado del traite de socket master
-	private $SocketEventReceptor = null;
 	private $SendHandshake = false;
 	private $magicString = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 	
@@ -18,7 +16,8 @@ class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 	{
 		if($this->SendHandshake == true)
 		{
-			return parent::ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($this->unMask($message)));
+			if($message !== null)
+				parent::ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($this->unMask($message)));
 		} else {
 			// parsear cabeceras
 			$h = $this->parseHeaders($message);

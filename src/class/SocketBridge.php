@@ -2,7 +2,6 @@
 
 class SocketBridge extends SocketMaster implements iSocketBridge
 {
-	// use property; // teorícamente está cargado del traite de socket master
 	private $SocketEventReceptor = null;
 
 	public function __construct($socket, SocketEventReceptor &$callback) 
@@ -32,7 +31,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 	}
 	
 	// wrapper, agradecimiento a Destructor.cs por la idea
-	private function ValidateObj($call, $args = null)
+	public function ValidateObj($call, $args = null)
 	{
 		if($this->SocketEventReceptor != null)
 		{ 

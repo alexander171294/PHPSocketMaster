@@ -46,6 +46,7 @@ class newWebClient extends SocketEventReceptor
 			$this->code = $headers['Sec-WebSocket-Key']; 
 			$this->requested = true;
 			$this->getBridge()->send($this->generateResponse(), false);
+			var_dump($this->generateResponse());
 			echo 'End-HandShacke';
 		}
 	}
