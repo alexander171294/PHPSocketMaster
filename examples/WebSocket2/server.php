@@ -1,7 +1,7 @@
 <?php namespace PHPSocketMaster;
 
 /**
- * @wiki ...
+ * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/PHPSocketMaster-como-WebSocket
  */
 
 // example of websocket using directly SocketMaster
