@@ -35,39 +35,32 @@ class newWebClient extends SocketEventReceptor
 
 	public function onReceiveMessage($message)
 	{
-		echo "\n";
 		// fix for windows sockets message
 		$message = is_array($message) ? $message[0] : $message;
 		if($this->requested)
 		{
 			$this->ParseReceptor($this->unMask($message));
 		} else {
-			if($this->isHandCode($message))
-			{
-				$this->code = $this->getHandCode($message);
-			} 
-			if($message == "\n" || $message == "\r")
-			{
-				$this->counts++; 
-			} else { $this->counts = 0; }
-			if($this->counts == 2) 
-			{
-				$this->requested = true;
-				echo 'End-HandShacke';
-				$this->getBridge()->send($this->generateResponse());
-			}
+			$headers = $this->getHeaders($message);
+			$this->code = $headers['Sec-WebSocket-Key']; 
+			$this->requested = true;
+			$this->getBridge()->send($this->generateResponse());
+			echo 'End-HandShacke';
 		}
 	}
 	
-	private function getHandCode($message)
+	private function getHeaders($message)
 	{
-		$header = str_replace("\r", null, str_replace('Sec-WebSocket-Key: ', null, $message));
-		return $header;
-	}
-	
-	private function isHandCode($message)
-	{
-		return (strpos($message, 'Sec-WebSocket-Key: ')!== false);
+		$lines = explode("\r", $message);
+		$out = array();
+		// salteamos el primero
+		for($i = 1; $i<count($lines); $i++)
+		{
+			$unformat= explode(':',str_replace("\n",null, $lines[$i]));
+			if(isset($unformat[1]))
+				$out[$unformat[0]] = str_replace(' ',null,$unformat[1]);
+		}
+		return $out;
 	}
 	
 	private function generateResponse()
@@ -158,7 +151,7 @@ class newWebClient extends SocketEventReceptor
 		// your script code of chat here
 		// tu código para el chat aquí
 		var_dump($message);
-		/*if($message!=null)
+		if($message!=null)
 			$this->getBridge()->send($this->Mask(json_encode(array('message'=>'welcome', 'type' => 'system'))));
-	*/}
+	}
 }
