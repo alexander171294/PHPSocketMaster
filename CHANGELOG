@@ -10,3 +10,4 @@ ADD - Implementamos la idea de Destructor.cs utilizada en python conocida como W
 FIX - había un problema al cerrar el cliente generaba un loop de errores infinitos en los ejemplos originales
 Reestructuración de directorios en src (class and resources)
 ADD - WebSocketBridge para aceptar conexiones entrantes de tipo websocket
+ADD - ejemplos para WebSocket usando control nativo de SocketMaster
