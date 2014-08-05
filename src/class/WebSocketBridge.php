@@ -14,10 +14,12 @@ class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 
 	public function onReceiveMessage($message)
 	{
+		$message = is_array($message) ? $message[0] : $message;
 		if($this->SendHandshake == true)
 		{
 			if($message !== null)
 				parent::ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($this->unMask($message)));
+			else { $this->onDisconnect(); }
 		} else {
 			// parsear cabeceras
 			$h = $this->parseHeaders($message);

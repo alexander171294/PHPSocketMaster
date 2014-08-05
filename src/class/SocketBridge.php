@@ -27,6 +27,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 
 	public function onReceiveMessage($message)
 	{
+		$message = is_array($message) ? $message[0] : $message;
 		return $this->ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($message));
 	}
 	

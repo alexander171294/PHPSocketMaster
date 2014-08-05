@@ -16,8 +16,7 @@ class newClient extends SocketEventReceptor
 
 	public function onConnect()
 	{
-		echo '> New client... Requesting Name';
-		parent::getBridge()->send('What is your nick?');
+		echo '> New client...';
 	}
 
 	public function onDisconnect()
@@ -28,15 +27,12 @@ class newClient extends SocketEventReceptor
 
 	public function onReceiveMessage($message)
 	{
-		sleep(1);
-		/*
+		
 		// fix for windows sockets message
 		$message = is_array($message) ? $message[0] : $message;
-		if($this->requested)
-		{
-			sleep(1);
-			ServerManager::Resend($this->name.': '.$message);
-			// aca tengo el mensaje
-		} else {$this->requested = true; $this->name = $message; parent::getBridge()->send('Hello '.$this->name.', welcome to example chat server v1.0'); }*/
+		// send
+		ServerManager::Resend('HI!');
+		// mostramos en pantalla lo que llegó
+		echo '>'.$message."\r\n";
 	}
 }
