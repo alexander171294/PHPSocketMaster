@@ -5,6 +5,7 @@
 require('class/SocketMaster.php');
 require('class/aSocketEventReceptor.php');
 require('iSocketBridge.php');
+require('iWebSocketBridge.php');
 
 /**
  * @abstract SocketMaster

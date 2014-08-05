@@ -63,14 +63,14 @@ class WebSocketBridge extends SocketMaster implements iWebSocketBridge
 		if($length <= 125)
 			$header = pack('CC', $b1, $length);
 		elseif($length > 125 && $length < 65536)
-		$header = pack('CCS', $b1, 126, $length);
+			$header = pack('CCS', $b1, 126, $length);
 		elseif($length >= 65536)
-		$header = pack('CCN', $b1, 127, $length);
+			$header = pack('CCN', $b1, 127, $length);
 		return $header.$message;
 	}
 	
 	// @todo agregarlo al interface
-	final public function unMask($payload)
+	final private function unMask($payload)
 	{
 		$payload = str_replace("\r",null,$payload);
 		$length = ord($payload[1]) & 127;
@@ -87,7 +87,6 @@ class WebSocketBridge extends SocketMaster implements iWebSocketBridge
 			$masks = substr($payload, 2, 4);
 			$data = substr($payload, 6);
 		}
-	
 		$text = null;
 		for ($i = 0; $i < strlen($data); ++$i) {
 			$text .= $data[$i] ^ $masks[$i%4];
@@ -96,7 +95,7 @@ class WebSocketBridge extends SocketMaster implements iWebSocketBridge
 	}
 	
 	// generate handshake response
-	private function generateResponse($code)
+	final private function generateResponse($code)
 	{
 		$secAccept = base64_encode(pack('H*', sha1($code . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
 		$upgrade  = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
