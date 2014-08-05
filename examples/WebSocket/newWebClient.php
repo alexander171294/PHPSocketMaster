@@ -82,57 +82,44 @@ class newWebClient extends SocketEventReceptor
 		return $upgrade;
 	}
 	
-	private function unMask($msg) 
+	private function unMask($payload) 
 	{
-		str_replace("\r",null,$msg);
-		$check = (0x1 << 7) | 0x8;
-		$length = ord($msg[1]) & 127;
+		$payload = str_replace("\r",null,$payload);
+		$length = ord($payload[1]) & 127;
+	
 		if($length == 126) {
-			$masks = substr($msg, 4, 4);
-			$data = substr($msg, 8);
-		} elseif($length == 127) {
-			$masks = substr($msg, 10, 4);
-			$data = substr($msg, 14);
-		} else {
-			$masks = substr($msg, 2, 4);
-			$data = substr($msg, 6);
+			$masks = substr($payload, 4, 4);
+			$data = substr($payload, 8);
 		}
-		 
-		$text = null;
+		elseif($length == 127) {
+			$masks = substr($payload, 10, 4);
+			$data = substr($payload, 14);
+		}
+		else {
+			$masks = substr($payload, 2, 4);
+			$data = substr($payload, 6);
+		}
+	
+		$text = '';
 		for ($i = 0; $i < strlen($data); ++$i) {
 			$text .= $data[$i] ^ $masks[$i%4];
 		}
 		return $text;
 	}
 	
-	private function Mask($msg)
+	private function Mask($text) 
 	{
-		// 0x1 text frame (FIN + opcode)
-		$b1 = 0x80 | (0x1 & 0x0f);
-		$length = strlen($msg);
-		
-		if($length <= 125)
-			$header = pack('CC', $b1, $length);
-		elseif($length > 125 && $length < 65536)
-			$header = pack('CCn', $b1, 126, $length);
-		elseif($length >= 65536 && $length <= pow(2, 63)) {
-			// some code for 64 bit byte integer
-			$upper = 0;
-			$lower = 0;
-			$this->get64Bit($upper, $lower, $length);
-			$header = pack('CCNN', $b1, 127, $upper, $lower);
-		}
-		return $header.$msg;
-	}
+	    // 0x1 text frame (FIN + opcode)
+	    $b1 = 0x80 | (0x1 & 0x0f);
+	    $length = strlen($text);
 	
-	private function get64Bit(&$upper, &$lower, $value) 
-	{
-		$BIGINT_DIVIDER = 0x7fffffff + 1;
-		$lower = intval($value % $BIGINT_DIVIDER);
-		$upper = intval(($value - $lower) / $BIGINT_DIVIDER);
-		return $this;
-	}
+	    if($length > 125 && $length < 65536)
+	        $header = pack('CCS', $b1, 126, $length);
+	    elseif($length >= 65536)
+	        $header = pack('CCN', $b1, 127, $length);
 	
+	    return $header.$text;
+	}	
 	
 	private function ParseReceptor($message)
 	{
