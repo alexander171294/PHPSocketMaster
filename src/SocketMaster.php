@@ -15,7 +15,6 @@ abstract class SocketMaster implements iSocketMaster
 {
 	use Property;
 	
-
 	protected $address = '000.000.000.000';
 	protected $port = 0;
 	protected $readcontrol = "\n";
@@ -32,7 +31,7 @@ abstract class SocketMaster implements iSocketMaster
 			// creamos el socket
 			$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 			if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
@@ -44,7 +43,7 @@ abstract class SocketMaster implements iSocketMaster
 			if(!empty($this->socketRef))
 				socket_close($this->socketRef);
 			$this->onDisconnect();
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
@@ -59,7 +58,7 @@ abstract class SocketMaster implements iSocketMaster
 				throw new \Exception('Failed to bind socket :: '.$this->getError());
 			if (socket_listen($this->socketRef, 5) === false)
 				throw new \Exception('Failed Listening :: '.$this->getError());
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
@@ -72,7 +71,7 @@ abstract class SocketMaster implements iSocketMaster
 			if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 				throw new \Exception('Failed to connect :: '.$this->getError());
 			$this->onConnect();
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
@@ -92,7 +91,7 @@ abstract class SocketMaster implements iSocketMaster
 			$Callback->setMother($instance);
 			$instance->onConnect();
 			return $instance;
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
@@ -105,7 +104,7 @@ abstract class SocketMaster implements iSocketMaster
 			$message = $message.$this->readcontrol;
 			if(socket_write($this->socketRef, $message, strlen($message)) == false)
 				throw new \Exception('Socket Send Message Failed :: '.$this->getError());
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
@@ -156,7 +155,7 @@ abstract class SocketMaster implements iSocketMaster
 		try
 		{
 			call_user_func($call, $args);
-		} catch (exception $error) {
+		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
 	}
