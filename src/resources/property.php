@@ -1,4 +1,4 @@
-<?php
+<?php namespace PHPSocketMaster;
 
 trait Property // mi hermosa clase property
 {
