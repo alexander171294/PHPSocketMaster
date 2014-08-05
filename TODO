@@ -1,0 +1,7 @@
+Se creará un bridge específicamente para WebSocket
+
+Se creará un ejemplo de la implementación del bridge para WebSocket
+
+Se reestructurarán las carpetas de src en /class y /resources
+
+se hará un merge a todo lo anterior con la rama master para sacar la nueva versión
