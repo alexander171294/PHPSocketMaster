@@ -14,7 +14,7 @@
 abstract class SocketMaster implements iSocketMaster
 {
 	use Property;
-	
+
 	protected $address = '000.000.000.000';
 	protected $port = 0;
 	protected $readcontrol = "\n";

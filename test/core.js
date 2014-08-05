@@ -26,7 +26,8 @@ $(document).ready(function(){
         name: myname,
         };
         //convert and send data to server
-        websocket.send(JSON.stringify(msg));
+        //websocket.send(JSON.stringify(msg));
+        websocket.send(mymessage);
     });
    
     //#### Message received from server?

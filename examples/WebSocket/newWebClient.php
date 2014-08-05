@@ -82,6 +82,7 @@ class newWebClient extends SocketEventReceptor
 		return $upgrade;
 	}
 	
+	// extract of https://github.com/srchea/PHP-Push-WebSocket/blob/master/lib/Server.class.php
 	private function unMask($payload) 
 	{
 		$payload = str_replace("\r",null,$payload);
@@ -100,25 +101,56 @@ class newWebClient extends SocketEventReceptor
 			$data = substr($payload, 6);
 		}
 	
-		$text = '';
+		$text = null;
 		for ($i = 0; $i < strlen($data); ++$i) {
 			$text .= $data[$i] ^ $masks[$i%4];
 		}
 		return $text;
 	}
 	
-	private function Mask($text) 
+	// extract of https://github.com/srchea/PHP-Push-WebSocket/blob/master/lib/Server.class.php
+	private function Mask($message) 
 	{
-	    // 0x1 text frame (FIN + opcode)
-	    $b1 = 0x80 | (0x1 & 0x0f);
-	    $length = strlen($text);
-	
-	    if($length > 125 && $length < 65536)
-	        $header = pack('CCS', $b1, 126, $length);
-	    elseif($length >= 65536)
-	        $header = pack('CCN', $b1, 127, $length);
-	
-	    return $header.$text;
+	    $length = strlen($message);
+		$lengthField = null;
+		if ($length < 126) 
+		{
+			$b2 = $length;
+		} elseif ($length <= 65536) {
+			$b2 = 126;
+			$hexLength = dechex($length);
+			if (strlen($hexLength)%2 == 1) 
+			{
+				$hexLength = '0' . $hexLength;
+			}
+			$n = strlen($hexLength) - 2;
+			
+			for ($i = $n; $i >= 0; $i=$i-2) 
+			{
+				$lengthField = chr(hexdec(substr($hexLength, $i, 2))) . $lengthField;
+			}
+			while (strlen($lengthField) < 2) 
+			{
+				$lengthField = chr(0) . $lengthField;
+			}
+		} else {
+			$b2 = 127;
+			$hexLength = dechex($length);
+			if (strlen($hexLength)%2 == 1) 
+			{
+				$hexLength = '0' . $hexLength;
+			}
+			$n = strlen($hexLength) - 2;
+			for ($i = $n; $i >= 0; $i=$i-2) 
+			{
+				$lengthField = chr(hexdec(substr($hexLength, $i, 2))) . $lengthField;
+			}
+			while (strlen($lengthField) < 8) 
+			{
+				$lengthField = chr(0) . $lengthField;
+			}
+		}
+		return chr(1) . chr($b2) . $lengthField . $message;
 	}	
 	
 	private function ParseReceptor($message)
@@ -126,7 +158,7 @@ class newWebClient extends SocketEventReceptor
 		// your script code of chat here
 		// tu código para el chat aquí
 		var_dump($message);
-		if($message!=null)
+		/*if($message!=null)
 			$this->getBridge()->send($this->Mask(json_encode(array('message'=>'welcome', 'type' => 'system'))));
-	}
+	*/}
 }
