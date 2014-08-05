@@ -39,12 +39,13 @@ class newWebClient extends SocketEventReceptor
 		$message = is_array($message) ? $message[0] : $message;
 		if($this->requested)
 		{
-			$this->ParseReceptor($this->unMask($message));
+			if(!empty($message))
+				$this->ParseReceptor($this->unMask($message));
 		} else {
 			$headers = $this->getHeaders($message);
 			$this->code = $headers['Sec-WebSocket-Key']; 
 			$this->requested = true;
-			$this->getBridge()->send($this->generateResponse());
+			$this->getBridge()->send($this->generateResponse(), false);
 			echo 'End-HandShacke';
 		}
 	}
@@ -101,49 +102,18 @@ class newWebClient extends SocketEventReceptor
 		return $text;
 	}
 	
-	// extract of https://github.com/srchea/PHP-Push-WebSocket/blob/master/lib/Server.class.php
+	// extract of http://stackoverflow.com/questions/14530931/websockets-encoding-data-to-be-send
 	private function Mask($message) 
 	{
-	    $length = strlen($message);
-		$lengthField = null;
-		if ($length < 126) 
-		{
-			$b2 = $length;
-		} elseif ($length <= 65536) {
-			$b2 = 126;
-			$hexLength = dechex($length);
-			if (strlen($hexLength)%2 == 1) 
-			{
-				$hexLength = '0' . $hexLength;
-			}
-			$n = strlen($hexLength) - 2;
-			
-			for ($i = $n; $i >= 0; $i=$i-2) 
-			{
-				$lengthField = chr(hexdec(substr($hexLength, $i, 2))) . $lengthField;
-			}
-			while (strlen($lengthField) < 2) 
-			{
-				$lengthField = chr(0) . $lengthField;
-			}
-		} else {
-			$b2 = 127;
-			$hexLength = dechex($length);
-			if (strlen($hexLength)%2 == 1) 
-			{
-				$hexLength = '0' . $hexLength;
-			}
-			$n = strlen($hexLength) - 2;
-			for ($i = $n; $i >= 0; $i=$i-2) 
-			{
-				$lengthField = chr(hexdec(substr($hexLength, $i, 2))) . $lengthField;
-			}
-			while (strlen($lengthField) < 8) 
-			{
-				$lengthField = chr(0) . $lengthField;
-			}
-		}
-		return chr(1) . chr($b2) . $lengthField . $message;
+		$b1 = 0x80 | (0x1 & 0x0f);
+		$length = strlen($message);
+	    if($length <= 125)
+        	$header = pack('CC', $b1, $length);
+    	elseif($length > 125 && $length < 65536)
+        	$header = pack('CCS', $b1, 126, $length);
+    	elseif($length >= 65536)
+        	$header = pack('CCN', $b1, 127, $length);
+		return $header.$message;
 	}	
 	
 	private function ParseReceptor($message)
@@ -151,7 +121,8 @@ class newWebClient extends SocketEventReceptor
 		// your script code of chat here
 		// tu código para el chat aquí
 		var_dump($message);
+		sleep(5);
 		if($message!=null)
-			$this->getBridge()->send($this->Mask(json_encode(array('message'=>'welcome', 'type' => 'system'))));
+			$this->getBridge()->send($this->Mask(json_encode(array('message'=>'welcome', 'type' => 'system'))."\r\n"), false);
 	}
 }

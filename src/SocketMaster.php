@@ -118,11 +118,11 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	//send message by socket
-	final public function send($message)
+	final public function send($message, $readControl = true)
 	{
 		try
 		{
-			$message = $message.$this->readcontrol;
+			if($readControl === true) $message = $message.$this->readcontrol;
 			if(socket_write($this->socketRef, $message, strlen($message)) == false)
 				throw new \Exception('Socket Send Message Failed :: '.$this->getError());
 		} catch (\Exception $error) {
