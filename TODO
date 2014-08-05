@@ -4,4 +4,8 @@ Se creará un ejemplo de la implementación del bridge para WebSocket
 
 Se reestructurarán las carpetas de src en /class y /resources
 
+VOLVER AL PROPERTY por trait! (quitado porque mi version de php es obsoleta y no hacepta traits)
+
+Revisar EXCEPTIONS!
+
 se hará un merge a todo lo anterior con la rama master para sacar la nueva versión
