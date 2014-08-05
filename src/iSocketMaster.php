@@ -68,10 +68,11 @@ interface iSocketMaster
 	/**
 	 * Function send
 	 * @param string $message
+	 * @param bool $readControl
 	 * send a message by socket
 	 * enviar un mensaje por el socket
 	 */
-	public function send($message);
+	public function send($message, $readControl = true);
 
 	/**
 	 * Function refresh
