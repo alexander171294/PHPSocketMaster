@@ -160,7 +160,8 @@ abstract class SocketMaster implements iSocketMaster
 	// recive a message by socket
 	final private function read()
 	{
-			if (false === ($buf = socket_read($this->socketRef, 2048, PHP_NORMAL_READ)))
+			$buf = null;
+			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
 				throw new \Exception('Socket Read Failed :: '.$this->getError());
 			if($buf === '') // esto estaba literalmente así en la documentación
 			{ 
