@@ -9,3 +9,4 @@ FIX - Cambiamos todas las funciones set.. por su Setter al implementar el Proper
 ADD - Implementamos la idea de Destructor.cs utilizada en python conocida como Wrappers
 FIX - había un problema al cerrar el cliente generaba un loop de errores infinitos en los ejemplos originales
 Reestructuración de directorios en src (class and resources)
+ADD - WebSocketBridge para aceptar conexiones entrantes de tipo websocket
