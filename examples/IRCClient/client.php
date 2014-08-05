@@ -26,17 +26,18 @@ $channel = null;
 echo '? Put /exit for end client and put ! to refresh';
 
 $text = null;
-
+$free = true;
 // while not exist
 do
 {
 	// new messages?
 	echo "\n".'** refreshing'."\n";
 	$sock->refresh();
+	
 	// get text
-	$text = getInputText();
+	$text = $free ? getInputText() : null;
 	// refresh or send menssage?
-	if($text!='/exit' and $text!='' and strpos($text,'/join')===false and strpos($text,'/nick')===false )
+	if($text!='/exit' and $text!='' and strpos($text,'/join')===false and strpos($text,'/nick')===false and $text!='/free' )
 		$sock->sendToChannel($channel, $text); //send text :)
 	if(strpos($text,'/join')!==false)
 	{
@@ -54,4 +55,11 @@ do
 	{
 		$sock->eexit();
 	}
+	
+	if ($text == '/free')
+	{
+		$free = false;
+	}
+	
+	
 } while ($text != '/exit');
