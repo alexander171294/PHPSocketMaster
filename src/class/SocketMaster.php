@@ -11,6 +11,11 @@
  * @example server-chat listen.php
  * @example client-chat socket.php
  */
+
+// TYPES
+define('SCKM_BASIC', 1);
+define('SCKM_WEB', 2);
+
 abstract class SocketMaster implements iSocketMaster
 {
 	/**
@@ -108,13 +113,16 @@ abstract class SocketMaster implements iSocketMaster
 		@params: SocketEventReceptor $callback :: instancia de clase que ejecutara los eventos del socket creado
 		@return: object of SocketBridge
 		*/
-	final public function accept(SocketEventReceptor $Callback)
+	final public function accept(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
 		try
 		{
 			$newSocketRef = socket_accept($this->socketRef);
 			if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
-			$instance = new SocketBridge($newSocketRef, $Callback);
+			if($type == SCKM_BASIC)
+				$instance = new SocketBridge($newSocketRef, $Callback);
+			if($type == SCKM_WEB)
+				$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
 			$Callback->setMother($instance);
 			$instance->onConnect();
 			return $instance;
@@ -149,7 +157,7 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	//detect new request external connections
-	final public function refreshListen(SocketEventReceptor $Callback)
+	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
 			$read = array($this->socketRef);
 			$write = null;
@@ -158,7 +166,7 @@ abstract class SocketMaster implements iSocketMaster
 				$this->onDisconnect();
 			if($result > 0) 
 			{
-				$res = $this->accept($Callback);
+				$res = $this->accept($Callback, $type);
 				$this->onNewConnection($res);
 			}
 	}
