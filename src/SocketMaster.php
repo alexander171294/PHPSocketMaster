@@ -189,5 +189,5 @@ abstract class SocketMaster implements iSocketMaster
 	final public function set_address($val) { $this->address = $val; }
 	final public function set_port($val) { $this->port = $val; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
-	final private function set_socketRef($val) { $this->socketRef = $sref; }
+	final private function set_socketRef($val) { $this->socketRef = $val; }
 }
