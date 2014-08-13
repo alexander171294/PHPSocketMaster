@@ -32,5 +32,5 @@ trait Singleton
 		return self::$instance;
 	}
 	
-	static public function get_instance() { return $this->instance; }
+	static public function get_instance() { return self::$instance; }
 }
