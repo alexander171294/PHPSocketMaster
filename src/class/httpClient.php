@@ -36,14 +36,15 @@ class httpClient
 	private function __construct($webpage, $saveHeaders = true)
 	{
 		$this->socket = new HTTPSocketMaster($webpage, 80);
-		var_dump(self::get_instance());
-		$this->socket->set_httpClient(self::get_instance());
 		$this->saveHeaders = $saveHeaders;
 		$this->webpage = $webpage;
 	}
 	
 	public function get($resources, $params, $headers = array('User-Agent' => 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0', 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Lenguaje' => 'es-ar,es;q=0.8,en-us;q=0.5,en;q=0.3', 'Connection' => 'keep-alive'))
 	{
+		// set me instance
+		$this->socket->set_httpClient(self::get_instance());
+		
 		$res = null;
 		$first = true;
 		$headers['Host'] = $this->webpage;
@@ -69,6 +70,8 @@ class httpClient
 	
 	public function post($resources, $params, $headers = array('User-Agent' => 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0', 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Lenguaje' => 'es-ar,es;q=0.8,en-us;q=0.5,en;q=0.3', 'Connection' => 'keep-alive'))
 	{
+		// set me instance
+		$this->socket->set_httpClient(self::get_instance());
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$resources, $params, $headers, HTTP_POST);
 		$this->socket->connect();
