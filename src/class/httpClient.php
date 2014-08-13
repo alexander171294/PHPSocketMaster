@@ -115,7 +115,7 @@ class httpClient
 		for($i = 1; $i<count($headers); $i++)
 		{
 			preg_match("/(.*): (.*)/",$headers[$i],$match);
-			$response[$match[0]] = $match[1];
+			$response[$match[1]] = $match[2];
 		}
 		$response['Main'] = $parts[1];
 		// parsear cabeceras
