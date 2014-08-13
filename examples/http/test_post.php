@@ -8,7 +8,7 @@ require('../../src/class/httpClient.php');
 $http = PHPSocketMaster\httpClient::Factory('foro.infiernohacker.com', true);
 
 // solicitamos el index.php
-$http->get('index.php',array('board' => '71.0'));
+$http->post('index.php?action=login2',array('user' => 'alexmanycool', 'passwrd' => '', 'cookieneverexp'=>'on', 'hash_passwrd' => md5('alex1234')));
 
 // mostramos el cuerpo del mensaje recibido
 var_dump($http->response);
