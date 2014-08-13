@@ -25,6 +25,7 @@ class httpClient
 	private $cookies = null;
 	private $webpage = '';
 	private $protocolHeader = 'http';
+	private $version = '1.1';
 	
 	/**
 	 * para crear el objeto usar el factory
@@ -74,13 +75,15 @@ class httpClient
 	
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)
 	{
-		$header_final = $type.' '.$resources.HCNL;
+		$header_final = $type.' '.$resources.' '.strtoupper($this->protocolHeader).'/'.$this->version.HCNL;
 		foreach($headers as $header => $val )
 		{
 			$header_final .= $header . ': '.$val.HCNL;
 		}
 		$header_final.=HCNL;
 		$first = true;
+		// evitamos foreach al dope
+		if(!empty($params))
 		foreach($params as $param => $val )
 		{
 			if($first == true)
