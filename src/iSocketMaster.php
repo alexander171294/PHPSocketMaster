@@ -66,6 +66,13 @@ interface iSocketMaster
 	 * conectarse a un server (establecido al crear la instancia)
 	 */
 	public function connect();
+	
+	/**
+	 * Function disconnect
+	 * disconnect of host
+	 * desconectarse del server actual (mantiene las conexiones para hacer una reconeccion luego)
+	 */
+	public function connect();
 
 	/**
 	 * Function send
