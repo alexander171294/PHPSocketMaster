@@ -81,7 +81,6 @@ class httpClient
 			$this->socket->refresh();
 		}
 		
-		$this->socket->disconnect();
 		// dudo que esto funcione pero espero que borre el contenido de la variable
 		unset($this->socket);
 		// creamos un nuevo recurso de socket master
@@ -111,7 +110,6 @@ class httpClient
 			$this->socket->refresh();
 		}
 		
-		$this->socket->disconnect();
 		// dudo que esto funcione pero espero que borre el contenido de la variable
 		unset($this->socket);
 		// creamos un nuevo recurso de socket master
