@@ -107,6 +107,7 @@ class httpClient
 		$header_final = $type.' '.$resources.' '.strtoupper($this->protocolHeader).'/'.$this->version.HCNL;
 		$addParams = null;
 		$first = true;
+		if($type == HTTP_POST) $headers['Content-Type'] = 'application/x-www-form-urlencoded'; 
 		// evitamos foreach al dope
 		if(!empty($params))
 		{
