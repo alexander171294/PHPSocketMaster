@@ -5,6 +5,7 @@ ADD - SocketMaster devuelve verdadero o falso en funcion refresh dependiendo si 
 ADD - Nueva clase httpClient (en prueba)
 ADD - Trait singleton pero aún no está listo, hay problemas con la forma de trabajar argumentos de php, la nueva version de php 5.6 implementa una forma bastante funcional pero la versión actual (5.5) no lo implementa y puede ocacionar problemas de compatibilidad.
 ADD - Ejemplos de uso de httpClient (login en smf)...
+FIX - Namespaces en trait property
 
 v0.1(inicial) < v0.2(Actual) 
 
