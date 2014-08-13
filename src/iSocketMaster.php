@@ -2,6 +2,7 @@
 
 // Dependencias principales
 require('resources/property.php');
+require('resources/singleton.php');
 require('class/SocketMaster.php');
 require('class/aSocketEventReceptor.php');
 require('iSocketBridge.php');
