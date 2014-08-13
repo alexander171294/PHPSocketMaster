@@ -87,6 +87,7 @@ interface iSocketMaster
 	 * Function refresh
 	 * detect new received messages, and call onReceiveMessage
 	 * detectar nuevos mensajes recibidos y ejecutar onReceiveMessage
+	 * @return bool ¿new messages? true/false
 	 */
 	public function refresh();
 
