@@ -15,4 +15,4 @@ var_dump($http->response);
 // mostramos la cabecera de respuesta
 var_dump($http->response['Header']);
 
-echo NL.'finishin!!'.NL;
+echo PHPSocketMaster\NL.'finishin!!'.PHPSocketMaster\NL;
