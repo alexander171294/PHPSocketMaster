@@ -78,8 +78,7 @@ class httpClient
 		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
-		sleep(1);
-		$this->socket->refresh();
+		while($this->socket->refresh() === false);
 	}
 	
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)
@@ -108,15 +107,14 @@ class httpClient
 	
 	public function onReceiveResponse($msg)
 	{
+		// parseamos las cabeceras
+		$parts = explode(HCNL.HCNL, $msg);
 		// parsear cabeceras
-		$this->response = $msg;
-		var_dump($msg);
+		$this->response = $parts;
 	}
 	
 	public function get_response() { return $this->response; }
 	public function set_response($val) { $this->response = null; }
-	
-	
 	
 }
 
