@@ -14,3 +14,4 @@ $http->get('index.php',array('board' => '71.0'));
 var_dump($http->response);
 // mostramos la cabecera de respuesta
 var_dump($http->response['Header']);
+
