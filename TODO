@@ -1,1 +1,6 @@
-for the moment nothing :(
+Terminar el httpClient
+Hacerle la interfaz
+
+Revisar Singleton
+
+Agregar sistema de proxys tanto a sockets como a httpClient
