@@ -15,7 +15,7 @@ $http = PHPSocketMaster\httpClient::Factory('foro.infiernohacker.com', true);
 $cur_session = null;
 $user = 'alexmanycool';
 $pass = 'alex1234';
-$http->post('index.php?action=login2',array('user' => $user, 'passwrd' => '', 'cookieneverexp'=>'on', 'hash_passwrd' => sha1(sha1($user.$pass).$cur_session)));
+$http->post('index.php?action=login2',array('user' => $user, 'passwrd' => $pass, 'cookieneverexp'=>'on', 'hash_passwrd' => sha1(sha1($user.$pass).$cur_session)));
 
 // mostramos el cuerpo del mensaje recibido
 file_put_contents('log.out',$http->response['Main']);
