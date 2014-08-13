@@ -128,7 +128,7 @@ class httpClient
 	
 	public function onReceiveResponse($msg)
 	{
-		var_dump($msg);
+		if($msg == null) $this->eof = true;
 		if($this->first === true)
 		{
 			$this->first = false;
