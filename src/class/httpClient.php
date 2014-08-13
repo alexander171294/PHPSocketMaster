@@ -105,6 +105,8 @@ class httpClient
 		{
 			$this->socket->refresh();
 		}
+		
+		$this->socket->disconnect();
 	}
 	
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)
