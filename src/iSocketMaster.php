@@ -2,6 +2,7 @@
 
 // Dependencias principales
 require('resources/property.php');
+require('resources/singleton.php');
 require('class/SocketMaster.php');
 require('class/aSocketEventReceptor.php');
 require('iSocketBridge.php');
@@ -65,6 +66,13 @@ interface iSocketMaster
 	 * conectarse a un server (establecido al crear la instancia)
 	 */
 	public function connect();
+	
+	/**
+	 * Function disconnect
+	 * disconnect of host
+	 * desconectarse del server actual (mantiene las conexiones para hacer una reconeccion luego)
+	 */
+	public function disconnect();
 
 	/**
 	 * Function send
@@ -79,6 +87,7 @@ interface iSocketMaster
 	 * Function refresh
 	 * detect new received messages, and call onReceiveMessage
 	 * detectar nuevos mensajes recibidos y ejecutar onReceiveMessage
+	 * @return bool ¿new messages? true/false
 	 */
 	public function refresh();
 
