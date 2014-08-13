@@ -49,6 +49,11 @@ abstract class SocketMaster implements iSocketMaster
 
 	final public function __destruct()
 	{
+		$this->disconnect();
+	}
+	
+	final public function disconnect()
+	{
 		try
 		{
 			if(!empty($this->socketRef))
