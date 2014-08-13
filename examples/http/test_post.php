@@ -23,6 +23,8 @@ file_put_contents('login.log',$http->response['Main']);
 // se loggueo correctamente y redirigimos al check user
 if($http->response['Redirection'] == 'Yes')
 {
+	// no queremos cambiar mas las cabeceras
+	$http->saveHeaders = false;
 	// cargamos la página de la redireccion
 	$http->get($http->response['Location'], null);
 	// mostramos el cuerpo del mensaje recibido del check
