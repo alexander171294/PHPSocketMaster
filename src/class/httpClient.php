@@ -115,12 +115,13 @@ class httpClient
 				if($first == true)
 				{
 					$first = false;
-					$addParams .= $param . '=' . $val . HCNL;
+					$addParams .= $param . '=' . $val;
 				} else {
-					$addParams .= '&'.$param . '=' . $val . HCNL;
+					$addParams .= '&'.$param . '=' . $val;
 				}
 			}
-		$headers['Content-Length'] = strlen($addParams);
+			$addParams .= HCNL;
+			$headers['Content-Length'] = strlen($addParams);
 		}
 		foreach($headers as $header => $val )
 		{
