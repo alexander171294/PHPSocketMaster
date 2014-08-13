@@ -27,7 +27,7 @@ trait Singleton
 		{
 			// cambiado por bug en php #36221
 			$className = __CLASS__;
-			self::$instance = new $className(func_get_args());
+			self::$instance = new $className(func_get_arg(0),func_get_arg(1));
 		}
 		return self::$instance;
 	}
