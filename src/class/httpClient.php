@@ -138,7 +138,7 @@ class HTTPSocketMaster extends SocketMaster
 	}
 	
 	// on disconnect event
-	public function onDisconnect() { echo '> Disconnected :('; }
+	public function onDisconnect() { }
 	
 	// on receive message event
 	public function onReceiveMessage($message)
