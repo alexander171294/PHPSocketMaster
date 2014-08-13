@@ -21,7 +21,6 @@ class httpClient
 	private $socket = null;
 	private $saveHeaders = true;
 	private $response = null;
-	private $sessions = null;
 	private $cookies = null;
 	private $webpage = '';
 	private $protocolHeader = 'http';
@@ -47,6 +46,9 @@ class httpClient
 		
 		$res = null;
 		$first = true;
+		// agregamos ademas del host las cookies
+		if(!empty($this->cookies)) $headers['Cookie'] = $this->cookies;
+		// agregamos el host
 		$headers['Host'] = $this->webpage;
 		// generamos la nueva peticion con variables
 		foreach($params as $param => $val)
@@ -62,7 +64,6 @@ class httpClient
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$res, null, $headers, HTTP_GET);
 		$this->socket->connect();
-		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
 		while($this->socket->refresh() === false);
@@ -72,6 +73,10 @@ class httpClient
 	{
 		// set me instance
 		$this->socket->set_httpClient(self::get_instance());
+		// agregamos ademas del host las cookies
+		if(!empty($this->cookies)) $headers['Cookie'] = $this->cookies;
+		// agregamos el host
+		$headers['Host'] = $this->webpage;
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$resources, $params, $headers, HTTP_POST);
 		$this->socket->connect();
@@ -118,6 +123,8 @@ class httpClient
 			$response[$match[1]] = $match[2];
 		}
 		$response['Main'] = $parts[1];
+		// vemos si hay que guardar las cookies
+		if($this->saveHeaders == true) $this->cookies = $response['Set-Cookie'];
 		// parsear cabeceras
 		$this->response = $response;
 	}
