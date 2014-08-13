@@ -36,7 +36,7 @@ class httpClient
 	private function __construct($webpage, $saveHeaders = true)
 	{
 		$this->socket = new HTTPSocketMaster($webpage, 80);
-		$this->socket->set_httpClient(self::$instance);
+		$this->socket->set_httpClient(self::get_instance());
 		$this->saveHeaders = $saveHeaders;
 		$this->webpage = $webpage;
 	}
