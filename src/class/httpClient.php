@@ -112,6 +112,7 @@ class httpClient
 	
 	public function onReceiveResponse($msg)
 	{
+		var_dump($msg);
 		$response = array();
 		// parseamos las cabeceras
 		$parts = explode(HCNL.HCNL, $msg);
