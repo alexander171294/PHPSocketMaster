@@ -70,7 +70,6 @@ class httpClient
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$res, null, $headers, HTTP_GET);
 		$this->socket->connect();
-		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
 		while($this->eof === true)
