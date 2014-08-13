@@ -85,6 +85,8 @@ class httpClient
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
 		while($this->socket->refresh() === false);
+		// esperamos una segunda respuesta
+		while($this->socket->refresh() === false);
 	}
 	
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)
