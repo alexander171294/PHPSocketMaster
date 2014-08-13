@@ -72,7 +72,7 @@ class httpClient
 		$this->socket->connect();
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
-		while($this->eof === true)
+		while($this->eof === false)
 		{
 			$this->socket->refresh();
 		}
@@ -96,7 +96,7 @@ class httpClient
 		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
-		while($this->eof === true)
+		while($this->eof === false)
 		{
 			$this->socket->refresh();
 		}
