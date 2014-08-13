@@ -72,7 +72,7 @@ interface iSocketMaster
 	 * disconnect of host
 	 * desconectarse del server actual (mantiene las conexiones para hacer una reconeccion luego)
 	 */
-	public function connect();
+	public function disconnect();
 
 	/**
 	 * Function send
