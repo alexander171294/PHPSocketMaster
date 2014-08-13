@@ -25,6 +25,8 @@ class httpClient
 	private $webpage = '';
 	private $protocolHeader = 'http';
 	private $version = '1.1';
+	private $eof = false;
+	private $first = true;
 	
 	/**
 	 * para crear el objeto usar el factory
@@ -41,6 +43,10 @@ class httpClient
 	
 	public function get($resources, $params, $headers = array('User-Agent' => 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0', 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Lenguaje' => 'es-ar,es;q=0.8,en-us;q=0.5,en;q=0.3', 'Connection' => 'keep-alive'))
 	{
+		// set eof as false
+		$this->eof = false;
+		// set first as true
+		$this->first = true;
 		// set me instance
 		$this->socket->set_httpClient(self::get_instance());
 		
@@ -67,13 +73,18 @@ class httpClient
 		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
-		while($this->socket->refresh() === false);
-		// esperamos una segunda respuesta
-		while($this->socket->refresh() === false);
+		while($this->eof === true)
+		{
+			$this->socket->refresh();
+		}
 	}	
 	
 	public function post($resources, $params, $headers = array('User-Agent' => 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0', 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Lenguaje' => 'es-ar,es;q=0.8,en-us;q=0.5,en;q=0.3', 'Connection' => 'keep-alive'))
 	{
+		// set eof as false
+		$this->eof = false;
+		// set first as true
+		$this->first = true;
 		// set me instance
 		$this->socket->set_httpClient(self::get_instance());
 		// agregamos ademas del host las cookies
@@ -86,9 +97,10 @@ class httpClient
 		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
-		while($this->socket->refresh() === false);
-		// esperamos una segunda respuesta
-		while($this->socket->refresh() === false);
+		while($this->eof === true)
+		{
+			$this->socket->refresh();
+		}
 	}
 	
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)
@@ -118,26 +130,35 @@ class httpClient
 	public function onReceiveResponse($msg)
 	{
 		var_dump($msg);
-		$response = array();
-		// parseamos las cabeceras
-		$parts = explode(HCNL.HCNL, $msg);
-		$headers = explode(HCNL, $parts[0]);
-		$response['Header'] = $headers[0];
-		for($i = 1; $i<count($headers); $i++)
+		if($this->first === true)
 		{
+			$this->first = false;
+			$response = array();
+			// parseamos las cabeceras
+			$parts = explode(HCNL.HCNL, $msg);
+			$headers = explode(HCNL, $parts[0]);
+			$response['Header'] = $headers[0];
+			for($i = 1; $i<count($headers); $i++)
+			{
 			preg_match("/(.*): (.*)/",$headers[$i],$match);
 			$response[$match[1]] = $match[2];
+			}
+			$response['Main'] = $parts[1];
+			// vemos si hay que guardar las cookies
+			if($this->saveHeaders == true) $this->cookies = $response['Set-Cookie'];
+			// parsear cabeceras
+			$this->response = $response;
+		} else {
+			$response = $this->response;
+			$response['Main'] .= $msg;
+			$this->response = $response;
 		}
-		$response['Main'] = $parts[1];
-		// vemos si hay que guardar las cookies
-		if($this->saveHeaders == true) $this->cookies = $response['Set-Cookie'];
-		// parsear cabeceras
-		$this->response = $response;
 	}
 	
 	public function get_response() { return $this->response; }
 	public function set_response($val) { $this->response = null; }
 	
+	public function setEOF() { $this->eof = true; }
 }
 
 class HTTPSocketMaster extends SocketMaster
@@ -157,7 +178,10 @@ class HTTPSocketMaster extends SocketMaster
 	}
 	
 	// on disconnect event
-	public function onDisconnect() { }
+	public function onDisconnect() 
+	{
+		 $this->httpClient->setEOF();		
+	}
 	
 	// on receive message event
 	public function onReceiveMessage($message)
