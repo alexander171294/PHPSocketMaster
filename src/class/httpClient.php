@@ -44,7 +44,7 @@ class httpClient
 	{
 		$res = null;
 		$first = true;
-		$headers['Host'] => $this->webpage;
+		$headers['Host'] = $this->webpage;
 		// generamos la nueva peticion con variables
 		foreach($params as $param => $val)
 		{
