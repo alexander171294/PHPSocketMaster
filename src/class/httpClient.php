@@ -35,10 +35,14 @@ class httpClient
 	// cambiamos el constructor por la dependencia de php 5.6 que aún no sale
 	private function __construct(/*$webpage, $saveHeaders = true*/ $args)
 	{
-		
-		$this->socket = new HTTPSocketMaster($args[0], 80);
+		$argsFormatted = array();
+		foreach($args as $arg)
+		{
+			$argsFormatted[] = $arg;
+		}
+		$this->socket = new HTTPSocketMaster($argsFormatted[0], 80);
 		$this->socket->set_httpClient(self::$instance);
-		$this->saveHeaders = $args[1];
+		$this->saveHeaders = $argsFormatted[1];
 		$this->webpage = $webpage;
 	}
 	
