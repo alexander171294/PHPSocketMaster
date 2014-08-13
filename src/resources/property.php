@@ -9,7 +9,7 @@ trait Property // mi hermosa clase property
             return call_user_func(array($this, 'set_'.$property), $value);
         else
         	// no hay funcion getter para este atributo (o no existe el atributo)
-            throw new exception('The atribute $'.$property.' not exist for set');
+            throw new \Exception('The atribute $'.$property.' not exist for set');
     }
 
     // llamando a funciones getters
@@ -21,6 +21,6 @@ trait Property // mi hermosa clase property
             return call_user_func(array(parent, 'get_'.$property));
         else
        		// no hay funcion getter para este atributo (o no existe el atributo)
-            throw new exception('The atribute $'.$property.' not exist for get');
+            throw new \Exception('The atribute $'.$property.' not exist for get');
     }
 }
