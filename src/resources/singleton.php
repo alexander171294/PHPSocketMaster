@@ -13,7 +13,7 @@ trait Singleton
 	   de modo que esta función requiere de una version de php tan actualizada que aún no está publica estable
 	static public function Factory(...$params)
 	{
-		if(!empty($instance))
+		if(empty($instance))
 			// cambiado por bug en php #36221
 			//self::$instance = new __CLASS__(...$params);
 			
@@ -23,13 +23,12 @@ trait Singleton
 	// version funcional para php 5.5
 	static public function Factory()
 	{
-		if(!empty($instance))
+		if(empty($instance))
 		{
 			// cambiado por bug en php #36221
 			$className = __CLASS__;
 			self::$instance = new $className(func_get_args());
 		}
-			
 		return self::$instance;
 	}
 	
