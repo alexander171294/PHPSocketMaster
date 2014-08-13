@@ -11,4 +11,4 @@ $http = PHPSocketMaster\httpClient::Factory('underc0de.org', true);
 $http->get('foro/index.php',array('board' => '131.0'));
 
 // mostramos lo recibido
-var_dump($http->response);
+//var_dump($http->response);
