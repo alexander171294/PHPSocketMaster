@@ -105,24 +105,28 @@ class httpClient
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)
 	{
 		$header_final = $type.' '.$resources.' '.strtoupper($this->protocolHeader).'/'.$this->version.HCNL;
+		$addParams = null;
+		$first = true;
+		// evitamos foreach al dope
+		if(!empty($params))
+		{
+			foreach($params as $param => $val )
+			{
+				if($first == true)
+				{
+					$first = false;
+					$addParams .= $param . '=' . $val . HCNL;
+				} else {
+					$addParams .= '&'.$param . '=' . $val . HCNL;
+				}
+			}
+		$headers['Content-Length'] = strlen($addParams);
+		}
 		foreach($headers as $header => $val )
 		{
 			$header_final .= $header . ': '.$val.HCNL;
 		}
-		$header_final.=HCNL;
-		$first = true;
-		// evitamos foreach al dope
-		if(!empty($params))
-		foreach($params as $param => $val )
-		{
-			if($first == true)
-			{
-				$first = false;
-				$header_final .= $param . '=' . $val . HCNL;
-			} else {
-				$header_final .= '&'.$param . '=' . $val . HCNL;
-			}
-		}
+		$header_final.=HCNL.$addParams;
 		return $header_final;
 	}
 	
