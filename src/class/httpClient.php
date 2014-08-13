@@ -44,6 +44,7 @@ class httpClient
 	{
 		$res = null;
 		$first = true;
+		$headers['Host'] => $this->webpage;
 		// generamos la nueva peticion con variables
 		foreach($params as $param => $val)
 		{
@@ -119,8 +120,8 @@ class HTTPSocketMaster extends SocketMaster
 	// on Connect event
 	public function onConnect()
 	{
-		// enviar cabeceras
-		$this->getBridge()->send($header);
+		// estamos conectados
+		
 	}
 	
 	// on disconnect event
