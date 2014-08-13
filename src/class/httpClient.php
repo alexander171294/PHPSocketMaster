@@ -36,6 +36,7 @@ class httpClient
 	private function __construct($webpage, $saveHeaders = true)
 	{
 		$this->socket = new HTTPSocketMaster($webpage, 80);
+		var_dump(self::get_instance());
 		$this->socket->set_httpClient(self::get_instance());
 		$this->saveHeaders = $saveHeaders;
 		$this->webpage = $webpage;
@@ -60,7 +61,6 @@ class httpClient
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$res, null, $headers, HTTP_GET);
 		$this->socket->connect();
-		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
 		sleep(1);
