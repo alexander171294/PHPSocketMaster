@@ -49,6 +49,11 @@ abstract class SocketMaster implements iSocketMaster
 
 	final public function __destruct()
 	{
+		$this->disconnect();
+	}
+	
+	final public function disconnect()
+	{
 		try
 		{
 			if(!empty($this->socketRef))
@@ -124,6 +129,7 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	//detect new messages
+	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
 			$read = array($this->socketRef);
@@ -132,7 +138,10 @@ abstract class SocketMaster implements iSocketMaster
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
 				$this->onDisconnect();
 			if($result > 0) 
+			{
 				$this->ErrorControl(array($this, 'read'));
+				return true;
+			} else { return false; }
 	}
 
 	//detect new request external connections
