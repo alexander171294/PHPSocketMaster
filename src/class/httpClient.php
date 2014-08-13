@@ -107,10 +107,19 @@ class httpClient
 	
 	public function onReceiveResponse($msg)
 	{
+		$response = array();
 		// parseamos las cabeceras
 		$parts = explode(HCNL.HCNL, $msg);
+		$headers = explode(HCNL, $parts[0]);
+		$response['Header'] = $headers[0];
+		for($i = 1; $i<count($headers); $i++)
+		{
+			preg_match("/(.*): (.*)/",$headers[$i],$match);
+			$response[$match[0]] = $match[1];
+		}
+		$response['Main'] = $parts[1];
 		// parsear cabeceras
-		$this->response = $parts;
+		$this->response = $response;
 	}
 	
 	public function get_response() { return $this->response; }

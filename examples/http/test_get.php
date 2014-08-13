@@ -10,5 +10,9 @@ $http = PHPSocketMaster\httpClient::Factory('underc0de.org', true);
 // solicitamos el index.php
 $http->get('foro/index.php',array('board' => '131.0'));
 
-// mostramos lo recibido
-var_dump($http->response);
+// mostramos el cuerpo del mensaje recibido
+var_dump($http->response['Main']);
+// mostramos la cabecera de respuesta
+var_dump($http->response['Header']);
+// mostramos las cookies (esto lo necesitamos para despues)
+var_dump($http->response['Set-Cookie']);
