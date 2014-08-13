@@ -191,6 +191,7 @@ class HTTPSocketMaster extends SocketMaster
 	// on receive message event
 	public function onReceiveMessage($message)
 	{
+		var_dump($message);
 		$this->httpClient->onReceiveResponse($message);
 	}
 	
