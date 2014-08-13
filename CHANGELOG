@@ -7,16 +7,6 @@ ADD - Trait singleton pero aún no está listo, hay problemas con la forma de trab
 ADD - Ejemplos de uso de httpClient (login en smf)...
 FIX - Namespaces en trait property
 
-v0.1(inicial) < v0.2(Actual) 
+--> cambios de versiones anteriores <--
 
-ADD - Nuevo ejemlo demostrando el uso de sockets y el protocolo IRC
-ADD - Nuevo ejemplo demostrando el uso de sockets en modo WebSocket
-ADD - Property, para funciones getters y setters
-FIX - Se reemplazo la funcion interna de manejos de socket para SocketMaster::Read(); por una que aparentemente funciona mejor
-ADD - NameSpaces, a sugerencia de "hhs" se implementaron los NameSpaces
-FIX - Cambiamos todas las funciones set.. por su Setter al implementar el Property
-ADD - Implementamos la idea de Destructor.cs utilizada en python conocida como Wrappers
-FIX - había un problema al cerrar el cliente generaba un loop de errores infinitos en los ejemplos originales
-Reestructuración de directorios en src (class and resources)
-ADD - WebSocketBridge para aceptar conexiones entrantes de tipo websocket
-ADD - ejemplos para WebSocket usando control nativo de SocketMaster
+v0.1 -> v0.2 : https://github.com/alexander171294/PHPSocketMaster/blob/5217190a15d0f3be92c69697dad91846d2e8257e/CHANGELOG
