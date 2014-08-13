@@ -11,6 +11,6 @@ $http = PHPSocketMaster\httpClient::Factory('foro.infiernohacker.com', true);
 $http->post('index.php?action=login2',array('user' => 'alexmanycool', 'passwrd' => '', 'cookieneverexp'=>'on', 'hash_passwrd' => md5('alex1234')));
 
 // mostramos el cuerpo del mensaje recibido
-file_put_contents('log.out',$http->response['main']);
+file_put_contents('log.out',$http->response['Main']);
 // mostramos la cabecera de respuesta
 var_dump($http->response['Header']);
