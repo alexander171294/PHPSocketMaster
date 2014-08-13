@@ -180,6 +180,8 @@ class httpClient
 	public function set_response($val) { $this->response = null; }
 	
 	public function setEOF() { $this->eof = true; }
+	
+	public function set_socket($val) { $this->socket = $val; } 
 }
 
 class HTTPSocketMaster extends SocketMaster
