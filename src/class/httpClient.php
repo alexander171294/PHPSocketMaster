@@ -27,6 +27,7 @@ class httpClient
 	private $version = '1.1';
 	private $eof = false;
 	private $first = true;
+	private $lastResource = null;
 	
 	/**
 	 * para crear el objeto usar el factory
@@ -69,8 +70,10 @@ class httpClient
 		}
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$res, null, $headers, HTTP_GET);
+		$this->lastResource = $res; 
 		$this->socket->connect();
 		$this->socket->send($headers, false);
+		
 		// esperamos la respuesta
 		while($this->eof === false)
 		{
@@ -92,8 +95,8 @@ class httpClient
 		$headers['Host'] = $this->webpage;
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$resources, $params, $headers, HTTP_POST);
+		$this->lastResource = $resources;
 		$this->socket->connect();
-		var_dump($headers);
 		$this->socket->send($headers, false);
 		// esperamos la respuesta
 		while($this->eof === false)
@@ -153,6 +156,8 @@ class httpClient
 			if($this->saveHeaders == true) $this->cookies = $response['Set-Cookie'];
 			// parsear cabeceras
 			$this->response = $response;
+			// redireccion
+			if($this->response['Location']!= $this->protocolHeader.'://'.$this->webpage.'/'.$this->lastResource) { $this->setEOF(); $this->response['Redirection'] = 'Yes'; }
 		} else {
 			$response = $this->response;
 			$response['Main'] .= $msg;
@@ -191,7 +196,6 @@ class HTTPSocketMaster extends SocketMaster
 	// on receive message event
 	public function onReceiveMessage($message)
 	{
-		var_dump($message);
 		$this->httpClient->onReceiveResponse($message);
 	}
 	
