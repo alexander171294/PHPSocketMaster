@@ -59,16 +59,17 @@ class httpClient
 		// agregamos el host
 		$headers['Host'] = $this->webpage;
 		// generamos la nueva peticion con variables
-		foreach($params as $param => $val)
-		{
-			if($first == true)
+		if(!empty($params))
+			foreach($params as $param => $val)
 			{
-				$first = false;
-				$res .= '?'.urlencode(trim($param)).'='.urlencode($val);	
-			} else {
-				$res .= '&'.urlencode(trim($param)).'='.urlencode($val);
-			}	
-		}
+				if($first == true)
+				{
+					$first = false;
+					$res .= '?'.urlencode(trim($param)).'='.urlencode($val);	
+				} else {
+					$res .= '&'.urlencode(trim($param)).'='.urlencode($val);
+				}	
+			}
 		// hacemos la conexion mandando la peticion
 		$headers = $this->generateHeaders($this->protocolHeader.'://'.$this->webpage.'/'.$res, null, $headers, HTTP_GET);
 		$this->lastResource = $res; 
@@ -168,7 +169,7 @@ class httpClient
 			// parsear cabeceras
 			$this->response = $response;
 			// redireccion
-			if($this->response['Location']!= $this->protocolHeader.'://'.$this->webpage.'/'.$this->lastResource) { $this->setEOF(); $this->response['Redirection'] = true; }
+			if(isset($this->response['Location']) && $this->response['Location']!= $this->protocolHeader.'://'.$this->webpage.'/'.$this->lastResource) { $this->setEOF(); $this->response['Redirection'] = true; }
 		} else {
 			$response = $this->response;
 			$response['Main'] .= $msg;
@@ -211,7 +212,7 @@ class httpClient
 		$out = $this->cookies;
 		for($index = 0; $index < count($individualCookieString); $index++)
 		{
-			$vals = explode('=',$individualCookieString[$i]);
+			$vals = explode('=',$individualCookieString[$index]);
 			$out[$vals[0]] = $vals[1];
 		}
 		var_dump($out);
@@ -226,6 +227,7 @@ class HTTPSocketMaster extends SocketMaster
 	
 	public function set_httpClient($val)
 	{
+		echo 'SETHTTP';
 		$this->httpClient = $val;
 	}
 	
