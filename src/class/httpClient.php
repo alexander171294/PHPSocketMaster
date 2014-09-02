@@ -208,7 +208,7 @@ class httpClient
 	private function explodeCookies($cookies)
 	{
 		$individualCookieString = explode(';', $cookies);
-		$out = array();
+		$out = $this->cookies;
 		for($index = 0; $index < count($individualCookieString); $index++)
 		{
 			$vals = explode('=',$individualCookieString[$i]);

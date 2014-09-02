@@ -18,7 +18,7 @@ $pass = 'alex1234';
 $http->post('index.php?action=login2',array('user' => $user, 'passwrd' => $pass, 'cookieneverexp'=>'on', 'hash_passwrd' => sha1(sha1($user.$pass).$cur_session)));
 
 // mostramos el cuerpo del mensaje recibido
-file_put_contents('login.log',$http->response['Main']);
+file_put_contents('login2.log',$http->response['Main']);
 
 // se loggueo correctamente y redirigimos al check user
 if($http->response['Redirection'] === true)
