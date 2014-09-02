@@ -34,3 +34,5 @@ if($http->response['Redirection'] === true)
 	// mostramos el cuerpo del mensaje recibido del perfil
 	file_put_contents('perfil.log',$http->response['Main']);
 } else { echo 'error in loggin, view log.out for more info'; }
+
+echo 'End of Program.. goodbye!';

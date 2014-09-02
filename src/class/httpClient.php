@@ -215,7 +215,6 @@ class httpClient
 			$vals = explode('=',$individualCookieString[$index]);
 			$out[$vals[0]] = $vals[1];
 		}
-		var_dump($out);
 		return $out;
 	}
 
@@ -227,7 +226,7 @@ class HTTPSocketMaster extends SocketMaster
 	
 	public function set_httpClient($val)
 	{
-		echo 'SETHTTP';
+		echo 'SETHTTP**';
 		$this->httpClient = $val;
 	}
 	
