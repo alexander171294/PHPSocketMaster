@@ -21,7 +21,7 @@ $http->post('index.php?action=login2',array('user' => $user, 'passwrd' => $pass,
 file_put_contents('login.log',$http->response['Main']);
 
 // se loggueo correctamente y redirigimos al check user
-if($http->response['Redirection'] == 'Yes')
+if($http->response['Redirection'] === true)
 {
 	// no queremos cambiar mas las cabeceras
 	$http->saveHeaders = false;

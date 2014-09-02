@@ -55,7 +55,7 @@ class httpClient
 		$res = null;
 		$first = true;
 		// agregamos ademas del host las cookies
-		if(!empty($this->cookies)) $headers['Cookie'] = $this->cookies;
+		if(!empty($this->cookies)) $headers['Cookie'] = $this->implodeCookies($this->cookies);
 		// agregamos el host
 		$headers['Host'] = $this->webpage;
 		// generamos la nueva peticion con variables
@@ -96,7 +96,7 @@ class httpClient
 		// set me instance
 		$this->socket->set_httpClient(self::get_instance());
 		// agregamos ademas del host las cookies
-		if(!empty($this->cookies)) $headers['Cookie'] = $this->cookies;
+		if(!empty($this->cookies)) $headers['Cookie'] = $this->implodeCookies($this->cookies);
 		// agregamos el host
 		$headers['Host'] = $this->webpage;
 		// hacemos la conexion mandando la peticion
@@ -164,11 +164,11 @@ class httpClient
 			}
 			$response['Main'] = $parts[1];
 			// vemos si hay que guardar las cookies
-			if($this->saveHeaders == true) $this->cookies = $response['Set-Cookie'];
+			if($this->saveHeaders == true) $this->cookies = $this->explodeCookies($response['Set-Cookie']);
 			// parsear cabeceras
 			$this->response = $response;
 			// redireccion
-			if($this->response['Location']!= $this->protocolHeader.'://'.$this->webpage.'/'.$this->lastResource) { $this->setEOF(); $this->response['Redirection'] = 'Yes'; }
+			if($this->response['Location']!= $this->protocolHeader.'://'.$this->webpage.'/'.$this->lastResource) { $this->setEOF(); $this->response['Redirection'] = true; }
 		} else {
 			$response = $this->response;
 			$response['Main'] .= $msg;
@@ -185,6 +185,39 @@ class httpClient
 
 	public function set_saveHeaders($val) { $this->saveHeaders = $val; }
 	public function get_saveHeaders() { return $this->saveHeaders;}
+
+	/**
+	 * implode cookies of array
+	 * @param AssocArray $cookies
+	 * @return string arrayString
+	 */
+	private function implodeCookies($cookies)
+	{
+		$first = false;
+		$arrayString = null;
+		foreach($cookies as $cookie => $value)
+		{
+			if($first === true)
+			{
+				$arrayString .= ';'.$cookie.'='.$value;
+			} else { $arrayString = $cookie.'='.$value; $first = true; }
+		}
+		return $arrayString;
+	}
+	
+	private function explodeCookies($cookies)
+	{
+		$individualCookieString = explode(';', $cookies);
+		$out = array();
+		for($index = 0; $index < count($individualCookieString); $index++)
+		{
+			$vals = explode('=',$individualCookieString[$i]);
+			$out[$vals[0]] = $vals[1];
+		}
+		var_dump($out);
+		return $out;
+	}
+
 }
 
 class HTTPSocketMaster extends SocketMaster
