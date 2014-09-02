@@ -226,7 +226,6 @@ class HTTPSocketMaster extends SocketMaster
 	
 	public function set_httpClient($val)
 	{
-		echo 'SETHTTP**';
 		$this->httpClient = $val;
 	}
 	
@@ -240,7 +239,8 @@ class HTTPSocketMaster extends SocketMaster
 	// on disconnect event
 	public function onDisconnect() 
 	{
-		 $this->httpClient->setEOF();		
+		if(!empty($this->httpClient)) 
+			$this->httpClient->setEOF();		
 	}
 	
 	// on receive message event
