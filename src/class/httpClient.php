@@ -14,7 +14,7 @@ define('HTTP_GET', 'GET');
 define('HTTP_POST', 'POST');
 define('HCNL', "\r\n");
 
-class httpClient
+class httpClient implements iHttpClient
 {
 	use Property, Singleton;
 	
@@ -182,7 +182,7 @@ class httpClient
 	
 	public function setEOF() { $this->eof = true; }
 	
-	public function set_socket($val) { $this->socket = $val; } 
+	public function set_socket(HTTPSocketMaster $val) { $this->socket = $val; } 
 
 	public function set_saveHeaders($val) { $this->saveHeaders = $val; }
 	public function get_saveHeaders() { return $this->saveHeaders;}
