@@ -54,7 +54,7 @@ interface iHttpClient
 	/**
 	 * Getter of property contentType for post request
 	 */
-	public function get_contentType()
+	public function get_contentType();
 	
 	// SETTERS
 	/**
