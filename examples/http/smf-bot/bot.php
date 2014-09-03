@@ -1,7 +1,8 @@
 <?php
 
 /*
- * ejemplo para logguearse en un smf
+ * ejemplo para logguearse y publicar en un smf
+ * developed for simple machines forum 2.0.8
  */
 echo 'starting...'."\r\n";
 
@@ -57,7 +58,7 @@ if($http->response['Redirection'] === true)
 	echo 'Waiting...';
 	sleep(2);
 	echo 'sending post!'."\r\n";
-	$http->contentType = 'multipart/form-data';
+	//$http->contentType = 'multipart/form-data';
 	$http->post('index.php?action=post2;start=0;board='.$board,array('topic' => 0, 'subject' => SMF_SUBJECT, 'icon' => 'xx', 'message' => SMF_MSG, 'message_mode' => 0, 'notify' => 0, 'lock' => 0, 'sticky' => 0, 'move' => 0, 'additional_options' => 0, $sessid => $sessvar, 'seqnum' => $seqnum));
 } else { echo 'error in loggin, view log.out for more info'; }
 
