@@ -29,6 +29,7 @@ class httpClient implements iHttpClient
 	private $first = true;
 	private $lastResource = null;
 	private $DefaultPort = 80;
+	private $contentType = 'application/x-www-form-urlencoded';
 	
 	/**
 	 * para crear el objeto usar el factory
@@ -122,7 +123,7 @@ class httpClient implements iHttpClient
 		$header_final = $type.' '.$resources.' '.strtoupper($this->protocolHeader).'/'.$this->version.HCNL;
 		$addParams = null;
 		$first = true;
-		if($type == HTTP_POST) $headers['Content-Type'] = 'application/x-www-form-urlencoded'; 
+		if($type == HTTP_POST) $headers['Content-Type'] = $this->contentType; 
 		// evitamos foreach al dope
 		if(!empty($params))
 		{
@@ -187,6 +188,9 @@ class httpClient implements iHttpClient
 	public function set_saveHeaders($val) { $this->saveHeaders = $val; }
 	public function get_saveHeaders() { return $this->saveHeaders;}
 
+	public function get_contentType() { return $this->contentType; }
+	public function set_contentType($val) { $this->contentType = $val; }
+	
 	/**
 	 * implode cookies of array
 	 * @param AssocArray $cookies

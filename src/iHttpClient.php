@@ -51,6 +51,10 @@ interface iHttpClient
 	 * Getter of property saveHeaders
 	 */
 	public function get_saveHeaders();
+	/**
+	 * Getter of property contentType for post request
+	 */
+	public function get_contentType()
 	
 	// SETTERS
 	/**
@@ -68,6 +72,11 @@ interface iHttpClient
 	 * @param bool $val
 	 */
 	public function set_saveHeaders($val);
+	/**
+	 * setter of property contentType for post requests
+	 * @param string $val
+	 */
+	public function set_contentType($val);
 	
 	// set end of file (end of server responses)
 	public function setEOF();
