@@ -1,6 +1,7 @@
 Cambios version v0.4
 
 FIX - Reconstrucción innecesaria del objeto socket en httpClient.
+FIX - Arreglé finalmente el Trait Singleton
 
 --> cambios de versiones anteriores <--
 

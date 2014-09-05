@@ -51,4 +51,7 @@ trait Singleton
 	}
 	
 	static public function get_instance() { return self::$instance; }
+	
+	final private function __wakeup() {}
+	final private function __clone() {}
 }
