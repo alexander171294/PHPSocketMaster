@@ -1,1 +1,3 @@
-for the moment nothing :(
+agregar funciones de export/import de cookies (httpclient)
+agregar funcion de borrar cookies (httpclient)
+agregar clase administradora de multiples sockets para servidores
