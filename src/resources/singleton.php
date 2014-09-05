@@ -20,14 +20,32 @@ trait Singleton
 		return self::$instance;
 	}*/
 	
-	// version funcional para php 5.5
+	// version funcional para php <= 5.5
 	static public function Factory()
 	{
 		if(empty($instance))
 		{
 			// cambiado por bug en php #36221
 			$className = __CLASS__;
-			self::$instance = new $className(func_get_arg(0),func_get_arg(1));
+			// dado que sigo teniendo problemas con hacer un factory correcto para versiones <= 5.5
+			// vamos a hacer un par de trucos
+			$firstArg = true;
+			// creamos el listado de argumentos
+			for($i = 0; $i<func_num_args(); $i++)
+			{
+				if($firstArg == true)
+				{
+					$args = func_get_arg($i);
+					$firstArg = false;
+				} else {
+					$args .= ','.func_get_arg($i);
+				}
+			}
+			// evaluamos un string que construya la clase
+			eval('$NewInstance = new $className('.$args.');');
+			// y esto hace esto:
+			// self::$instance = new $className(func_get_arg(0),func_get_arg(1),.. etc);
+			self::$instance = $NewInstance;
 		}
 		return self::$instance;
 	}
