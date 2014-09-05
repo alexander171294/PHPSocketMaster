@@ -21,7 +21,7 @@ trait Singleton
 	}*/
 	
 	// version funcional para php <= 5.5
-	static public function Factory()
+	final static public function Factory()
 	{
 		if(empty($instance))
 		{
@@ -50,7 +50,7 @@ trait Singleton
 		return self::$instance;
 	}
 	
-	static public function get_instance() { return self::$instance; }
+	final static public function get_instance() { return self::$instance; }
 	
 	final private function __wakeup() {}
 	final private function __clone() {}
