@@ -35,10 +35,10 @@ trait Singleton
 			{
 				if($firstArg == true)
 				{
-					$args = func_get_arg($i);
+					$args = '\''.func_get_arg($i).'\'';
 					$firstArg = false;
 				} else {
-					$args .= ','.func_get_arg($i);
+					$args .= ',\''.func_get_arg($i).'\'';
 				}
 			}
 			// evaluamos un string que construya la clase
