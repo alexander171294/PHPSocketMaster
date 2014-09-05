@@ -2,7 +2,13 @@
 
 // Dependencias principales
 require('resources/property.php');
-require('resources/singleton_php5.6.php');
+
+// trait Singleton para dos versiones de php
+if(version_compare(phpversion(),'5.6.0','>='))
+	require('resources/singleton_php5.6.php');
+else 
+	require('resources/singleton.php');
+
 require('class/SocketMaster.php');
 require('class/aSocketEventReceptor.php');
 require('iSocketBridge.php');
