@@ -1,12 +1,11 @@
-v0.2(anterior) < v0.3(Actual)
+Cambios version v0.3.1
 
-ADD - SocketMaster implementa nueva función para forzar desconexión
-ADD - SocketMaster devuelve verdadero o falso en funcion refresh dependiendo si hay nuevos mensajes o no
-ADD - Nueva clase httpClient (en prueba)
-ADD - Trait singleton pero aún no está listo, hay problemas con la forma de trabajar argumentos de php, la nueva version de php 5.6 implementa una forma bastante funcional pero la versión actual (5.5) no lo implementa y puede ocacionar problemas de compatibilidad.
-ADD - Ejemplos de uso de httpClient (login en smf)...
-FIX - Namespaces en trait property
+FIX - Reconstrucción innecesaria del objeto socket en httpClient.
+FIX - Arreglé finalmente el Trait Singleton
+ADD - Trait Singleton para PHP 5.6 y compatibilidad para versiones anteriores.
+FIX - bug de PHPSocketMaster
 
 --> cambios de versiones anteriores <--
 
+v0.2 -> v0.3 : https://github.com/alexander171294/PHPSocketMaster/blob/acc8f0e3a580e0b49a8efae00cf6f2e72b6c02ae/CHANGELOG
 v0.1 -> v0.2 : https://github.com/alexander171294/PHPSocketMaster/blob/5217190a15d0f3be92c69697dad91846d2e8257e/CHANGELOG

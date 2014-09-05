@@ -83,10 +83,9 @@ class httpClient implements iHttpClient
 			$this->socket->refresh();
 		}
 		
-		// dudo que esto funcione pero espero que borre el contenido de la variable
-		unset($this->socket);
-		// creamos un nuevo recurso de socket master
-		$this->socket = new HTTPSocketMaster($this->webpage, $this->DefaultPort);
+		// no es necesario volver a crear otro objeto, se puede desconectar
+		// no recordaba que lo había diseñado así
+		$this->socket->disconnect();
 	}	
 	
 	public function post($resources, $params, $headers = array('User-Agent' => 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0', 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Lenguaje' => 'es-ar,es;q=0.8,en-us;q=0.5,en;q=0.3', 'Connection' => 'keep-alive'))
@@ -112,10 +111,9 @@ class httpClient implements iHttpClient
 			$this->socket->refresh();
 		}
 		
-		// dudo que esto funcione pero espero que borre el contenido de la variable
-		unset($this->socket);
-		// creamos un nuevo recurso de socket master
-		$this->socket = new HTTPSocketMaster($this->webpage, $this->DefaultPort);
+		// no es necesario volver a crear otro objeto, se puede desconectar
+		// no recordaba que lo había diseñado así
+		$this->socket->disconnect();
 	}
 	
 	private function generateHeaders($resources, $params, $headers, $type = HTTP_GET)

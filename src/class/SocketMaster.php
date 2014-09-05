@@ -57,7 +57,10 @@ abstract class SocketMaster implements iSocketMaster
 		try
 		{
 			if(!empty($this->socketRef))
+			{
 				socket_close($this->socketRef);
+				$this->socketRef = null;
+			}
 			$this->onDisconnect();
 		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
