@@ -57,26 +57,77 @@ class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 	// @todo agregarlo al interface
 	final private function unMask($payload)
 	{
-		$payload = str_replace("\r",null,$payload);
-		$length = ord($payload[1]) & 127;
+		$data = $payload;
+		
+		$payloadLength = '';
+		$mask = '';
+		$unmaskedPayload = '';
+		$decodedData = array();
+		
+		// estimate frame type:
+		$firstByteBinary = sprintf('%08b', ord($data[0]));
+		$secondByteBinary = sprintf('%08b', ord($data[1]));
+		$opcode = bindec(substr($firstByteBinary, 4, 4));
+		$isMasked = ($secondByteBinary[0] == '1') ? true : false;
+		$payloadLength = ord($data[1]) & 127;
+		
+		// close connection if unmasked frame is received:
+		if ($isMasked === false) {
+			$this->disconnect($socket);
+		}
+		
+		switch ($opcode) {
+			// text frame:
+			case 1:
+				$decodedData['type'] = 'text';
+				break;
+		
+				// connection close frame:
+			case 8:
+				$decodedData['type'] = 'close';
+				break;
+		
+				// ping frame:
+			case 9:
+				$decodedData['type'] = 'ping';
+				break;
+		
+				// pong frame:
+			case 10:
+				$decodedData['type'] = 'pong';
+				break;
+		
+			default:
+				// Close connection on unknown opcode:
+				//$this->close(1003);
+				break;
+		}
+		
+		if ($payloadLength === 126) {
+			$mask = substr($data, 4, 4);
+			$payloadOffset = 8;
+		} elseif ($payloadLength === 127) {
+			$mask = substr($data, 10, 4);
+			$payloadOffset = 14;
+		} else {
+			$mask = substr($data, 2, 4);
+			$payloadOffset = 6;
+		}
+		
+		$dataLength = strlen($data);
+		
+		if ($isMasked === true) {
+			for ($i = $payloadOffset; $i < $dataLength; $i++) {
+				$j = $i - $payloadOffset;
+				$unmaskedPayload .= $data[$i] ^ $mask[$j % 4];
+			}
+			$decodedData['payload'] = $unmaskedPayload;
+		} else {
+			$payloadOffset = $payloadOffset - 4;
+			$decodedData['payload'] = substr($data, $payloadOffset);
+		}
 	
-		if($length == 126) {
-			$masks = substr($payload, 4, 4);
-			$data = substr($payload, 8);
-		}
-		elseif($length == 127) {
-			$masks = substr($payload, 10, 4);
-			$data = substr($payload, 14);
-		}
-		else {
-			$masks = substr($payload, 2, 4);
-			$data = substr($payload, 6);
-		}
-		$text = null;
-		for ($i = 0; $i < strlen($data); ++$i) {
-			$text .= $data[$i] ^ $masks[$i%4];
-		}
-		return $text;
+		return $decodedData;
 	}
 	
 	// generate handshake response
