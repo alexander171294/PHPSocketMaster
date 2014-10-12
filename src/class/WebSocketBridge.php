@@ -41,7 +41,7 @@ class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 	}
 	
 	// mask message
-	final private function Mask($message, $type = 'text', $masked = true)
+	final private function Mask($message, $type = 'text', $masked = false)
 	{
 		$payload = $message;
 	
