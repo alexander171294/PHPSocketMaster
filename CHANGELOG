@@ -3,7 +3,7 @@ Cambios version v0.4
 FIX UnMask error, en algunas ocaciones unmask fallaba dando por resultado un mensaje inválido
 ADD el parametro de la funcion onReciveMessage en websocketbridge, ahora devuelve un arreglo conformado por tipo de mensaje y payload (el mensaje)
 CHG Mask function, cambiada en concordancia con los cambios realizados a unMask.
-
+FIX Mask function, valor por defecto para $masked = false
 
 --> cambios de versiones anteriores <--
 
