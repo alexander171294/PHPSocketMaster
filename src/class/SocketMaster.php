@@ -30,6 +30,7 @@ abstract class SocketMaster implements iSocketMaster
 	protected $port = 0;
 	protected $readcontrol = "\n";
 	protected $endLoop = false;
+	protected $listenClients = null;
 
 	private $socketRef = null;
 
@@ -177,6 +178,25 @@ abstract class SocketMaster implements iSocketMaster
 				$res = $this->accept($Callback, $type);
 				$this->onNewConnection($res);
 			}
+	}
+	
+	// loop for function refreshListen
+	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_BASIC)
+	{
+		$this->listenClients = $clients;
+		while($this->endLoop == false)
+		{
+			$this->refreshListen($callback, $type);
+			for($i=0; $i < count($this->listenClients); $i++)
+			{
+				$this->listenClients[$i]->refresh();
+			}
+		}
+	}
+	
+	final public function set_listenClients(&$newArray)
+	{
+		$this->listenClients = $newArray;
 	}
 
 	// recive a message by socket
