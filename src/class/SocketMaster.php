@@ -29,6 +29,7 @@ abstract class SocketMaster implements iSocketMaster
 	protected $address = 'localhost';
 	protected $port = 0;
 	protected $readcontrol = "\n";
+	protected $endLoop = false;
 
 	private $socketRef = null;
 
@@ -43,6 +44,7 @@ abstract class SocketMaster implements iSocketMaster
 			$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 			if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -60,9 +62,11 @@ abstract class SocketMaster implements iSocketMaster
 			{
 				socket_close($this->socketRef);
 				$this->socketRef = null;
+				$this->endLoop = true;
 			}
 			$this->onDisconnect();
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -78,6 +82,7 @@ abstract class SocketMaster implements iSocketMaster
 			if (socket_listen($this->socketRef, 5) === false)
 				throw new \Exception('Failed Listening :: '.$this->getError());
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -91,6 +96,7 @@ abstract class SocketMaster implements iSocketMaster
 				throw new \Exception('Failed to connect :: '.$this->getError());
 			$this->onConnect();
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -114,6 +120,7 @@ abstract class SocketMaster implements iSocketMaster
 			$instance->onConnect();
 			return $instance;
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -127,6 +134,7 @@ abstract class SocketMaster implements iSocketMaster
 			if(socket_write($this->socketRef, $message, strlen($message)) == false)
 				throw new \Exception('Socket Send Message Failed :: '.$this->getError());
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -145,6 +153,15 @@ abstract class SocketMaster implements iSocketMaster
 				$this->ErrorControl(array($this, 'read'));
 				return true;
 			} else { return false; }
+	}
+	
+	// loop for function refresh
+	final public function loop_refresh()
+	{
+		while($this->endLoop == false)
+		{
+			$this->refresh();
+		}
 	}
 
 	//detect new request external connections
@@ -183,6 +200,7 @@ abstract class SocketMaster implements iSocketMaster
 		{
 			call_user_func($call, $args);
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}

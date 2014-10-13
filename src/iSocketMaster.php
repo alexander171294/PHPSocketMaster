@@ -96,6 +96,12 @@ interface iSocketMaster
 	 * @return bool ¿new messages? true/false
 	 */
 	public function refresh();
+        
+        /**
+         * Function loop_refresh()
+         * internal and controlled loop for refresh function
+         */
+        public function loop_refresh();
 
 	/**
 	 * Function refreshListen
