@@ -29,7 +29,7 @@ class newClient extends SocketEventReceptor
 	{
 		
 		// fix for windows sockets message
-		$message = is_array($message) ? $message[0] : $message;
+		$message = isset($message[0]) ? $message[0] : $message;
 		// send
 		ServerManager::Resend('HI!');
 		// mostramos en pantalla lo que llegó
