@@ -34,72 +34,73 @@ abstract class SocketMaster implements iSocketMaster
 
 	private $socketRef = null;
 
+	// constructor function
 	public function __construct($address, $port)
 	{
-		try
-		{
-			// seteamos variables fundamentales
-			$this->address = $address;
-			$this->port = $port;
-			// creamos el socket
-			$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-			if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
-		} catch (\Exception $error) {
-			$this->endLoop = true;
-			$this->onError($error->getMessage());
-		}
+		$this->ErrorControl(array($this, '_construct_'), array($address, $port));
 	}
-
+	// the wrapper of construct function
+	private function __construct_($address, $port)
+	{
+		// seteamos variables fundamentales
+		$this->address = $address;
+		$this->port = $port;
+		// creamos el socket
+		$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
+	}
+	
+	// destructor function
 	final public function __destruct()
 	{
 		$this->disconnect();
 	}
 	
+	// disconnect function
 	final public function disconnect()
 	{
-		try
+		$this->ErrorControl(array($this, 'disconnect_'));
+	}
+	// the wrapper of disconnect function
+	final private function disconnect_()
+	{
+		if(!empty($this->socketRef))
 		{
-			if(!empty($this->socketRef))
-			{
-				socket_close($this->socketRef);
-				$this->socketRef = null;
-				$this->endLoop = true;
-			}
-			$this->onDisconnect();
-		} catch (\Exception $error) {
+			socket_close($this->socketRef);
+			$this->socketRef = null;
 			$this->endLoop = true;
-			$this->onError($error->getMessage());
 		}
+		$this->onDisconnect();
 	}
 
 	// wait for a new external connection request
 	final public function listen()
 	{
-		try
-		{
-			// bindeamos el socket
-			if(socket_bind($this->socketRef, $this->address, $this->port) == false)
-				throw new \Exception('Failed to bind socket :: '.$this->getError());
-			if (socket_listen($this->socketRef, 5) === false)
-				throw new \Exception('Failed Listening :: '.$this->getError());
-		} catch (\Exception $error) {
-			$this->endLoop = true;
-			$this->onError($error->getMessage());
-		}
+		$this->ErrorControl(array($this, 'listen_'));
 	}
+	// the wrapper of listen function
+	final private function listen_()
+	{
+		// bindeamos el socket
+		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
+			throw new \Exception('Failed to bind socket :: '.$this->getError());
+		if (socket_listen($this->socketRef, 5) === false)
+			throw new \Exception('Failed Listening :: '.$this->getError());
+	}
+	
+	
 
 	// connect to host
 	final public function connect()
 	{
-		try
-		{
-			if(socket_connect($this->socketRef, $this->address, $this->port)===false)
-				throw new \Exception('Failed to connect :: '.$this->getError());
-			$this->onConnect();
-		} catch (\Exception $error) {
-			$this->endLoop = true;
-			$this->onError($error->getMessage());
-		}
+		$this->ErrorControl(array($this, 'connect_'));
+	}
+	// the wrapper of connect function
+	final private function connect_()
+	{
+		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
+			throw new \Exception('Failed to connect :: '.$this->getError());
+		$this->onConnect();
 	}
 
 	// accept a new external connection and create new socket object
@@ -109,35 +110,33 @@ abstract class SocketMaster implements iSocketMaster
 		*/
 	final public function accept(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
-		try
-		{
-			$newSocketRef = socket_accept($this->socketRef);
-			if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
-			if($type == SCKM_BASIC)
-				$instance = new SocketBridge($newSocketRef, $Callback);
-			if($type == SCKM_WEB)
-				$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
-			$Callback->setMother($instance);
-			$instance->onConnect();
-			return $instance;
-		} catch (\Exception $error) {
-			$this->endLoop = true;
-			$this->onError($error->getMessage());
-		}
+		$this->ErrorControl(array($this, 'accept_'), array($Callback, $type));
+	}
+	// the wrapper of accept function
+	final private function accept_(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	{
+		$newSocketRef = socket_accept($this->socketRef);
+		if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
+		if($type == SCKM_BASIC)
+			$instance = new SocketBridge($newSocketRef, $Callback);
+		if($type == SCKM_WEB)
+			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
+		$Callback->setMother($instance);
+		$instance->onConnect();
+		return $instance;
 	}
 
 	//send message by socket
 	public function send($message, $readControl = true)
 	{
-		try
-		{
-			if($readControl === true) $message = $message.$this->readcontrol;
-			if(socket_write($this->socketRef, $message, strlen($message)) == false)
-				throw new \Exception('Socket Send Message Failed :: '.$this->getError());
-		} catch (\Exception $error) {
-			$this->endLoop = true;
-			$this->onError($error->getMessage());
-		}
+		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
+	}
+	// the wrapper of send function
+	private function send_($message, $readControl = true)
+	{
+		if($readControl === true) $message = $message.$this->readcontrol;
+		if(socket_write($this->socketRef, $message, strlen($message)) == false)
+			throw new \Exception('Socket Send Message Failed :: '.$this->getError());
 	}
 
 	//detect new messages
