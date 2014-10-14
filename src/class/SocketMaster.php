@@ -204,8 +204,9 @@ abstract class SocketMaster implements iSocketMaster
 			$buf = null;
 			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
 				throw new \Exception('Socket Read Failed :: '.$this->getError());
-			if($buf === '') // esto estaba literalmente así en la documentación
-			{ 
+			if($buf === null)
+			{
+				$this->endLoop = true;
 				$this->onDisconnect();
 			} else {
 				$this->onReceiveMessage($buf);	
