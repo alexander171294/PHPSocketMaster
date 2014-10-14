@@ -1,17 +1,17 @@
 <?php
 
 require('../../src/iSocketMaster.php');
-require('../../src/iHttpClient.php');
+require('../../src/iHttpClient2.php');
 
 // cambiamos por su namespace y el factory method del singleton
 // $http = new httpClient('underc0de.org');
-$http = PHPSocketMaster\httpClient::Factory('foro.infiernohacker.com', true);
+$http = new PHPSocketMaster\httpClient('localhost');
 
 // solicitamos el index.php
-$http->get('index.php',array('board' => '71.0'));
+$result = $http->get('index.php?example=true');
 
 // mostramos el cuerpo del mensaje recibido
-var_dump($http->response);
+var_dump($result['Headers']);
 // mostramos la cabecera de respuesta
-var_dump($http->response['Header']);
+var_dump($result['Body']);
 
