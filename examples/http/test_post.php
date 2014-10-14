@@ -1,7 +1,7 @@
 <?php
 
 require('../../src/iSocketMaster.php');
-require('../../src/iHttpClient2.php');
+require('../../src/iHttpClient.php');
 
 $http = new PHPSocketMaster\httpClient('foro.infiernohacker.com');
 

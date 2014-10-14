@@ -1,7 +1,7 @@
 <?php
 
 require('../../src/iSocketMaster.php');
-require('../../src/iHttpClient2.php');
+require('../../src/iHttpClient.php');
 
 // creamos una nueva instancia
 $http = new PHPSocketMaster\httpClient('underc0de.org');
