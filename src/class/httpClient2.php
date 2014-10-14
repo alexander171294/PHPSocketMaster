@@ -16,7 +16,7 @@ class httpClient implements ihttpClient
 {
     use property;
     
-    private $Port = 0;
+    private $port = 0;
     private $domain = null;
     private $socket = null;
     private $headers = array('User-Agent' => 'Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0', 'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Lenguaje' => 'es-ar,es;q=0.8,en-us;q=0.5,en;q=0.3', 'Connection' => 'keep-alive');
@@ -26,7 +26,7 @@ class httpClient implements ihttpClient
     {
         $this->port = $port;
         $this->domain = $domain;
-        $this->socket = new HTTPSocketMaster($webpage, $this->DefaultPort);
+        $this->socket = new HTTPSocketMaster($this->domain, $this->port);
         // set new headers
         if(is_array($newHeaders))
         {
@@ -76,7 +76,7 @@ class httpClient implements ihttpClient
         // enviamos peticion
         $this->socket->send($body, false);
         // esperamos respuesta
-        $this->socket->refreshLoop();
+        $this->socket->loop_refresh();
         // luego de finalizar la conexión revisamos el resultado
         if(bridge::$response)
             return bridge::$objResponse;
@@ -146,7 +146,8 @@ class HTTPSocketMaster extends SocketMaster
         private function parseResponse($textPlain)
         {
             //separamos cabeceras de cuerpo de mensaje
-            $parts = explode(HCNL.HCNL, $msg);
+            $parts = explode(HCNL.HCNL, $textPlain);
+            if(!isset($parts[0]) || $parts[0] == null) return false;
             // separamos cada cabecera
 	    $headers = explode(HCNL, $parts[0]);
             $out = array();
@@ -155,7 +156,7 @@ class HTTPSocketMaster extends SocketMaster
 		preg_match("/(.*): (.*)/",$headers[$i],$match);
 		$out['Headers'][$match[1]] = $match[2];
 	    }
-            $out['Headers'] = (object) $out['headers'];
+            $out['Headers'] = (object) $out['Headers'];
             $out['Body'] = $parts[1];
             return $out;
         }
@@ -169,5 +170,5 @@ class HTTPSocketMaster extends SocketMaster
 class bridge
 {
     static public $objResponse = null;
-    static public $Response = false;
+    static public $response = false;
 }
