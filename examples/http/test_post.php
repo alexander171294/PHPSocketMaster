@@ -3,14 +3,15 @@
 require('../../src/iSocketMaster.php');
 require('../../src/iHttpClient2.php');
 
-// cambiamos por su namespace y el factory method del singleton
-// $http = new httpClient('underc0de.org');
-$http = new PHPSocketMaster\httpClient('localhost');
+$http = new PHPSocketMaster\httpClient('underc0de.org');
 
 // solicitamos el index.php
-$result = $http->post('welcome/login', array('nick' => 'alexander1712', 'pass' => 'test1234'));
+$result = $http->post('foro/index.php', array('nick' => 'alexander1712', 'pass' => 'test123'));
 
-// mostramos el cuerpo del mensaje recibido
-var_dump($result['Headers']);
-// mostramos la cabecera de respuesta
-var_dump($result['Body']);
+if(isset($result['Headers']))
+{
+    // mostramos el cuerpo del mensaje recibido
+    var_dump($result['Headers']);
+    // mostramos la cabecera de respuesta
+    var_dump($result['Body']);
+} else var_dump($result);

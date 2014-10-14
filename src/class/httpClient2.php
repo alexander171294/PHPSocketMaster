@@ -40,14 +40,14 @@ class httpClient implements ihttpClient
     
     public function get($resource)
     {
-        $body = 'GET '.$this->protocol.'://'.$this->domain.'/'.$resource;
+        $body = 'GET '.$this->protocol.'://'.$this->domain.'/'.$resource.HCNL;
         $body .= $this->make($resource);
         return $this->sendData($body);
     }
     
     public function post($resource, $argv = null)
     {
-        $body = 'POST '.$this->protocol.'://'.$this->domain.'/'.$resource;
+        $body = 'POST '.$this->protocol.'://'.$this->domain.'/'.$resource.HCNL;
         $plainARGV = null;
         if($argv !== null)
         {
@@ -62,22 +62,33 @@ class httpClient implements ihttpClient
     private function make($resource, $bodyRequest = null)
     {
         $out = null;
+        if(!empty($bodyRequest))
+        {
+            if(!isset($this->headers['Content-Type'])) $this->headers['Content-Type'] = 'text/plain; charset=UTF-8';
+            $this->headers['Content-Length'] = strlen($bodyRequest);
+        }
         foreach($this->headers as $index => $value)
         {
             $out .= $index.': '.$value.HCNL;
         }
-        return $out.HCNL.$bodyRequest;
+        if(isset($this->headers['Content-Length'])) unset($this->headers['Content-Length']);
+        $finish = empty($bodyRequest) ? null : $bodyRequest;
+        return $out.HCNL.$finish;
     }
     
     private function sendData($body)
     {
         // conectamos al host
         $this->socket->connect();
+        
+        var_dump($body);
         // enviamos peticion
         $this->socket->send($body, false);
+        
         // esperamos respuesta
         $this->socket->loop_refresh();
         // luego de finalizar la conexión revisamos el resultado
+
         if(bridge::$response)
             return bridge::$objResponse;
         else
@@ -133,13 +144,17 @@ class HTTPSocketMaster extends SocketMaster
 	public function onConnect(){}
 	
 	// on disconnect event
-	public function onDisconnect(){}
+	public function onDisconnect(){ }
 	
 	// on receive message event
 	public function onReceiveMessage($message)
 	{
 	    bridge::$response = true;
-            bridge::$objResponse = $this->parseResponse($message);
+            $result = $this->parseResponse($message);
+            if(isset($result['Headers']))
+                bridge::$objResponse = $result;
+            else
+                bridge::$objResponse.= $result;
 	}
         
         // parse a response
@@ -151,18 +166,25 @@ class HTTPSocketMaster extends SocketMaster
             // separamos cada cabecera
 	    $headers = explode(HCNL, $parts[0]);
             $out = array();
+            $onlybody = false;
             for($i = 1; $i<count($headers); $i++)
 	    {
 		preg_match("/(.*): (.*)/",$headers[$i],$match);
-		$out['Headers'][$match[1]] = $match[2];
+                if(isset($match[1]))
+                    $out['Headers'][$match[1]] = $match[2];
+                else
+                    $onlybody = true;
 	    }
-            $out['Headers'] = (object) $out['Headers'];
-            $out['Body'] = $parts[1];
+            if($onlybody == false && isset($out['Headers']))
+            {
+                $out['Headers'] = (object) $out['Headers'];
+                $out['Body'] = $parts[1];
+            } else $out = $parts[0];
             return $out;
         }
 	
 	// on error message event
-	public function onError($errorMessage){}
+	public function onError($errorMessage){ }
 	
 	public function onNewConnection(SocketBridge $socket){}
 }
