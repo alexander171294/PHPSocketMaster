@@ -37,7 +37,7 @@ abstract class SocketMaster implements iSocketMaster
 	// constructor function
 	public function __construct($address, $port)
 	{
-		$this->ErrorControl(array($this, '_construct_'), array($address, $port));
+		$this->ErrorControl(array($this, '__construct_'), array($address, $port));
 	}
 	// the wrapper of construct function
 	private function __construct_($address, $port)
@@ -213,11 +213,11 @@ abstract class SocketMaster implements iSocketMaster
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
-	private function ErrorControl($call, $args = null)
+	private function ErrorControl($call, $args = array())
 	{
 		try
 		{
-			call_user_func($call, $args);
+			call_user_func_array($call, $args);
 		} catch (\Exception $error) {
 			$this->endLoop = true;
 			$this->onError($error->getMessage());
