@@ -12,7 +12,7 @@
 
 define('HCNL', "\r\n");
 
-class httpClient extends ihttpClient
+class httpClient implements ihttpClient
 {
     use property;
     
