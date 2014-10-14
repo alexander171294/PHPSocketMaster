@@ -40,14 +40,14 @@ class httpClient implements ihttpClient
     
     public function get($resource)
     {
-        $body = 'GET '.$this->protocol.'://'.$this->domain.'/'.$resource.HCNL;
+        $body = 'GET '.$this->protocol.'://'.$this->domain.'/'.$resource.' HTTP/1.0'.HCNL;
         $body .= $this->make($resource);
         return $this->sendData($body);
     }
     
     public function post($resource, $argv = null)
     {
-        $body = 'POST '.$this->protocol.'://'.$this->domain.'/'.$resource.HCNL;
+        $body = 'POST '.$this->protocol.'://'.$this->domain.'/'.$resource.' HTTP/1.0'.HCNL;
         $plainARGV = null;
         if($argv !== null)
         {
