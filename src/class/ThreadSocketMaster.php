@@ -18,7 +18,7 @@ define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
 
-abstract class SocketMaster  extends Threads implements iSocketMaster
+abstract class SocketMaster  extends \Thread implements iSocketMaster
 {
 	/**
 	 * Dado que mi version de php es menor a 5.4 
