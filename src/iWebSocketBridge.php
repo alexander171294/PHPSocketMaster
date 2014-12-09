@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 // requerimos la clase socketMaster
 require('class/WebSocketBridge.php');
 
@@ -26,7 +27,7 @@ interface iWebSocketBridge
 	 * Function getSocketEventReceptor
 	 * @return object of SocketEventReceptor class
 	*/
-	// @todo : esta funcion hay que quitarla, para eso está el property
+	// @todo : esta funcion hay que quitarla, para eso estÃ¡ el property
 	public function getSocketEventReceptor();
 
 	/**
@@ -40,10 +41,10 @@ interface iWebSocketBridge
 	/**
 	 * Function set_SocketEventReceptor
 	 * @return none
-	 * WARN!!: esta función es únicamente simbólica para cumplir con los requisitos
-	 * del atributo, pero se maneja a dicho atributo como solo lectura por lo que esta función
+	 * WARN!!: esta funciÃ³n es Ãºnicamente simbÃ³lica para cumplir con los requisitos
+	 * del atributo, pero se maneja a dicho atributo como solo lectura por lo que esta funciÃ³n
 	 * emite una excepcion catchable, de igual manera como la anterior no es necesario llamarla
-	 * directamente, también al setear este atributo como si de un público se tratara, será llamada esta función
+	 * directamente, tambiÃ©n al setear este atributo como si de un pÃºblico se tratara, serÃ¡ llamada esta funciÃ³n
 	*/
 	public function set_SocketEventReceptor($val);
 	
