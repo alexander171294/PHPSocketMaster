@@ -11,7 +11,7 @@ else
 	require('resources/singleton.php');
 
 // use different definitions in different cases
-if(!defined('SOCKET_THREAD')) // not threads
+if(!defined('SCKM_THREAD')) // not threads
     require('class/SocketMaster.php');
 else // yes, i love threads xD
     require('class/ThreadSocketMaster.php');

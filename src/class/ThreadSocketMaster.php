@@ -18,7 +18,7 @@ define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
 
-abstract class SocketMaster implements iSocketMaster extends Threads
+abstract class SocketMaster  extends Threads implements iSocketMaster
 {
 	/**
 	 * Dado que mi version de php es menor a 5.4 
@@ -100,7 +100,7 @@ abstract class SocketMaster implements iSocketMaster extends Threads
 	// the wrapper of connect function
 	final private function connect_()
 	{ // thread start
-		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
+        if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
 		$this->start();
 	}
