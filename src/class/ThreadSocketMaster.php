@@ -28,10 +28,10 @@ class hilo extends \Thread
     final public function run()
     {
         $this->synchronized(function($thread){
-            if (!$thread->Socket)
+            if (!$thread->Socket || !$thread->Ref)
                 $thread->wait();
         }, $this);
-        var_dump($this->Socket);
+       
         // infinite loop
         $this->Socket->loop_refresh();
     }
@@ -129,6 +129,7 @@ abstract class SocketMaster implements iSocketMaster
 		$hilo->start();
         $hilo->synchronized(function($thread){
             $thread->Socket = $this;
+            $thread->Ref = $this->socketRef;
             $thread->notify();
         }, $hilo);
 	}
@@ -288,5 +289,6 @@ abstract class SocketMaster implements iSocketMaster
 	final public function set_address($val) { $this->address = $val; }
 	final public function set_port($val) { $this->port = $val; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
-	final private function set_socketRef($val) { $this->socketRef = $val; }
+    // pero para poder utilizar los hilos es necesario un seteador
+	final public function set_socketRef($val) { $this->socketRef = $val; }
 }
