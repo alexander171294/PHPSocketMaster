@@ -19,7 +19,7 @@ define('SCKM_WEB', 2);
 
 class hilo extends \Thread
 {
-    //use Property;
+    use Property;
     //private $ref = null;
     private $address = null;
     private $port = null;
@@ -125,7 +125,7 @@ abstract class SocketMaster implements iSocketMaster
         $hilo = new hilo();
         if(socket_connect($this->socketref, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-        $this->Socket->onConnect();
+        $this->onConnect();
 		$hilo->start();
         $hilo->synchronized(function($thread){
             $thread->Socket = $this;
