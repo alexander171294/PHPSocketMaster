@@ -1,5 +1,20 @@
 <?php namespace PHPSocketMaster;
 
+// THIS SOURCE DON'T WORK!!!!
+// Este código no funciona
+
+/**
+ ** En este momento aún estoy trabajando con sockets en hilos, al menos con las funciones nativas
+ ** dadas las limitaciones de Pthreads, aún con mucho esfuerzo no logro compartir el recurso de 
+ ** socket entre los dos contextos que necesito, el recurso pierde el tipo y deja de funcionar
+ **
+ ** Si usted desea utilizar sockets con hilos, hay una solución para windows que será implementada
+ ** próximamente.
+ 
+ ** El manejo de hilos de PHPSocketMaster aún es una característica experimental y recién comienzo con el desarrollo
+ **
+ */
+
 // Cliente de ejemplo
 
 // definimos que utilizaremos hilos
