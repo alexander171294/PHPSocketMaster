@@ -108,9 +108,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 			throw new \Exception('Failed to connect :: '.$this->getError());
         $this->onConnect();
         // infinite loop
-        //$this->lock();
         $this->loop_refresh();
-        //$this->unlock();
     }
 
 	// accept a new external connection and create new socket object
@@ -139,12 +137,14 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	//send message by socket
 	public function send($message, $readControl = true)
 	{
+        var_dump($this->socketRef);
 		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
 	}
 	// the wrapper of send function
-	private function send_($message, $readControl = true)
+	public function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
+        var_dump($this->socketRef);
 		if(socket_write($this->socketRef, $message, strlen($message)) == false)
 			throw new \Exception('Socket Send Message Failed :: '.$this->getError());
 	}
@@ -153,6 +153,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
+            $this->lock();
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
@@ -163,6 +164,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 				$this->ErrorControl(array($this, 'read'));
 				return true;
 			} else { return false; }
+            $this->unlock();
 	}
 	
 	// loop for function refresh
