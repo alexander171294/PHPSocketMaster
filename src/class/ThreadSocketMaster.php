@@ -27,18 +27,27 @@ class hilo extends \Thread
      // autocall by threads
     final public function run()
     {
-        $this->synchronized(function($thread){
-            if (!$thread->Socket || !$thread->Ref)
-                $thread->wait();
-        }, $this);
-       
+        // lock the changes
+        $this->lock();
         // infinite loop
-        $this->Socket->loop_refresh();
+        $this->worker->Socket->loop_refresh();
+        // unlock the changes
+        $this->unlock();
     }
     
     final public function set_address($val) {$this->address = $val;}
     final public function set_port($val) { $this->port = $val; }
 } 
+
+class trabajador extends \Worker
+{
+    private $Socket;
+    
+    public function __construct($instance)
+    {
+        $this->Socket = $instance;
+    }
+}
 
 abstract class SocketMaster implements iSocketMaster
 {
@@ -122,16 +131,11 @@ abstract class SocketMaster implements iSocketMaster
 	// the wrapper of connect function
 	final private function connect_()
 	{ // new thread
-        $hilo = new hilo();
+        $pool = new \Pool(1, 'PHPSocketMaster\trabajador', [$this]);
         if(socket_connect($this->socketref, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
         $this->onConnect();
-		$hilo->start();
-        $hilo->synchronized(function($thread){
-            $thread->Socket = $this;
-            $thread->Ref = $this->socketRef;
-            $thread->notify();
-        }, $hilo);
+		$pool->submit(new hilo());
 	}
 
 	// accept a new external connection and create new socket object
