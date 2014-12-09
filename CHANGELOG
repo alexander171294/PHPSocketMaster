@@ -4,6 +4,9 @@ ADD: loop_refresh() function
 ADD: loop_refreshListen function
 ADD: property listenClients
 ADD: Test Threads
+ADD: new httpclient
+ADD: new interface http client.
+
 
 --> cambios de versiones anteriores <--
 
