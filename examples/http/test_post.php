@@ -5,7 +5,7 @@
  */
 
 require('../../src/iSocketMaster.php');
-require('../../src/iHttpClient.php');
+require('../../src/iHttpClient2.php');
 
 // cambiamos por su namespace y el factory method del singleton
 // $http = new httpClient('underc0de.org');
