@@ -1,5 +1,4 @@
 <?php namespace PHPSocketMaster;
-<?php namespace PHPSocketMaster;
 
 
 /**
