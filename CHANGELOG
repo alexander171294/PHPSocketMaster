@@ -7,6 +7,8 @@ ADD: Test Threads
 ADD: new httpclient
 ADD: new interface http client.
 
+*** ADD: Support for threads BUT DON'T WORK!! IS EXPERIMENTAL CLASS.
+
 
 --> cambios de versiones anteriores <--
 
