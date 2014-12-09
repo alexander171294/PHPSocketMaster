@@ -10,7 +10,12 @@ if(version_compare(phpversion(),'5.6.0','>='))
 else 
 	require('resources/singleton.php');
 
-require('class/SocketMaster.php');
+// use different definitions in different cases
+if(!defined('SOCKET_THREAD')) // not threads
+    require('class/SocketMaster.php');
+else // yes, i love threads xD
+    require('class/ThreadSocketMaster.php');
+
 require('class/aSocketEventReceptor.php');
 require('iSocketBridge.php');
 require('iWebSocketBridge.php');

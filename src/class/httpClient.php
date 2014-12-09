@@ -99,26 +99,26 @@ class httpClient implements ihttpClient
     public function implode_cookies($cookies)
     {
         $first = false;
-	$arrayString = null;
-	foreach($cookies as $cookie => $value)
-	{
-	    if($first === true)
-	    {
-		$arrayString .= ';'.$cookie.'='.$value;
-	    } else { $arrayString = $cookie.'='.$value; $first = true; }
-        }
-	return $arrayString;
+        $arrayString = null;
+        foreach($cookies as $cookie => $value)
+        {
+            if($first === true)
+            {
+            $arrayString .= ';'.$cookie.'='.$value;
+            } else { $arrayString = $cookie.'='.$value; $first = true; }
+            }
+        return $arrayString;
     }
     
     public function explodeCookies($cookies)
     {
-	$individualCookieString = explode(';', $cookies);
-	$out = $this->cookies;
-	for($index = 0; $index < count($individualCookieString); $index++)
-	{
-	    $vals = explode('=',$individualCookieString[$index]);
-	    $out[$vals[0]] = $vals[1];
-	}
+        $individualCookieString = explode(';', $cookies);
+        $out = $this->cookies;
+            for($index = 0; $index < count($individualCookieString); $index++)
+            {
+                $vals = explode('=',$individualCookieString[$index]);
+                $out[$vals[0]] = $vals[1];
+            }
         return $out;
     }
     
