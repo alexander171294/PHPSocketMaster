@@ -17,8 +17,30 @@
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
+class hilo extends \Thread
+{
+    //use Property;
+    //private $ref = null;
+    private $address = null;
+    private $port = null;
+    
+     // autocall by threads
+    final public function run()
+    {
+        $this->synchronized(function($thread){
+            if (!$thread->Socket)
+                $thread->wait();
+        }, $this);
+        var_dump($this->Socket);
+        // infinite loop
+        $this->Socket->loop_refresh();
+    }
+    
+    final public function set_address($val) {$this->address = $val;}
+    final public function set_port($val) { $this->port = $val; }
+} 
 
-abstract class SocketMaster  extends \Thread implements iSocketMaster
+abstract class SocketMaster implements iSocketMaster
 {
 	use Property;
 
@@ -27,7 +49,8 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	protected $readcontrol = "\n";
 	protected $endLoop = false;
 	protected $listenClients = null;
-
+    
+    private $thread = null;
 	private $socketRef = null;
 
 	// constructor function
@@ -38,6 +61,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	// the wrapper of construct function
 	private function __construct_($address, $port)
 	{
+        $this->socketFactory();
 		// seteamos variables fundamentales
 		$this->address = $address;
 		$this->port = $port;
@@ -81,7 +105,6 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	// the wrapper of listen function
 	final private function listen_()
 	{
-        $this->socketFactory();
 		// bindeamos el socket
 		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
@@ -98,18 +121,17 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	}
 	// the wrapper of connect function
 	final private function connect_()
-	{ // thread start
-		$this->start();
-	}
-    final public function run()
-    {
-        $this->socketFactory();
-        if(socket_connect($this->socketRef, $this->address, $this->port)===false)
+	{ // new thread
+        $hilo = new hilo();
+        if(socket_connect($this->socketref, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-        $this->onConnect();
-        // infinite loop
-        $this->loop_refresh();
-    }
+        $this->Socket->onConnect();
+		$hilo->start();
+        $hilo->synchronized(function($thread){
+            $thread->Socket = $this;
+            $thread->notify();
+        }, $hilo);
+	}
 
 	// accept a new external connection and create new socket object
 	/**
@@ -137,7 +159,6 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	//send message by socket
 	public function send($message, $readControl = true)
 	{
-        var_dump($this->socketRef);
 		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
 	}
 	// the wrapper of send function
@@ -153,7 +174,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
-            $this->lock();
+            //$this->lock();
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
@@ -164,7 +185,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 				$this->ErrorControl(array($this, 'read'));
 				return true;
 			} else { return false; }
-            $this->unlock();
+            //$this->unlock();
 	}
 	
 	// loop for function refresh
