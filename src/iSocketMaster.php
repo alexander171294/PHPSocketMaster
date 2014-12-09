@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 // Dependencias principales
 require('resources/property.php');
 
@@ -19,7 +20,7 @@ require('iWebSocketBridge.php');
  * @author Alexander
  * @version 1.0
  * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/Funciones-del-Socket
- * Clase diseñada como modelo de socket orientado a objetos
+ * Clase diseÃ±ada como modelo de socket orientado a objetos
  * con eventos.
  * Cuenta con la finalidad de escuchar y conectarse.
  *
@@ -60,7 +61,7 @@ interface iSocketMaster
 	 * @return: object of SocketBridge
 	 * wait and accept a new external connection and create new socket object (instance of SocketBridge). 
 	 * espera y acepta conexiones externas y luego crea una nueva instancia de SocketMaster (su extension Socket Bridge)
-	 * es necesario pasar por parametro una instancia de la clase que recibirá los eventos y ejecutará las tareas cuando 
+	 * es necesario pasar por parametro una instancia de la clase que recibirÃ¡ los eventos y ejecutarÃ¡ las tareas cuando 
 	 * ocurran sobre el nuevo socket que se crea al aceptar una conexion (usado luego para gestionar dicha conexion)
 	*/
 	public function accept(SocketEventReceptor $Callback);
@@ -93,7 +94,7 @@ interface iSocketMaster
 	 * Function refresh
 	 * detect new received messages, and call onReceiveMessage
 	 * detectar nuevos mensajes recibidos y ejecutar onReceiveMessage
-	 * @return bool ¿new messages? true/false
+	 * @return bool Â¿new messages? true/false
 	 */
 	public function refresh();
         
@@ -141,7 +142,7 @@ interface iSocketMaster
 	/**
 	 * Function get_socketRef
 	 * @return EXCEPTION
-	 * WARN: esta función es únicamente simbólica, por el momento solo arrojará una excepcion
+	 * WARN: esta funciÃ³n es Ãºnicamente simbÃ³lica, por el momento solo arrojarÃ¡ una excepcion
 	 */
 	// change to private for the moment
 	//public function get_socketRef();
@@ -160,7 +161,7 @@ interface iSocketMaster
 	 * @param array $newArray new value for the property listenClients (loop_refreshListen clients refresheds)
 	 * WARN: puede omitir el uso de esta funcion accediendo directamente al
 	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
-	 * EN ESTA FUNCIÓN EN PARTICULAR EL USO DE LA PROPIEDAD SIN LLAMAR A LA FUNCIÓN NO ESTÁ ACONCEJADO POR NO
+	 * EN ESTA FUNCIÃ“N EN PARTICULAR EL USO DE LA PROPIEDAD SIN LLAMAR A LA FUNCIÃ“N NO ESTÃ ACONCEJADO POR NO
 	 * UTILIZAR REFERENCIAS EN EL PROPERTY
 	 */
         public function set_listenClients(&$newArray);
@@ -176,7 +177,7 @@ interface iSocketMaster
 	/**
 	 * Function set_socketRef
 	 * @return EXCEPTION
-	 * WARN: esta función es únicamente simbólica, por el momento solo arrojará una excepcion
+	 * WARN: esta funciÃ³n es Ãºnicamente simbÃ³lica, por el momento solo arrojarÃ¡ una excepcion
 	 */
 	// change to private for the moment
 	//public function set_socketRef($val);
@@ -198,6 +199,6 @@ interface iSocketMaster
 	//abstract private function onError($errorMessage);
 	
 	// call on new connection accepted by listen
-	// funcion llamada al aceptar una nueva conexion cuando se está a la escucha con listen.
+	// funcion llamada al aceptar una nueva conexion cuando se estÃ¡ a la escucha con listen.
 	//abstract public function onNewConnection(SocketBridge $socket); 
 }
