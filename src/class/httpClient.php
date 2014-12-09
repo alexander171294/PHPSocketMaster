@@ -1,10 +1,11 @@
 <?php namespace PHPSocketMaster;
 
+
 /**
  * @class httpClient
  * @author Alexander
  * @version 2.0
- * clase diseñada para hacer peticiones http a cualquier server
+ * clase diseÃ±ada para hacer peticiones http a cualquier server
  * http.
  *
  * @example proximamente
@@ -87,7 +88,7 @@ class httpClient implements ihttpClient
         
         // esperamos respuesta
         $this->socket->loop_refresh();
-        // luego de finalizar la conexión revisamos el resultado
+        // luego de finalizar la conexiÃ³n revisamos el resultado
 
         if(bridge::$response)
             return bridge::$objResponse;
