@@ -15,6 +15,7 @@ class ircClient extends Socket
 	public function parse()
 	{
 		//parse input messages if is necesary
+        
 	}
 	
 	public function onConnect()

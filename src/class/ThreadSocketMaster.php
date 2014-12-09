@@ -108,9 +108,9 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 			throw new \Exception('Failed to connect :: '.$this->getError());
         $this->onConnect();
         // infinite loop
-        $this->lock();
+        //$this->lock();
         $this->loop_refresh();
-        $this->unlock();
+        //$this->unlock();
     }
 
 	// accept a new external connection and create new socket object

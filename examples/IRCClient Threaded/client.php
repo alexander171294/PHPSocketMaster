@@ -15,7 +15,10 @@ include('irc.php');
 // enter a text in console
 function getInputText()
 {
-	return trim(fgets(STDIN));
+    $var = fgets(fopen('php://stdin', 'r'));
+    var_dump($var);
+    exit();
+    return ($var !== null) ? trim($var) : null;
 }
 
 // create a new socket
@@ -42,7 +45,7 @@ do
 	if($text!='/exit' and $text!='' and strpos($text,'/join')===false and strpos($text,'/nick')===false and $text!='/free' )
 		$sock->sendToChannel($channel, $text); //send text :)
     
-    var_dump($text);
+    
     
 	if(strpos($text,'/join')!==false)
 	{
@@ -65,6 +68,8 @@ do
 	{
 		$free = false;
 	}
+    
+    var_dump($text);
     
 } while ($text != '/exit');
 
