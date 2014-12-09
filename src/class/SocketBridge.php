@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 class SocketBridge extends SocketMaster implements iSocketBridge
 {
 	private $SocketEventReceptor = null;
@@ -43,7 +44,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 
 	public function onNewConnection(SocketBridge $socket) { }
 	
-	// @todo : esta funcion hay que quitarla, para eso está el property
+	// @todo : esta funcion hay que quitarla, para eso estÃ¡ el property
 	public function getSocketEventReceptor() { return $this->SocketEventReceptor; }
 	
 	// GETTERS
