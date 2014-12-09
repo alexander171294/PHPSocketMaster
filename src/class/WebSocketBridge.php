@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 {
 	private $SendHandshake = false;
