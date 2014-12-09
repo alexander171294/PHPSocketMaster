@@ -1,15 +1,16 @@
 <?php namespace PHPSocketMaster;
 
+
 /**
  * @abstract SocketEventReceptor
  * @author Alexander
  * @version 1.0
- * Clase diseñada para crear receptores de eventos para 
+ * Clase diseÃ±ada para crear receptores de eventos para 
  * sockets creados por un listen.
  * 
  * Cuando se recive una conexion entrante, el socket la acepta
  * creando otro socket para manipular esa conexion en particular.
- * en ese caso, los eventos que le ocurran serán ejecutados en una clase
+ * en ese caso, los eventos que le ocurran serÃ¡n ejecutados en una clase
  * que es extendida de esta.
  * 
  * @example server-chat newClient.php
@@ -38,7 +39,7 @@ abstract class SocketEventReceptor
 	/**
 	 * Function Getter getBridge
 	 * @return object instance of SocketBridge
-	 * function diseñada para obtener la instancia del puente
+	 * function diseÃ±ada para obtener la instancia del puente
 	 * de forma que se puedan ejecutar acciones sobre el socket.
 	 */
 	final public function getBridge() { return $this->bridge; }
