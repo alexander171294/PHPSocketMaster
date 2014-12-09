@@ -21,12 +21,6 @@ define('SCKM_WEB', 2);
 
 abstract class SocketMaster implements iSocketMaster
 {
-	/**
-	 * Dado que mi version de php es menor a 5.4 
-	 * los traits no existen para mi php, por lo que aparentemente
-	 * tengo que abstenerme a usarlos, y eso se resume en la escritura
-	 * del trait property directamente en la clase SocketMaster
-	 */
 	use Property;
 
 	protected $address = 'localhost';

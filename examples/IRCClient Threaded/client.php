@@ -29,6 +29,8 @@ $channel = null;
 $text = null;
 $free = true;
 
+sleep(5);
+
 do
 {
     // info:
@@ -39,6 +41,9 @@ do
     // refresh or send menssage?
 	if($text!='/exit' and $text!='' and strpos($text,'/join')===false and strpos($text,'/nick')===false and $text!='/free' )
 		$sock->sendToChannel($channel, $text); //send text :)
+    
+    var_dump($text);
+    
 	if(strpos($text,'/join')!==false)
 	{
 		if(!empty($channel)) $sock->leaveChannel($channel);

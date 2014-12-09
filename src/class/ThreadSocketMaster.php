@@ -20,12 +20,6 @@ define('SCKM_WEB', 2);
 
 abstract class SocketMaster  extends \Thread implements iSocketMaster
 {
-	/**
-	 * Dado que mi version de php es menor a 5.4 
-	 * los traits no existen para mi php, por lo que aparentemente
-	 * tengo que abstenerme a usarlos, y eso se resume en la escritura
-	 * del trait property directamente en la clase SocketMaster
-	 */
 	use Property;
 
 	protected $address = 'localhost';
@@ -47,10 +41,14 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 		// seteamos variables fundamentales
 		$this->address = $address;
 		$this->port = $port;
-		// creamos el socket
+	}
+    
+    public function socketFactory()
+    {
+        // creamos el socket
 		$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
-	}
+    }
 	
 	// destructor function
 	final public function __destruct()
@@ -83,6 +81,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	// the wrapper of listen function
 	final private function listen_()
 	{
+        $this->socketFactory();
 		// bindeamos el socket
 		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
@@ -100,12 +99,13 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	// the wrapper of connect function
 	final private function connect_()
 	{ // thread start
-        if(socket_connect($this->socketRef, $this->address, $this->port)===false)
-			throw new \Exception('Failed to connect :: '.$this->getError());
 		$this->start();
 	}
-    final private function run()
+    final public function run()
     {
+        $this->socketFactory();
+        if(socket_connect($this->socketRef, $this->address, $this->port)===false)
+			throw new \Exception('Failed to connect :: '.$this->getError());
         $this->onConnect();
         // infinite loop
         $this->lock();
@@ -212,6 +212,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	final private function read()
 	{
 			$buf = null;
+        var_dump($this->socketRef);
 			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
 				throw new \Exception('Socket Read Failed :: '.$this->getError());
 			if($buf === null)
@@ -224,7 +225,7 @@ abstract class SocketMaster  extends \Thread implements iSocketMaster
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
-	private function ErrorControl($call, $args = array())
+	public function ErrorControl($call, $args = array())
 	{
 		try
 		{
