@@ -99,11 +99,19 @@ abstract class SocketMaster implements iSocketMaster extends Threads
 	}
 	// the wrapper of connect function
 	final private function connect_()
-	{
+	{ // thread start
 		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-		$this->onConnect();
+		$this->start();
 	}
+    final private function run()
+    {
+        $this->onConnect();
+        // infinite loop
+        $this->lock();
+        $this->loop_refresh();
+        $this->unlock();
+    }
 
 	// accept a new external connection and create new socket object
 	/**
