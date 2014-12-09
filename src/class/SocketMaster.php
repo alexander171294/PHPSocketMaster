@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 /**
  * @abstract SocketMaster
  * @author Alexander
