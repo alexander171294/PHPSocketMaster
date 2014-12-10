@@ -17,39 +17,7 @@
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
-class hilo extends \Thread
-{
-    use Property;
-    //private $ref = null;
-    private $address = null;
-    private $port = null;
-    
-     // autocall by threads
-    final public function run()
-    {
-        // lock the changes
-        $this->lock();
-        // infinite loop
-        $this->worker->Socket->loop_refresh();
-        // unlock the changes
-        $this->unlock();
-    }
-    
-    final public function set_address($val) {$this->address = $val;}
-    final public function set_port($val) { $this->port = $val; }
-} 
-
-class trabajador extends \Worker
-{
-    private $Socket;
-    
-    public function __construct($instance)
-    {
-        $this->Socket = $instance;
-    }
-}
-
-abstract class SocketMaster implements iSocketMaster
+abstract class SocketMaster extends \Thread implements iSocketMaster
 {
 	use Property;
 
@@ -131,11 +99,9 @@ abstract class SocketMaster implements iSocketMaster
 	// the wrapper of connect function
 	final private function connect_()
 	{ // new thread
-        $pool = new \Pool(1, 'PHPSocketMaster\trabajador', [$this]);
         if(socket_connect($this->socketref, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-        $this->onConnect();
-		$pool->submit(new hilo());
+        $this->start();
 	}
 
 	// accept a new external connection and create new socket object
@@ -193,6 +159,11 @@ abstract class SocketMaster implements iSocketMaster
             //$this->unlock();
 	}
 	
+    final public function run()
+    {
+        $this->loop_refresh();
+    }
+    
 	// loop for function refresh
 	final public function loop_refresh()
 	{
