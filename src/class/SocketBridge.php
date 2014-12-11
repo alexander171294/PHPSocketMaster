@@ -9,6 +9,8 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 	{ 
 		$this->SocketEventReceptor = $callback;
 		$this->SocketRef = $socket;
+        if(!defined('SCKM_THREAD'))
+            $this->aux_SocketRef = $socket;
 	}
 
 	public function onError($errorMessage)

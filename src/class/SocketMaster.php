@@ -36,7 +36,7 @@ abstract class SocketMaster implements iSocketMaster
 		$this->ErrorControl(array($this, '__construct_'), array($address, $port));
 	}
 	// the wrapper of construct function
-	private function __construct_($address, $port)
+	final private function __construct_($address, $port)
 	{
 		// seteamos variables fundamentales
 		$this->address = $address;
@@ -128,7 +128,7 @@ abstract class SocketMaster implements iSocketMaster
 		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
 	}
 	// the wrapper of send function
-	private function send_($message, $readControl = true)
+	final private function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
 		if(socket_write($this->socketRef, $message, strlen($message)) == false)
@@ -211,7 +211,7 @@ abstract class SocketMaster implements iSocketMaster
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
-	private function ErrorControl($call, $args = array())
+	final private function ErrorControl($call, $args = array())
 	{
 		try
 		{

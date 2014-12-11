@@ -27,6 +27,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	protected $readcontrol = "\n";
 	protected $endLoop = false;
 	protected $listenClients = null;
+    protected $typeListen = false;
     
     private $thread = null;
 	private $socketRef = null;
@@ -71,7 +72,8 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	{
 		if(!empty($this->socketRef))
 		{
-			socket_close($this->socketRef);
+            $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+			socket_close($uSocket);
 			$this->socketRef = null;
 			$this->endLoop = true;
 		}
@@ -86,10 +88,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	// the wrapper of listen function
 	final private function listen_()
 	{
+        $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+        $this->typeListen = true;
 		// bindeamos el socket
-		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
+		if(socket_bind($uSocket, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
-		if (socket_listen($this->socketRef, 5) === false)
+		if (socket_listen($uSocket, 5) === false)
 			throw new \Exception('Failed Listening :: '.$this->getError());
 	}
 	
@@ -122,7 +126,8 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	// the wrapper of accept function
 	final private function accept_(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
-		$newSocketRef = socket_accept($this->socketRef);
+        $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+		$newSocketRef = socket_accept($uSocket);
 		if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
 		if($type == SCKM_BASIC)
 			$instance = new SocketBridge($newSocketRef, $Callback);
@@ -130,11 +135,13 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
 		$Callback->setMother($instance);
 		$instance->onConnect();
+        $instance->start();
 		return $instance;
 	}
 
 	//send message by socket
-	final public function send($message, $readControl = true)
+    // not final function, if you need program a previously actions for send and then use parent::send(...); is acceptable.
+	public function send($message, $readControl = true)
 	{
 		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
 	}
@@ -169,7 +176,10 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
     final public function run()
     {
         $this->socketRef = $this->socketRef;
-        $this->loop_refresh();
+        if($this->typeListen == false)
+            $this->loop_refresh();
+        else
+            $this->loop_refreshListen();
     }
     
 	// loop for function refresh
@@ -276,6 +286,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
     // pero para poder utilizar los hilos es necesario un seteador
 	final public function set_socketRef($val) { $this->socketRef = $val; }
+    final public function set_aux_socketRef($val) { $this->aux_socketRef = $val; }
     
     
 }
