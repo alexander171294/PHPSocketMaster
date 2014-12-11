@@ -9,8 +9,9 @@
  * con eventos.
  * Cuenta con la finalidad de escuchar y conectarse.
  *
- * @example server-chat listen.php
- * @example client-chat socket.php
+ * @example none
+ * @example none
+ * @example IRCClient Threaded
  */
 
 // TYPES
@@ -29,6 +30,8 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
     
     private $thread = null;
 	private $socketRef = null;
+    // auxiiar
+    private $aux_socketRef = null;
 
 	// constructor function
 	public function __construct($address, $port)
@@ -49,6 +52,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
         // creamos el socket
 		$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 		if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
+        $this->aux_socketRef = $this->socketRef;
     }
 	
 	// destructor function
@@ -138,7 +142,9 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	public function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
-		if(socket_write($this->socketRef, $message, strlen($message)) == false)
+        // use native socket or auxiliar.
+        $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+		if(socket_write($uSocket, $message, strlen($message)) == false)
 			throw new \Exception('Socket Send Message Failed :: '.$this->getError());
 	}
 

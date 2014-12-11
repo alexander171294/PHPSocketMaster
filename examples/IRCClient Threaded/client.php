@@ -27,6 +27,7 @@ include('socket.php');
 // import implementation of SocketMaster as Socket
 include('irc.php');
 
+
 // enter a text in console
 function getInputText()
 {
@@ -47,7 +48,7 @@ $channel = null;
 $text = null;
 $free = true;
 
-sleep(5);
+sleep(7);
 /*
 
 
@@ -93,6 +94,8 @@ do
 
 
 	*/
+
+$sock->send('JOIN #underc0de');
 
 echo 'Waiteando';
 // wait for end thread.

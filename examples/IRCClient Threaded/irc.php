@@ -16,6 +16,7 @@ class ircClient extends Socket
 	{
 		//parse input messages if is necesary
         
+        
 	}
 	
 	public function onConnect()
@@ -25,6 +26,7 @@ class ircClient extends Socket
 		$this->changeNick($this->nick);
 		$this->send('USER thex experimental irc.freenode.net :John Doe'.NL);
 		echo '>> esperando eventos...'.NL;
+        
 	}
 	
 	public function unirCanal($canal)
