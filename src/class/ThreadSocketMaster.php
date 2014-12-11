@@ -101,6 +101,8 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	{ // new thread
         if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
+        // exec event
+        $this->onConnect();
         $this->start();
 	}
 
@@ -145,7 +147,6 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function refresh()
 	{
             //$this->lock();
-            var_dump($this->socketRef);
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
@@ -161,7 +162,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	
     final public function run()
     {
-        var_dump($this->socketRef);
+        $this->socketRef = $this->socketRef;
         $this->loop_refresh();
     }
     
@@ -212,7 +213,6 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final private function read()
 	{
 			$buf = null;
-        var_dump($this->socketRef);
 			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
 				throw new \Exception('Socket Read Failed :: '.$this->getError());
 			if($buf === null)
