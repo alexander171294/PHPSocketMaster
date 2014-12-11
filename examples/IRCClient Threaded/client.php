@@ -48,6 +48,8 @@ $text = null;
 $free = true;
 
 sleep(5);
+/*
+
 
 do
 {
@@ -90,7 +92,12 @@ do
 
 
 
-	
+	*/
+
+echo 'Waiteando';
+// wait for end thread.
+while($sock->endLoop == false) {}
+
 	
 	
 	
