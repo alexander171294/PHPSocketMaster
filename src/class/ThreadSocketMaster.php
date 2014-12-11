@@ -6,7 +6,7 @@
  * @author Alexander
  * @version 1.0
  * Clase diseñada como modelo de socket orientado a objetos
- * con eventos.
+ * con eventos, y posibilidad de trabajar con multihilo.
  * Cuenta con la finalidad de escuchar y conectarse.
  *
  * @example none
@@ -39,7 +39,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 		$this->ErrorControl(array($this, '__construct_'), array($address, $port));
 	}
 	// the wrapper of construct function
-	private function __construct_($address, $port)
+	final private function __construct_($address, $port)
 	{
         $this->socketFactory();
 		// seteamos variables fundamentales
@@ -47,7 +47,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 		$this->port = $port;
 	}
     
-    public function socketFactory()
+    final public function socketFactory()
     {
         // creamos el socket
 		$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -134,12 +134,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	}
 
 	//send message by socket
-	public function send($message, $readControl = true)
+	final public function send($message, $readControl = true)
 	{
 		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
 	}
 	// the wrapper of send function
-	public function send_($message, $readControl = true)
+	final public function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
         // use native socket or auxiliar.
@@ -231,7 +231,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
-	public function ErrorControl($call, $args = array())
+	final public function ErrorControl($call, $args = array())
 	{
 		try
 		{

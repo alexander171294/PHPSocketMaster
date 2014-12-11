@@ -1,4 +1,4 @@
-Cambios version v0.5
+Cambios version v1.0
 
 ADD: loop_refresh() function
 ADD: loop_refreshListen function
@@ -6,8 +6,9 @@ ADD: property listenClients
 ADD: Test Threads
 ADD: new httpclient
 ADD: new interface http client.
+ADD: ThreadSocketMaster, support for MultiThread and Constants
 
-*** ADD: Support for threads BUT DON'T WORK!! IS EXPERIMENTAL CLASS.
+*** ADD: Support for threads BUT IS EXPERIMENTAL CLASS.
 
 
 --> cambios de versiones anteriores <--
