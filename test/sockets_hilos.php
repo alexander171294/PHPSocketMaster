@@ -30,6 +30,7 @@ class mysocket extends Thread
 			$read = array($this->socket);
 			$write = null;
 			$exceptions = null;
+            var_dump($this->socket);
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
 				$this->onDisconnect();
             if(isset($read[0]))
