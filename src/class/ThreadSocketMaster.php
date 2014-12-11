@@ -99,7 +99,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	// the wrapper of connect function
 	final private function connect_()
 	{ // new thread
-        if(socket_connect($this->socketref, $this->address, $this->port)===false)
+        if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
         $this->start();
 	}
@@ -136,7 +136,6 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	public function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
-        var_dump($this->socketRef);
 		if(socket_write($this->socketRef, $message, strlen($message)) == false)
 			throw new \Exception('Socket Send Message Failed :: '.$this->getError());
 	}
@@ -146,6 +145,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function refresh()
 	{
             //$this->lock();
+            var_dump($this->socketRef);
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
@@ -161,6 +161,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	
     final public function run()
     {
+        var_dump($this->socketRef);
         $this->loop_refresh();
     }
     
@@ -259,6 +260,9 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function get_port() { return $this->port; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
 	final private function get_socketRef() { return $this->socketRef; }
+    
+    // for my Waiteador :)
+    final public function get_endLoop(){ return $this->endLoop; }
 	
 	// AND SETTERS :)
 	final public function set_address($val) { $this->address = $val; }
@@ -266,4 +270,6 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
     // pero para poder utilizar los hilos es necesario un seteador
 	final public function set_socketRef($val) { $this->socketRef = $val; }
+    
+    
 }

@@ -139,6 +139,7 @@ abstract class SocketMaster implements iSocketMaster
 	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
+            var_dump($this->socketRef);
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
