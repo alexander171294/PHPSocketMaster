@@ -7,9 +7,11 @@ ADD: Test Threads
 ADD: new httpclient
 ADD: new interface http client.
 ADD: ThreadSocketMaster, support for MultiThread and Constants
+ADD: new events onSendRequest and onSendComplete
+ADD: new propertys: Domain, Protocol, ConnectionType, Type, State
+FIX: examples for new changes.
 
-*** ADD: Support for threads BUT IS EXPERIMENTAL CLASS.
-
+*** Support for threads IS EXPERIMENTAL CLASS.
 
 --> cambios de versiones anteriores <--
 

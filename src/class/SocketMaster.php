@@ -14,9 +14,22 @@
  */
 
 // TYPES
+define('SCKM_UNKNOWN');
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
+// DOMAIN TYPES
+define('SCKM_INET', AF_INET);
+define('SCKM_INET6', AF_INET6);
+define('SCKM_UNIX', AF_UNIX);
+
+// PROTOCOL TYPES
+define('SCKM_TCP', SOL_TCP);
+define('SCKM_UDP', SOL_UDP);
+
+// CONNECTIONS TYPES
+define('SCKM_CLIENT', 4);
+define('SCKM_SERVER', 5);
 
 abstract class SocketMaster implements iSocketMaster
 {
@@ -27,6 +40,12 @@ abstract class SocketMaster implements iSocketMaster
 	protected $readcontrol = "\n";
 	protected $endLoop = false;
 	protected $listenClients = null;
+    
+    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
+    protected $domain = SCKM_INET;
+    protected $protocol = SCKM_TCP;
+    protected $connectionType = SCKM_UNKNOWN;
+    protected $state = false;
 
 	private $socketRef = null;
 
@@ -42,7 +61,7 @@ abstract class SocketMaster implements iSocketMaster
 		$this->address = $address;
 		$this->port = $port;
 		// creamos el socket
-		$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		$this->socketRef = socket_create($this->domain, SOCK_STREAM, $this->protocol);
 		if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
 	}
 	
@@ -56,10 +75,12 @@ abstract class SocketMaster implements iSocketMaster
 	final public function disconnect()
 	{
 		$this->ErrorControl(array($this, 'disconnect_'));
+        return true;
 	}
 	// the wrapper of disconnect function
 	final private function disconnect_()
 	{
+        $this->state = false;
 		if(!empty($this->socketRef))
 		{
 			socket_close($this->socketRef);
@@ -73,30 +94,34 @@ abstract class SocketMaster implements iSocketMaster
 	final public function listen()
 	{
 		$this->ErrorControl(array($this, 'listen_'));
+        return true;
 	}
 	// the wrapper of listen function
 	final private function listen_()
 	{
+        $this->connectionType = SCKM_SERVER;
 		// bindeamos el socket
 		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
 		if (socket_listen($this->socketRef, 5) === false)
 			throw new \Exception('Failed Listening :: '.$this->getError());
+        $this->state = true;
 	}
-	
-	
 
 	// connect to host
 	final public function connect()
 	{
 		$this->ErrorControl(array($this, 'connect_'));
+        return true;
 	}
 	// the wrapper of connect function
 	final private function connect_()
 	{
+        $this->connectionType = SCKM_CLIENT;
 		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-		$this->onConnect();
+        $this->state = true;		
+        $this->onConnect();
 	}
 
 	// accept a new external connection and create new socket object
@@ -167,8 +192,9 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	//detect new request external connections
-	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_UNKNOWN)
 	{
+            if($type !== SCKM_UNKNOWN) $this->type = $type;
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
@@ -176,18 +202,19 @@ abstract class SocketMaster implements iSocketMaster
 				$this->onDisconnect();
 			if($result > 0) 
 			{
-				$res = $this->accept($Callback, $type);
+				$res = $this->accept($Callback, $this->type);
 				$this->onNewConnection($res);
 			}
 	}
 	
 	// loop for function refreshListen
-	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_BASIC)
+	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_UNKNOWN)
 	{
 		$this->listenClients = $clients;
 		while($this->endLoop == false)
 		{
 			$this->refreshListen($callback, $type);
+            $type = SCKM_UNKNOWN;
 			for($i=0; $i < count($this->listenClients); $i++)
 			{
 				$this->listenClients[$i]->refresh();
