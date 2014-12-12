@@ -187,7 +187,6 @@ abstract class SocketMaster implements iSocketMaster
 			if($result > 0) 
 			{
 				$res = $this->accept($Callback, $this->type);
-                var_dump($res);
 				$this->onNewConnection($res);
 			}
 	}
@@ -213,7 +212,6 @@ abstract class SocketMaster implements iSocketMaster
         
 		$Callback->setMother($instance);
 		$instance->onConnect();
-        var_dump($instance);
 		return $instance;
 	}
 	
