@@ -32,4 +32,14 @@ class Socket extends SocketMaster
 	}
 
 	public function onNewConnection(SocketBridge $socket) { }
+    
+    public function onSendRequest(&$cancel, $message) 
+    {
+        //...
+    }
+    
+    public function onSendComplete() 
+    {
+        //... 
+    }
 }
