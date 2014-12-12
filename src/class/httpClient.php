@@ -188,6 +188,16 @@ class HTTPSocketMaster extends SocketMaster
 	public function onError($errorMessage){ }
 	
 	public function onNewConnection(SocketBridge $socket){}
+    
+    public function onSendRequest(&$cancel, $message) 
+    {
+        //...
+    }
+    
+    public function onSendComplete() 
+    {
+        //... 
+    }
 }
 
 class bridge

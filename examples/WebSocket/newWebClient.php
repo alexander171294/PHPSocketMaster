@@ -127,4 +127,14 @@ class newWebClient extends SocketEventReceptor
 		if($message!=null)
 			$this->getBridge()->send($this->Mask(json_encode(array('message'=>'welcome', 'type' => 'system'))."\r\n"), false);
 	}
+    
+    public function onSendRequest(&$cancel, $message) 
+    {
+        //...
+    }
+    
+    public function onSendComplete() 
+    {
+        //... 
+    }
 }

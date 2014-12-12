@@ -36,4 +36,14 @@ class newClient extends SocketEventReceptor
 		// mostramos en pantalla lo que llegó
 		echo '>'.$message."\r\n";
 	}
+    
+    public function onSendRequest(&$cancel, $message) 
+    {
+        //...
+    }
+    
+    public function onSendComplete() 
+    {
+        //... 
+    }
 }
