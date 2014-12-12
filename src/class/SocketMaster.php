@@ -169,12 +169,14 @@ abstract class SocketMaster implements iSocketMaster
 	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
-            var_dump($this->socketRef);
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+            {
 				$this->onDisconnect();
+                $this->state = false;
+            }
 			if($result > 0) 
 			{
 				$this->ErrorControl(array($this, 'read'));
@@ -199,7 +201,10 @@ abstract class SocketMaster implements iSocketMaster
 			$write = null;
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+            {
 				$this->onDisconnect();
+                $this->state = false;
+            }
 			if($result > 0) 
 			{
 				$res = $this->accept($Callback, $this->type);

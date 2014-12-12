@@ -18,6 +18,19 @@
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
+// DOMAIN TYPES
+define('SCKM_INET', AF_INET);
+define('SCKM_INET6', AF_INET6);
+define('SCKM_UNIX', AF_UNIX);
+
+// PROTOCOL TYPES
+define('SCKM_TCP', SOL_TCP);
+define('SCKM_UDP', SOL_UDP);
+
+// CONNECTIONS TYPES
+define('SCKM_CLIENT', 4);
+define('SCKM_SERVER', 5);
+
 abstract class SocketMaster extends \Thread implements iSocketMaster
 {
 	use Property;
@@ -28,6 +41,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	protected $endLoop = false;
 	protected $listenClients = null;
     protected $typeListen = false;
+    
+    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
+    protected $domain = SCKM_INET;
+    protected $protocol = SCKM_TCP;
+    protected $connectionType = SCKM_UNKNOWN;
+    protected $state = false;
     
     private $thread = null;
 	private $socketRef = null;
@@ -51,7 +70,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
     final public function socketFactory()
     {
         // creamos el socket
-		$this->socketRef = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+		$this->socketRef = socket_create($this->domain, SOCK_STREAM, $this->protocol);
 		if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
         $this->aux_socketRef = $this->socketRef;
     }
@@ -66,10 +85,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function disconnect()
 	{
 		$this->ErrorControl(array($this, 'disconnect_'));
+        return true;
 	}
 	// the wrapper of disconnect function
 	final private function disconnect_()
 	{
+        $this->state = false;
 		if(!empty($this->socketRef))
 		{
             $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
@@ -84,10 +105,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function listen()
 	{
 		$this->ErrorControl(array($this, 'listen_'));
+        return true;
 	}
 	// the wrapper of listen function
 	final private function listen_()
 	{
+        $this->state = true;
         $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
         $this->typeListen = true;
 		// bindeamos el socket
@@ -95,6 +118,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
 		if (socket_listen($uSocket, 5) === false)
 			throw new \Exception('Failed Listening :: '.$this->getError());
+        $this->connectionType = SCKM_SERVER;
 	}
 	
 	
@@ -103,13 +127,16 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function connect()
 	{
 		$this->ErrorControl(array($this, 'connect_'));
+        return true;
 	}
 	// the wrapper of connect function
 	final private function connect_()
 	{ // new thread
+        $this->state = true;
         if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
         // exec event
+        $this->connectionType = SCKM_CLIENT;
         $this->onConnect();
         $this->start();
 	}
@@ -170,7 +197,10 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 			$write = null;
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+            {
+                $this->state = false;
 				$this->onDisconnect();
+            }
 			if($result > 0) 
 			{
 				$this->ErrorControl(array($this, 'read'));
@@ -198,27 +228,32 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	}
 
 	//detect new request external connections
-	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_UNKNOWN)
 	{
+            if($type !== SCKM_UNKNOWN) $this->type = $type;
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+            {
+                $this->state = false;
 				$this->onDisconnect();
+            }
 			if($result > 0) 
 			{
-				$res = $this->accept($Callback, $type);
+				$res = $this->accept($Callback, $this->type);
 				$this->onNewConnection($res);
 			}
 	}
 	
 	// loop for function refreshListen
-	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_BASIC)
+	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_UNKNOWN)
 	{
 		$this->listenClients = $clients;
 		while($this->endLoop == false)
 		{
 			$this->refreshListen($callback, $type);
+            $type = SCKM_UNKNOWN;
 			for($i=0; $i < count($this->listenClients); $i++)
 			{
 				$this->listenClients[$i]->refresh();
@@ -291,6 +326,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
     
     // for my Waiteador :)
     final public function get_endLoop(){ return $this->endLoop; }
+    
+    final public function get_type(){ return $this->type; }
+    final public function get_domain(){ return $this->domain; }
+    final public function get_protocol(){ return $this->protocol; }
+    final public function get_connectionType(){ return $this->connectionType; }
+    final public function get_state(){ return $this->state; }
 	
 	// AND SETTERS :)
 	final public function set_address($val) { $this->address = $val; }
@@ -300,5 +341,9 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function set_socketRef($val) { $this->socketRef = $val; }
     final public function set_aux_socketRef($val) { $this->aux_socketRef = $val; }
     
-    
+    final public function set_type($v){ $this->type = $v; }
+    final public function set_domain($v){ if($this->state == false) $this->domain = $v; }
+    final public function set_protocol($v){ if($this->state == false) $this->protocol = $v; }
+    final public function set_connectionType($v){}
+    final public function set_state($v){}
 }
