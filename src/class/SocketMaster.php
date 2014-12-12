@@ -48,6 +48,8 @@ abstract class SocketMaster implements iSocketMaster
     protected $state = false;
 
 	private $socketRef = null;
+    // auxiiar
+    private $aux_socketRef = null;
 
 	// constructor function
 	public function __construct($address, $port)
@@ -288,6 +290,7 @@ abstract class SocketMaster implements iSocketMaster
 	final public function get_port() { return $this->port; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
 	final private function get_socketRef() { return $this->socketRef; }
+    final private function get_aux_socketRef() { return $this->aux_socketRef; }
     
     final public function get_type(){ return $this->type; }
     final public function get_domain(){ return $this->domain; }
@@ -300,6 +303,7 @@ abstract class SocketMaster implements iSocketMaster
 	final public function set_port($val) { $this->port = $val; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
 	final private function set_socketRef($val) { $this->socketRef = $val; }
+    final private function set_aux_socketRef($val) { $this->aux_socketRef = $val; }
     
     final public function set_type($v){ $this->type = $v; }
     final public function set_domain($v){ if($this->state == false) $this->domain = $v; }
