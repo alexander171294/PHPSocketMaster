@@ -1,15 +1,16 @@
 Cambios version v1.0
 
-ADD: loop_refresh() function
-ADD: loop_refreshListen function
-ADD: property listenClients
-ADD: Test Threads
-ADD: new httpclient
-ADD: new interface http client.
-ADD: ThreadSocketMaster, support for MultiThread and Constants
-ADD: new events onSendRequest and onSendComplete
-ADD: new propertys: Domain, Protocol, ConnectionType, Type, State
-FIX: examples for new changes.
+ADD: función loop_refresh()
+ADD: función loop_refreshListen()
+ADD: Nueva propiedad listenClients
+ADD: Pruebas de hilos en el directorio test
+ADD: nueva clase HTTPClient
+ADD: nueva interface http client.
+ADD: nueva clase ThreadSocketMaster, control multihilo y sus constantes
+ADD: nuevos eventos onSendRequest y onSendComplete
+ADD: nuevas propiedades Domain, Protocol, ConnectionType, Type, State
+FIX: ejemplos para los nuevos cambios.
+FIX: las funciones connect, disconnect, listen ahora retornan verdadero o una excepción
 
 *** Support for threads IS EXPERIMENTAL CLASS.
 
