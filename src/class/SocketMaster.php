@@ -278,15 +278,35 @@ abstract class SocketMaster implements iSocketMaster
 	// @todo: revisar por qué puse esta función, donde la uso y la viabilidad de cambiarla por su setter
 	//final public function setSocketRef($sref) { $this->socketRef = $sref; }
 
+    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
+    protected $domain = SCKM_INET;
+    protected $protocol = SCKM_TCP;
+    protected $connectionType = SCKM_UNKNOWN;
+    protected $state = false;
+
+    
 	// GETTERS
 	final public function get_address() { return $this->address; }
 	final public function get_port() { return $this->port; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
 	final private function get_socketRef() { return $this->socketRef; }
+    
+    final public function get_type(){ return $this->type; }
+    final public function get_domain(){ return $this->domain; }
+    final public function get_protocol(){ return $this->protocol; }
+    final public function get_connectionType(){ return $this->connectionType; }
+    final public function get_state(){ return $this->state; }
 	
 	// AND SETTERS :)
 	final public function set_address($val) { $this->address = $val; }
 	final public function set_port($val) { $this->port = $val; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
 	final private function set_socketRef($val) { $this->socketRef = $val; }
+    
+    final public function set_type($v){ $this->type = $v; }
+    final public function set_domain($v){ if($this->state == false) $this->domain = $v; }
+    final public function set_protocol($v){ if($this->state == false) $this->protocol = $v; }
+    final public function set_connectionType($v){}
+    final public function set_state($v){}
+    
 }
