@@ -133,7 +133,7 @@ class newWebClient extends SocketEventReceptor
         //...
     }
     
-    public function onSendComplete() 
+    public function onSendComplete($message) 
     {
         //... 
     }

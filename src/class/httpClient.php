@@ -194,7 +194,7 @@ class HTTPSocketMaster extends SocketMaster
         //...
     }
     
-    public function onSendComplete() 
+    public function onSendComplete($message) 
     {
         //... 
     }

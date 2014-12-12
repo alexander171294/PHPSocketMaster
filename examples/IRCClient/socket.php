@@ -38,7 +38,7 @@ class Socket extends SocketMaster
         //...
     }
     
-    public function onSendComplete() 
+    public function onSendComplete($message) 
     {
         //... 
     }

@@ -15,6 +15,7 @@
  */
 
 // TYPES
+define('SCKM_UNKNOWN', 0);
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
 
