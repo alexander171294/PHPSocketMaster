@@ -36,13 +36,16 @@ class SocketBridge extends SocketMaster implements iSocketBridge
     
     public function onSendRequest(&$cancel, $message)
 	{
-		$message = is_array($message) ? $message[0] : $message;
-		return $this->ValidateObj(array($this->SocketEventReceptor, 'onSendRequest'), array($cancel, $message));
+        // no use validateobj, the call_user_func not support ref params 
+        if($this->SocketEventReceptor != null)
+		{ 
+            $this->SocketEventReceptor->onSendRequest($cancel, $message);
+            return true;
+        } else {  throw new \Exception('Not Set Callback in Socket Bridge');  return false; }
 	}
     
     public function onSendComplete($message)
 	{
-		$message = is_array($message) ? $message[0] : $message;
 		return $this->ValidateObj(array($this->SocketEventReceptor, 'onSendComplete'), array($message));
 	}
 	

@@ -126,29 +126,6 @@ abstract class SocketMaster implements iSocketMaster
         $this->onConnect();
 	}
 
-	// accept a new external connection and create new socket object
-	/**
-		@params: SocketEventReceptor $callback :: instancia de clase que ejecutara los eventos del socket creado
-		@return: object of SocketBridge
-		*/
-	final public function accept(SocketEventReceptor $Callback, $type = SCKM_BASIC)
-	{
-		$this->ErrorControl(array($this, 'accept_'), array($Callback, $type));
-	}
-	// the wrapper of accept function
-	final private function accept_(SocketEventReceptor $Callback, $type = SCKM_BASIC)
-	{
-		$newSocketRef = socket_accept($this->socketRef);
-		if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
-		if($type == SCKM_BASIC)
-			$instance = new SocketBridge($newSocketRef, $Callback);
-		if($type == SCKM_WEB)
-			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
-		$Callback->setMother($instance);
-		$instance->onConnect();
-		return $instance;
-	}
-
 	//send message by socket
 	public function send($message, $readControl = true)
 	{
@@ -210,8 +187,34 @@ abstract class SocketMaster implements iSocketMaster
 			if($result > 0) 
 			{
 				$res = $this->accept($Callback, $this->type);
+                var_dump($res);
 				$this->onNewConnection($res);
 			}
+	}
+    
+    // accept a new external connection and create new socket object
+	/**
+		@params: SocketEventReceptor $callback :: instancia de clase que ejecutara los eventos del socket creado
+		@return: object of SocketBridge
+		*/
+	final public function accept(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	{
+		return $this->ErrorControl(array($this, 'accept_'), array($Callback, $type));
+	}
+	// the wrapper of accept function
+	final private function accept_(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	{
+		$newSocketRef = socket_accept($this->socketRef);
+		if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
+		if($type == SCKM_BASIC)
+			$instance = new SocketBridge($newSocketRef, $Callback);
+		if($type == SCKM_WEB)
+			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
+        
+		$Callback->setMother($instance);
+		$instance->onConnect();
+        var_dump($instance);
+		return $instance;
 	}
 	
 	// loop for function refreshListen
@@ -254,7 +257,7 @@ abstract class SocketMaster implements iSocketMaster
 	{
 		try
 		{
-			call_user_func_array($call, $args);
+			return call_user_func_array($call, $args);
 		} catch (\Exception $error) {
 			$this->endLoop = true;
 			$this->onError($error->getMessage());
