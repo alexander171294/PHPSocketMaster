@@ -282,13 +282,6 @@ abstract class SocketMaster implements iSocketMaster
 
 	// @todo: revisar por qué puse esta función, donde la uso y la viabilidad de cambiarla por su setter
 	//final public function setSocketRef($sref) { $this->socketRef = $sref; }
-
-    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
-    protected $domain = SCKM_INET;
-    protected $protocol = SCKM_TCP;
-    protected $connectionType = SCKM_UNKNOWN;
-    protected $state = false;
-
     
 	// GETTERS
 	final public function get_address() { return $this->address; }
