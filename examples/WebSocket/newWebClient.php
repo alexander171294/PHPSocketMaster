@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 define('NL', "\n");
 
 class newWebClient extends SocketEventReceptor
@@ -120,7 +121,7 @@ class newWebClient extends SocketEventReceptor
 	private function ParseReceptor($message)
 	{
 		// your script code of chat here
-		// tu código para el chat aquí
+		// tu cÃ³digo para el chat aquÃ­
 		var_dump($message);
 		sleep(5);
 		if($message!=null)
