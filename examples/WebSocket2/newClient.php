@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 class newClient extends SocketEventReceptor
 {
 
@@ -32,7 +33,7 @@ class newClient extends SocketEventReceptor
 		$message = isset($message[0]) ? $message[0] : $message;
 		// send
 		ServerManager::Resend('HI!');
-		// mostramos en pantalla lo que llegó
+		// mostramos en pantalla lo que llegÃ³
 		echo '>'.$message."\r\n";
 	}
 }
