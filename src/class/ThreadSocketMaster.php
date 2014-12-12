@@ -151,8 +151,14 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 		if($readControl === true) $message = $message.$this->readcontrol;
         // use native socket or auxiliar.
         $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
-		if(socket_write($uSocket, $message, strlen($message)) == false)
-			throw new \Exception('Socket Send Message Failed :: '.$this->getError());
+        
+        $cancel = false;
+        $this->onSendRequest($cancel, $message);
+        if(!$cancel)
+            if(socket_write($uSocket, $message, strlen($message)) == false)
+                throw new \Exception('Socket Send Message Failed :: '.$this->getError());
+            else
+                $this->onSendComplete($message);
 	}
 
 	//detect new messages
@@ -262,6 +268,12 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	abstract public function onError($errorMessage); 
 	// call on new connection accepted by listen
 	abstract public function onNewConnection(SocketBridge $socket);
+    
+    // call on init send message
+    abstract public function onSendRequest(&$cancel, $message);
+    // call on finish send message
+    abstract public function onSendComplete($message);
+
 
 	final private function getError()
 	{

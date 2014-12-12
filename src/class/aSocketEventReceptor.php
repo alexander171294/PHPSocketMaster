@@ -51,4 +51,7 @@ abstract class SocketEventReceptor
 	abstract public function onConnect();
 	abstract public function onDisconnect();
 	abstract public function onReceiveMessage($message);
+    
+    abstract public function onSendRequest(&$cancel, $message);
+    abstract public function onSendComplete($message);
 }

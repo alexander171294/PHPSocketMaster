@@ -33,6 +33,18 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 		$message = is_array($message) ? $message[0] : $message;
 		return $this->ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($message));
 	}
+    
+    public function onSendRequest(&$cancel, $message)
+	{
+		$message = is_array($message) ? $message[0] : $message;
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onSendRequest'), array($cancel, $message));
+	}
+    
+    public function onSendComplete($message)
+	{
+		$message = is_array($message) ? $message[0] : $message;
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onSendComplete'), array($message));
+	}
 	
 	// wrapper, agradecimiento a Destructor.cs por la idea
 	public function ValidateObj($call, $args = null)

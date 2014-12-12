@@ -131,8 +131,13 @@ abstract class SocketMaster implements iSocketMaster
 	final private function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
-		if(socket_write($this->socketRef, $message, strlen($message)) == false)
-			throw new \Exception('Socket Send Message Failed :: '.$this->getError());
+        $cancel = false;
+        $this->onSendRequest($cancel, $message);
+        if(!$cancel)
+            if(socket_write($this->socketRef, $message, strlen($message)) == false)
+                throw new \Exception('Socket Send Message Failed :: '.$this->getError());
+            else
+                $this->onSendComplete($message);
 	}
 
 	//detect new messages
@@ -232,6 +237,11 @@ abstract class SocketMaster implements iSocketMaster
 	abstract public function onError($errorMessage); 
 	// call on new connection accepted by listen
 	abstract public function onNewConnection(SocketBridge $socket);
+    
+    // call on init send message
+    abstract public function onSendRequest(&$cancel, $message);
+    // call on finish send message
+    abstract public function onSendComplete($message);
 
 	final private function getError()
 	{
