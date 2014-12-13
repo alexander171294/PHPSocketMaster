@@ -17,6 +17,7 @@ ADD: agregado soporte nativo para programar sobre phpSocketMaster sin necesidad 
 
 --> cambios de versiones anteriores <--
 
+v0.4 -> 1.0    : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
 v0.3.1 -> v0.4 : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
 v0.3 -> v0.3.1 : https://github.com/alexander171294/PHPSocketMaster/blob/610d96123f4845de49dc4db12705f778571089e4/CHANGELOG
 v0.2 -> v0.3   : https://github.com/alexander171294/PHPSocketMaster/blob/acc8f0e3a580e0b49a8efae00cf6f2e72b6c02ae/CHANGELOG
