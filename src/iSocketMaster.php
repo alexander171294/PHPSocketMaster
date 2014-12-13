@@ -102,6 +102,12 @@ interface iSocketMaster
 	 * @return bool ¿new messages? true/false
 	 */
 	public function refresh();
+        
+        /**
+         * Function loop_refresh()
+         * internal and controlled loop for refresh function
+         */
+    public function loop_refresh();
 
 	/**
 	 * Function refreshListen
@@ -111,6 +117,16 @@ interface iSocketMaster
 	 */
 	public function refreshListen(SocketEventReceptor $Callback);
 
+        /**
+	 * Function loop_refreshListen
+	 * @param SocketEventReceptor $Callback
+	 * @param $clients instances of clients createds on new conections
+	 * @param $type type of new sockets on new conections
+	 * detect new incomming connections, and call accept using with args $callback
+	 * detectar nuevas conecciones entrantes y llamar a la funcion accept usando como argumentos $callback
+	 */
+        public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type);
+        
 	
 	// GETTERS
 	/**
@@ -144,8 +160,6 @@ interface iSocketMaster
 	 * atributo socketEventReceptor (como si de un atributo publico se tratara)
 	 */
 	public function set_address($val);
-<<<<<<< HEAD
-=======
         
         /**
 	 * Function set_listenClients
@@ -156,7 +170,6 @@ interface iSocketMaster
 	 * UTILIZAR REFERENCIAS EN EL PROPERTY
 	 */
         public function set_listenClients(&$newArray);
->>>>>>> origin/develop
 	
 	/**
 	 * Function set_port
