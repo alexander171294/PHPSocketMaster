@@ -27,9 +27,14 @@ Spanish
 -------
 
 Versión actual de PHPSocketMaster 1.0, nosotros recomendamos leer el log de cambios.
+
 Última versión publicada: 13 de diciembre del 2014
+
 Próxima versión: sin especificar.
+
 Primera versión publicada: 1 de Agosto del 2014
+
+
 
 Si decea obtener los últimos cambios en desarrollo por favor vea la rama Develop.
 
@@ -37,8 +42,13 @@ English
 -------
 
 Version: 1.0, we recomends read the change log.
+
 Last published version: Dec. 13, 2014
+
 Next version: none.
+
 First published version: Aug. 1, 2014 
+
+
 
 If you like get the latest changes, you need view the branch develop.
