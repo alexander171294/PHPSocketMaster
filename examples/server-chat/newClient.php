@@ -36,4 +36,14 @@ class newClient extends SocketEventReceptor
 			// aca tengo el mensaje
 		} else {$this->requested = true; $this->name = $message; parent::getBridge()->send('Hello '.$this->name.', welcome to example chat server v1.0'); }
 	}
+    
+     public function onSendRequest(&$cancel, $message) 
+    {
+        //...
+    }
+    
+    public function onSendComplete($message) 
+    {
+        //... 
+    }
 }

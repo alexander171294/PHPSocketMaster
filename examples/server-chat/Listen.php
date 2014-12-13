@@ -33,4 +33,14 @@ class Socket extends SocketMaster
 		ServerManager::AddNewClient();
 		ServerManager::AddClient($socket);
 	}
+    
+    public function onSendRequest(&$cancel, $message) 
+    {
+        //...
+    }
+    
+    public function onSendComplete($message) 
+    {
+        //... 
+    }
 }

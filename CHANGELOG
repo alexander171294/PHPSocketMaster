@@ -1,12 +1,23 @@
-Cambios version v0.4
+Cambios version 1.0
 
-FIX UnMask error, en algunas ocaciones unmask fallaba dando por resultado un mensaje inválido
-ADD el parametro de la funcion onReciveMessage en websocketbridge, ahora devuelve un arreglo conformado por tipo de mensaje y payload (el mensaje)
-CHG Mask function, cambiada en concordancia con los cambios realizados a unMask.
-FIX Mask function, valor por defecto para $masked = false
+ADD: funcion loop_refresh()
+ADD: funcion loop_refreshListen()
+ADD: Nueva propiedad listenClients
+ADD: Pruebas de hilos en el directorio test
+ADD: nueva clase HTTPClient
+ADD: nueva interface http client.
+ADD: nueva clase ThreadSocketMaster, control multihilo y sus constantes
+ADD: nuevos eventos onSendRequest y onSendComplete
+ADD: nuevas propiedades Domain, Protocol, ConnectionType, Type, State
+FIX: ejemplos para los nuevos cambios.
+FIX: las funciones connect, disconnect, listen ahora retornan verdadero o una excepciÃ³n
+ADD: agregado soporte nativo para programar sobre phpSocketMaster sin necesidad de eventos
+
+*** Support for threads IS EXPERIMENTAL CLASS.
 
 --> cambios de versiones anteriores <--
 
+v0.3.1 -> v0.4 : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
 v0.3 -> v0.3.1 : https://github.com/alexander171294/PHPSocketMaster/blob/610d96123f4845de49dc4db12705f778571089e4/CHANGELOG
 v0.2 -> v0.3   : https://github.com/alexander171294/PHPSocketMaster/blob/acc8f0e3a580e0b49a8efae00cf6f2e72b6c02ae/CHANGELOG
 v0.1 -> v0.2   : https://github.com/alexander171294/PHPSocketMaster/blob/5217190a15d0f3be92c69697dad91846d2e8257e/CHANGELOG

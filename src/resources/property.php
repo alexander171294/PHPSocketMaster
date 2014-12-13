@@ -17,8 +17,6 @@ trait Property // mi hermosa clase property
     {
         if(is_callable(array($this, 'get_'.$property)))
             return call_user_func(array($this, 'get_'.$property));
-        elseif(is_callable(array(parent, 'get_'.$property)))
-            return call_user_func(array(parent, 'get_'.$property));
         else
        		// no hay funcion getter para este atributo (o no existe el atributo)
             throw new \Exception('The atribute $'.$property.' not exist for get');

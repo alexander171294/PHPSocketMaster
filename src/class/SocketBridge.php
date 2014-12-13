@@ -1,5 +1,6 @@
 <?php namespace PHPSocketMaster;
 
+
 class SocketBridge extends SocketMaster implements iSocketBridge
 {
 	private $SocketEventReceptor = null;
@@ -8,6 +9,8 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 	{ 
 		$this->SocketEventReceptor = $callback;
 		$this->SocketRef = $socket;
+        if(!defined('SCKM_THREAD'))
+            $this->aux_SocketRef = $socket;
 	}
 
 	public function onError($errorMessage)
@@ -30,6 +33,21 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 		$message = is_array($message) ? $message[0] : $message;
 		return $this->ValidateObj(array($this->SocketEventReceptor, 'onReceiveMessage'), array($message));
 	}
+    
+    public function onSendRequest(&$cancel, $message)
+	{
+        // no use validateobj, the call_user_func not support ref params 
+        if($this->SocketEventReceptor != null)
+		{ 
+            $this->SocketEventReceptor->onSendRequest($cancel, $message);
+            return true;
+        } else {  throw new \Exception('Not Set Callback in Socket Bridge');  return false; }
+	}
+    
+    public function onSendComplete($message)
+	{
+		return $this->ValidateObj(array($this->SocketEventReceptor, 'onSendComplete'), array($message));
+	}
 	
 	// wrapper, agradecimiento a Destructor.cs por la idea
 	public function ValidateObj($call, $args = null)
@@ -43,7 +61,7 @@ class SocketBridge extends SocketMaster implements iSocketBridge
 
 	public function onNewConnection(SocketBridge $socket) { }
 	
-	// @todo : esta funcion hay que quitarla, para eso está el property
+	// @todo : esta funcion hay que quitarla, para eso estÃ¡ el property
 	public function getSocketEventReceptor() { return $this->SocketEventReceptor; }
 	
 	// GETTERS

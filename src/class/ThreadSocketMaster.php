@@ -6,11 +6,12 @@
  * @author Alexander
  * @version 1.0
  * Clase diseñada como modelo de socket orientado a objetos
- * con eventos.
+ * con eventos, y posibilidad de trabajar con multihilo.
  * Cuenta con la finalidad de escuchar y conectarse.
  *
- * @example server-chat listen.php
- * @example client-chat socket.php
+ * @example none
+ * @example none
+ * @example IRCClient Threaded
  */
 
 // TYPES
@@ -31,7 +32,7 @@ define('SCKM_UDP', SOL_UDP);
 define('SCKM_CLIENT', 4);
 define('SCKM_SERVER', 5);
 
-abstract class SocketMaster implements iSocketMaster
+abstract class SocketMaster extends \Thread implements iSocketMaster
 {
 	use Property;
 
@@ -40,18 +41,20 @@ abstract class SocketMaster implements iSocketMaster
 	protected $readcontrol = "\n";
 	protected $endLoop = false;
 	protected $listenClients = null;
+    protected $typeListen = false;
     
-    	protected $type = SCKM_BASIC; // esto es seteado de forma erronea
-    	protected $domain = SCKM_INET;
-    	protected $protocol = SCKM_TCP;
-    	protected $connectionType = SCKM_UNKNOWN;
-    	protected $state = false;
-
+    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
+    protected $domain = SCKM_INET;
+    protected $protocol = SCKM_TCP;
+    protected $connectionType = SCKM_UNKNOWN;
+    protected $state = false;
+    
+    private $thread = null;
 	private $socketRef = null;
-    	
-	// auxiliar
-    	private $aux_socketRef = null;
+    // auxiiar
+    private $aux_socketRef = null;
 
+	// constructor function
 	public function __construct($address, $port)
 	{
 		$this->ErrorControl(array($this, '__construct_'), array($address, $port));
@@ -59,23 +62,31 @@ abstract class SocketMaster implements iSocketMaster
 	// the wrapper of construct function
 	final private function __construct_($address, $port)
 	{
+        $this->socketFactory();
 		// seteamos variables fundamentales
 		$this->address = $address;
 		$this->port = $port;
-		// creamos el socket
+	}
+    
+    final public function socketFactory()
+    {
+        // creamos el socket
 		$this->socketRef = socket_create($this->domain, SOCK_STREAM, $this->protocol);
 		if($this->socketRef == false) throw new \Exception('Failed to create socket :: '.$this->getError());
-	}
-
+        $this->aux_socketRef = $this->socketRef;
+    }
+	
+	// destructor function
 	final public function __destruct()
 	{
 		$this->disconnect();
 	}
 	
+	// disconnect function
 	final public function disconnect()
 	{
 		$this->ErrorControl(array($this, 'disconnect_'));
-        	return true;
+        return true;
 	}
 	// the wrapper of disconnect function
 	final private function disconnect_()
@@ -83,64 +94,96 @@ abstract class SocketMaster implements iSocketMaster
         $this->state = false;
 		if(!empty($this->socketRef))
 		{
-			if(!empty($this->socketRef))
-			{
-				socket_close($this->socketRef);
-				$this->socketRef = null;
-			}
-			$this->onDisconnect();
-		} catch (\Exception $error) {
-			$this->onError($error->getMessage());
+            $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+			socket_close($uSocket);
+			$this->socketRef = null;
+			$this->endLoop = true;
 		}
+		$this->onDisconnect();
 	}
 
 	// wait for a new external connection request
 	final public function listen()
 	{
 		$this->ErrorControl(array($this, 'listen_'));
-        	return true;
+        return true;
 	}
 	// the wrapper of listen function
 	final private function listen_()
 	{
-        $this->connectionType = SCKM_SERVER;
+        $this->state = true;
+        $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+        $this->typeListen = true;
 		// bindeamos el socket
-		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
+		if(socket_bind($uSocket, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
-		if (socket_listen($this->socketRef, 5) === false)
+		if (socket_listen($uSocket, 5) === false)
 			throw new \Exception('Failed Listening :: '.$this->getError());
-        	$this->state = true;
+        $this->connectionType = SCKM_SERVER;
 	}
+	
+	
 
 	// connect to host
 	final public function connect()
 	{
 		$this->ErrorControl(array($this, 'connect_'));
-        	return true;
+        return true;
 	}
 	// the wrapper of connect function
 	final private function connect_()
-	{
-        	$this->connectionType = SCKM_CLIENT;
-		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
+	{ // new thread
+        $this->state = true;
+        if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-        	$this->state = true;		
-        	$this->onConnect();
+        // exec event
+        $this->connectionType = SCKM_CLIENT;
+        $this->onConnect();
+        $this->start();
+	}
+
+	// accept a new external connection and create new socket object
+	/**
+		@params: SocketEventReceptor $callback :: instancia de clase que ejecutara los eventos del socket creado
+		@return: object of SocketBridge
+		*/
+	final public function accept(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	{
+		$this->ErrorControl(array($this, 'accept_'), array($Callback, $type));
+	}
+	// the wrapper of accept function
+	final private function accept_(SocketEventReceptor $Callback, $type = SCKM_BASIC)
+	{
+        $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+		$newSocketRef = socket_accept($uSocket);
+		if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
+		if($type == SCKM_BASIC)
+			$instance = new SocketBridge($newSocketRef, $Callback);
+		if($type == SCKM_WEB)
+			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
+		$Callback->setMother($instance);
+		$instance->onConnect();
+        $instance->start();
+		return $instance;
 	}
 
 	//send message by socket
+    // not final function, if you need program a previously actions for send and then use parent::send(...); is acceptable.
 	public function send($message, $readControl = true)
 	{
 		$this->ErrorControl(array($this, 'send_'), array($message, $readControl));
 	}
 	// the wrapper of send function
-	final private function send_($message, $readControl = true)
+	final public function send_($message, $readControl = true)
 	{
 		if($readControl === true) $message = $message.$this->readcontrol;
+        // use native socket or auxiliar.
+        $uSocket = get_resource_type($this->socketRef) == 'Socket' ? $this->socketRef : $this->aux_socketRef;
+        
         $cancel = false;
         $this->onSendRequest($cancel, $message);
         if(!$cancel)
-            if(socket_write($this->socketRef, $message, strlen($message)) == false)
+            if(socket_write($uSocket, $message, strlen($message)) == false)
                 throw new \Exception('Socket Send Message Failed :: '.$this->getError());
             else
                 $this->onSendComplete($message);
@@ -150,19 +193,39 @@ abstract class SocketMaster implements iSocketMaster
 	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
+            //$this->lock();
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
             {
-				$this->onDisconnect();
                 $this->state = false;
+				$this->onDisconnect();
             }
 			if($result > 0) 
 			{
 				$this->ErrorControl(array($this, 'read'));
 				return true;
 			} else { return false; }
+            //$this->unlock();
+	}
+	
+    final public function run()
+    {
+        $this->socketRef = $this->socketRef;
+        if($this->typeListen == false)
+            $this->loop_refresh();
+        else
+            $this->loop_refreshListen();
+    }
+    
+	// loop for function refresh
+	final public function loop_refresh()
+	{
+		while($this->endLoop == false)
+		{
+			$this->refresh();
+		}
 	}
 
 	//detect new request external connections
@@ -174,38 +237,14 @@ abstract class SocketMaster implements iSocketMaster
 			$exceptions = null;
 			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
             {
-				$this->onDisconnect();
                 $this->state = false;
+				$this->onDisconnect();
             }
 			if($result > 0) 
 			{
 				$res = $this->accept($Callback, $this->type);
 				$this->onNewConnection($res);
 			}
-	}
-    
-    // accept a new external connection and create new socket object
-	/**
-		@params: SocketEventReceptor $callback :: instancia de clase que ejecutara los eventos del socket creado
-		@return: object of SocketBridge
-		*/
-	final public function accept(SocketEventReceptor $Callback, $type = SCKM_BASIC)
-	{
-		return $this->ErrorControl(array($this, 'accept_'), array($Callback, $type));
-	}
-	// the wrapper of accept function
-	final private function accept_(SocketEventReceptor $Callback, $type = SCKM_BASIC)
-	{
-		$newSocketRef = socket_accept($this->socketRef);
-		if($newSocketRef === false) throw new \Exception('Socket Accept Failed :: '.$this->getError());
-		if($type == SCKM_BASIC)
-			$instance = new SocketBridge($newSocketRef, $Callback);
-		if($type == SCKM_WEB)
-			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
-        
-		$Callback->setMother($instance);
-		$instance->onConnect();
-		return $instance;
 	}
 	
 	// loop for function refreshListen
@@ -234,8 +273,9 @@ abstract class SocketMaster implements iSocketMaster
 			$buf = null;
 			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
 				throw new \Exception('Socket Read Failed :: '.$this->getError());
-			if($buf === '') // esto estaba literalmente as� en la documentaci�n
-			{ 
+			if($buf === null)
+			{
+				$this->endLoop = true;
 				$this->onDisconnect();
 			} else {
 				$this->onReceiveMessage($buf);	
@@ -243,12 +283,13 @@ abstract class SocketMaster implements iSocketMaster
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
-	final private function ErrorControl($call, $args = array())
+	final public function ErrorControl($call, $args = array())
 	{
 		try
 		{
-			return call_user_func_array($call, $args);
+			call_user_func_array($call, $args);
 		} catch (\Exception $error) {
+			$this->endLoop = true;
 			$this->onError($error->getMessage());
 		}
 	}
@@ -264,10 +305,11 @@ abstract class SocketMaster implements iSocketMaster
 	// call on new connection accepted by listen
 	abstract public function onNewConnection(SocketBridge $socket);
     
-    	// call on init send message
-    	abstract public function onSendRequest(&$cancel, $message);
-    	// call on finish send message
-    	abstract public function onSendComplete($message);
+    // call on init send message
+    abstract public function onSendRequest(&$cancel, $message);
+    // call on finish send message
+    abstract public function onSendComplete($message);
+
 
 	final private function getError()
 	{
@@ -276,31 +318,33 @@ abstract class SocketMaster implements iSocketMaster
 
 	// @todo: revisar por qué puse esta función, donde la uso y la viabilidad de cambiarla por su setter
 	//final public function setSocketRef($sref) { $this->socketRef = $sref; }
-    
+
 	// GETTERS
 	final public function get_address() { return $this->address; }
 	final public function get_port() { return $this->port; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
 	final private function get_socketRef() { return $this->socketRef; }
-    	final private function get_aux_socketRef() { return $this->aux_socketRef; }
     
-    	final public function get_type(){ return $this->type; }
-    	final public function get_domain(){ return $this->domain; }
-    	final public function get_protocol(){ return $this->protocol; }
-    	final public function get_connectionType(){ return $this->connectionType; }
-    	final public function get_state(){ return $this->state; }
+    // for my Waiteador :)
+    final public function get_endLoop(){ return $this->endLoop; }
+    
+    final public function get_type(){ return $this->type; }
+    final public function get_domain(){ return $this->domain; }
+    final public function get_protocol(){ return $this->protocol; }
+    final public function get_connectionType(){ return $this->connectionType; }
+    final public function get_state(){ return $this->state; }
 	
 	// AND SETTERS :)
 	final public function set_address($val) { $this->address = $val; }
 	final public function set_port($val) { $this->port = $val; }
 	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
-	final private function set_socketRef($val) { $this->socketRef = $val; }
-    	final private function set_aux_socketRef($val) { $this->aux_socketRef = $val; }
+    // pero para poder utilizar los hilos es necesario un seteador
+	final public function set_socketRef($val) { $this->socketRef = $val; }
+    final public function set_aux_socketRef($val) { $this->aux_socketRef = $val; }
     
-    	final public function set_type($v){ $this->type = $v; }
-    	final public function set_domain($v){ if($this->state == false) $this->domain = $v; }
-    	final public function set_protocol($v){ if($this->state == false) $this->protocol = $v; }
-    	final public function set_connectionType($v){}
-   	final public function set_state($v){}
-    
+    final public function set_type($v){ $this->type = $v; }
+    final public function set_domain($v){ if($this->state == false) $this->domain = $v; }
+    final public function set_protocol($v){ if($this->state == false) $this->protocol = $v; }
+    final public function set_connectionType($v){}
+    final public function set_state($v){}
 }
