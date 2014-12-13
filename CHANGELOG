@@ -11,6 +11,7 @@ ADD: nuevos eventos onSendRequest y onSendComplete
 ADD: nuevas propiedades Domain, Protocol, ConnectionType, Type, State
 FIX: ejemplos para los nuevos cambios.
 FIX: las funciones connect, disconnect, listen ahora retornan verdadero o una excepción
+ADD: agregado soporte nativo para programar sobre phpSocketMaster sin necesidad de eventos
 
 *** Support for threads IS EXPERIMENTAL CLASS.
 
