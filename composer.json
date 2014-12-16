@@ -1,0 +1,24 @@
+{
+    "name": "alexander171294/phpsocketmaster",
+    "description": "PHP Socket library",
+    "version": "1.0.0-RC1",
+    "type": "library",
+    "keywords": ["sockets", "threads", "client", "server"],
+    "homepage": "https://github.com/alexander171294/PHPSocketMaster",
+    "time": "2014-12-15",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eberle Alexander",
+            "email": "alexander171294@gmail.com",
+            "homepage": "http://console-input-output.blogspot.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "alexander171294@gmail.com",
+        "issues": "https://github.com/alexander171294/PHPSocketMaster/issues",
+        "wiki": "https://github.com/alexander171294/PHPSocketMaster/wiki",
+        "source": "https://github.com/alexander171294/PHPSocketMaster"
+    },
+}
