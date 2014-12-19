@@ -168,6 +168,15 @@ abstract class SocketMaster implements iSocketMaster
 			} else { return false; }
 	}
 
+	// loop for function refresh
+	final public function loop_refresh()
+	{
+		while($this->endLoop == false)
+		{
+			$this->refresh();
+		}
+	}
+
 	//detect new request external connections
 	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_UNKNOWN)
 	{
