@@ -1,11 +1,10 @@
 <?php namespace PHPSocketMaster;
 
-
 /**
  * @abstract SocketMaster
  * @author Alexander
  * @version 1.0
- * Clase diseñada como modelo de socket orientado a objetos
+ * Clase diseÃ±ada como modelo de socket orientado a objetos
  * con eventos.
  * Cuenta con la finalidad de escuchar y conectarse.
  *
@@ -246,7 +245,7 @@ abstract class SocketMaster implements iSocketMaster
 			$buf = null;
 			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
 				throw new \Exception('Socket Read Failed :: '.$this->getError());
-			if($buf === '') // esto estaba literalmente as� en la documentaci�n
+			if($buf === '') // esto estaba literalmente así en la documentación
 			{ 
 				$this->onDisconnect();
 			} else {
@@ -286,13 +285,13 @@ abstract class SocketMaster implements iSocketMaster
 		return socket_strerror(socket_last_error($this->socketRef));
 	}
 
-	// @todo: revisar por qué puse esta función, donde la uso y la viabilidad de cambiarla por su setter
+	// @todo: revisar por quÃ© puse esta funciÃ³n, donde la uso y la viabilidad de cambiarla por su setter
 	//final public function setSocketRef($sref) { $this->socketRef = $sref; }
     
 	// GETTERS
 	final public function get_address() { return $this->address; }
 	final public function get_port() { return $this->port; }
-	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
+	// ATENCIÃN: en realidad la funciÃ³n original solo se llamaba en un Ã¡mbito privado por lo que no es necesario un public ni conveniente.
 	final private function get_socketRef() { return $this->socketRef; }
     	final private function get_aux_socketRef() { return $this->aux_socketRef; }
     
@@ -305,7 +304,7 @@ abstract class SocketMaster implements iSocketMaster
 	// AND SETTERS :)
 	final public function set_address($val) { $this->address = $val; }
 	final public function set_port($val) { $this->port = $val; }
-	// ATENCIÓN: en realidad la función original solo se llamaba en un ámbito privado por lo que no es necesario un public ni conveniente.
+	// ATENCIÃN: en realidad la funciÃ³n original solo se llamaba en un Ã¡mbito privado por lo que no es necesario un public ni conveniente.
 	final private function set_socketRef($val) { $this->socketRef = $val; }
     	final private function set_aux_socketRef($val) { $this->aux_socketRef = $val; }
     
