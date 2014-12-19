@@ -27,6 +27,7 @@ class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 			// enviar handshake
 			$this->sendUnmasked($this->generateResponse($h['Sec-WebSocket-Key']),false);
 			$this->SendHandshake = true;
+            $this->ValidateObj(array($this->SocketEventReceptor, 'onConnect'));
 			// handshake finish
 		}
 	}
