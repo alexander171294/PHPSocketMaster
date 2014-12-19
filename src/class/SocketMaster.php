@@ -80,15 +80,18 @@ abstract class SocketMaster implements iSocketMaster
 	// the wrapper of disconnect function
 	final private function disconnect_()
 	{
-        $this->state = false;
-		if(!empty($this->socketRef))
+        	$this->state = false;
+		try
 		{
 			if(!empty($this->socketRef))
 			{
-				socket_close($this->socketRef);
-				$this->socketRef = null;
+				if(!empty($this->socketRef))
+				{
+					socket_close($this->socketRef);
+					$this->socketRef = null;
+				}
+				$this->onDisconnect();
 			}
-			$this->onDisconnect();
 		} catch (\Exception $error) {
 			$this->onError($error->getMessage());
 		}
