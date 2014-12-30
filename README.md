@@ -26,9 +26,10 @@ PHPSocketMaster INFO
 Spanish
 -------
 
-Versión actual de PHPSocketMaster 1.0, nosotros recomendamos leer el log de cambios.
+Versión actual de PHPSocketMaster 1.0.1, nosotros recomendamos leer el log de cambios.
+ACTUALIZACIÓN IMPORTANTE DE 1.0, si usas la versión 1.0 nosotros recomendamos actualizarla ahora!
 
-Última versión publicada: 13 de diciembre del 2014
+Última versión publicada: 30 de diciembre del 2014
 
 Próxima versión: sin especificar.
 
@@ -41,9 +42,10 @@ Si decea obtener los últimos cambios en desarrollo por favor vea la rama Develo
 English
 -------
 
-Version: 1.0, we recomends read the change log.
+Version: 1.0.1, we recomends read the change log.
+IMPORTANT UPDATE OF 1.0, if you use version 1.0 we recomend update now!
 
-Last published version: Dec. 13, 2014
+Last published version: Dec. 30, 2014
 
 Next version: none.
 
