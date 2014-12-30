@@ -1,23 +1,15 @@
-Cambios version 1.0
+Cambios version 1.1
 
-ADD: funcion loop_refresh()
-ADD: funcion loop_refreshListen()
-ADD: Nueva propiedad listenClients
-ADD: Pruebas de hilos en el directorio test
-ADD: nueva clase HTTPClient
-ADD: nueva interface http client.
-ADD: nueva clase ThreadSocketMaster, control multihilo y sus constantes
-ADD: nuevos eventos onSendRequest y onSendComplete
-ADD: nuevas propiedades Domain, Protocol, ConnectionType, Type, State
-FIX: ejemplos para los nuevos cambios.
-FIX: las funciones connect, disconnect, listen ahora retornan verdadero o una excepción
-ADD: agregado soporte nativo para programar sobre phpSocketMaster sin necesidad de eventos
+ADD: recall event onConnect in websocket context.
+FIX: loop_refresh() missing!
+FIX: disconnect try missing!
 
-*** Support for threads IS EXPERIMENTAL CLASS.
+=====> IMPORTANT UPDATE!! <=====
 
 --> cambios de versiones anteriores <--
 
-v0.4 -> 1.0    : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
+v1.0 -> v1.1   : https://github.com/alexander171294/PHPSocketMaster/blob/4e83b8994717ad3ed4e3723281ca4263f7737474/CHANGELOG
+v0.4 -> v1.0   : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
 v0.3.1 -> v0.4 : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
 v0.3 -> v0.3.1 : https://github.com/alexander171294/PHPSocketMaster/blob/610d96123f4845de49dc4db12705f778571089e4/CHANGELOG
 v0.2 -> v0.3   : https://github.com/alexander171294/PHPSocketMaster/blob/acc8f0e3a580e0b49a8efae00cf6f2e72b6c02ae/CHANGELOG
