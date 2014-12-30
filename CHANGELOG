@@ -1,4 +1,4 @@
-Cambios version 1.1
+Cambios version 1.0.1
 
 ADD: doble llamad al evento onConnect en el contexto de websockets
 FIX: loop_refresh() función perdida en el merge de la versión 1.0!
@@ -8,9 +8,9 @@ FIX: disconnect try perdido en el merge de la versión 1.0!
 
 --> cambios de versiones anteriores <--
 
-v1.0 -> v1.1   : https://github.com/alexander171294/PHPSocketMaster/blob/4e83b8994717ad3ed4e3723281ca4263f7737474/CHANGELOG
-v0.4 -> v1.0   : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
-v0.3.1 -> v0.4 : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
-v0.3 -> v0.3.1 : https://github.com/alexander171294/PHPSocketMaster/blob/610d96123f4845de49dc4db12705f778571089e4/CHANGELOG
-v0.2 -> v0.3   : https://github.com/alexander171294/PHPSocketMaster/blob/acc8f0e3a580e0b49a8efae00cf6f2e72b6c02ae/CHANGELOG
-v0.1 -> v0.2   : https://github.com/alexander171294/PHPSocketMaster/blob/5217190a15d0f3be92c69697dad91846d2e8257e/CHANGELOG
+v1.0   : https://github.com/alexander171294/PHPSocketMaster/blob/4e83b8994717ad3ed4e3723281ca4263f7737474/CHANGELOG
+v0.4   : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
+v0.3.1 : https://github.com/alexander171294/PHPSocketMaster/blob/9b4838cf532e2d9547e78a63b3e83f5293555bc8/CHANGELOG
+v0.3   : https://github.com/alexander171294/PHPSocketMaster/blob/610d96123f4845de49dc4db12705f778571089e4/CHANGELOG
+v0.2   : https://github.com/alexander171294/PHPSocketMaster/blob/acc8f0e3a580e0b49a8efae00cf6f2e72b6c02ae/CHANGELOG
+v0.1   : https://github.com/alexander171294/PHPSocketMaster/blob/5217190a15d0f3be92c69697dad91846d2e8257e/CHANGELOG
