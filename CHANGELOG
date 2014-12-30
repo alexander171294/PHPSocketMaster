@@ -1,8 +1,8 @@
 Cambios version 1.1
 
-ADD: recall event onConnect in websocket context.
-FIX: loop_refresh() missing!
-FIX: disconnect try missing!
+ADD: doble llamad al evento onConnect en el contexto de websockets
+FIX: loop_refresh() función perdida en el merge de la versión 1.0!
+FIX: disconnect try perdido en el merge de la versión 1.0!
 
 =====> IMPORTANT UPDATE!! <=====
 
