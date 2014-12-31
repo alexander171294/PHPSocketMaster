@@ -40,7 +40,7 @@ abstract class SocketMaster implements iSocketMaster
 	protected $endLoop = false;
 	protected $listenClients = null;
     
-    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
+    protected $type = SCKM_UNKNOWN;
     protected $domain = SCKM_INET;
     protected $protocol = SCKM_TCP;
     protected $connectionType = SCKM_UNKNOWN;
@@ -75,12 +75,12 @@ abstract class SocketMaster implements iSocketMaster
 	final public function disconnect()
 	{
 		$this->ErrorControl(array($this, 'disconnect_'));
-        	return true;
+        return true;
 	}
 	// the wrapper of disconnect function
 	final private function disconnect_()
 	{
-        	$this->state = false;
+        $this->state = false;
 		try
 		{
 			if(!empty($this->socketRef))
@@ -101,34 +101,34 @@ abstract class SocketMaster implements iSocketMaster
 	final public function listen()
 	{
 		$this->ErrorControl(array($this, 'listen_'));
-        	return true;
+        return true;
 	}
 	// the wrapper of listen function
 	final private function listen_()
 	{
-        $this->connectionType = SCKM_SERVER;
+        $this->type = SCKM_SERVER;
 		// bindeamos el socket
 		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
 		if (socket_listen($this->socketRef, 5) === false)
 			throw new \Exception('Failed Listening :: '.$this->getError());
-        	$this->state = true;
+        $this->state = true;
 	}
 
 	// connect to host
 	final public function connect()
 	{
 		$this->ErrorControl(array($this, 'connect_'));
-        	return true;
+        return true;
 	}
 	// the wrapper of connect function
 	final private function connect_()
 	{
-        	$this->connectionType = SCKM_CLIENT;
+        $this->type = SCKM_CLIENT;
 		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
-        	$this->state = true;		
-        	$this->onConnect();
+        $this->state = true;		
+        $this->onConnect();
 	}
 
 	//send message by socket
@@ -145,27 +145,27 @@ abstract class SocketMaster implements iSocketMaster
         if(!$cancel)
             if(socket_write($this->socketRef, $message, strlen($message)) == false)
                 throw new \Exception('Socket Send Message Failed :: '.$this->getError());
-            else
-                $this->onSendComplete($message);
+        else
+            $this->onSendComplete($message);
 	}
 
 	//detect new messages
 	// return true if new messages, return fales if not new messages
 	final public function refresh()
 	{
-			$read = array($this->socketRef);
-			$write = null;
-			$exceptions = null;
-			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
-            {
-				$this->onDisconnect();
-                $this->state = false;
-            }
-			if($result > 0) 
-			{
-				$this->ErrorControl(array($this, 'read'));
-				return true;
-			} else { return false; }
+        $read = array($this->socketRef);
+        $write = null;
+        $exceptions = null;
+        if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+        {
+            $this->onDisconnect();
+            $this->state = false;
+        }
+        if($result > 0) 
+        {
+            $this->ErrorControl(array($this, 'read'));
+            return true;
+        } else { return false; }
 	}
 
 	// loop for function refresh
@@ -178,22 +178,22 @@ abstract class SocketMaster implements iSocketMaster
 	}
 
 	//detect new request external connections
-	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_UNKNOWN)
+	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
-            if($type !== SCKM_UNKNOWN) $this->type = $type;
-			$read = array($this->socketRef);
-			$write = null;
-			$exceptions = null;
-			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
-            {
-				$this->onDisconnect();
-                $this->state = false;
-            }
-			if($result > 0) 
-			{
-				$res = $this->accept($Callback, $this->type);
-				$this->onNewConnection($res);
-			}
+        if($type !== SCKM_BASIC) $this->connectionType = $type;
+        $read = array($this->socketRef);
+        $write = null;
+        $exceptions = null;
+        if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+        {
+            $this->onDisconnect();
+            $this->state = false;
+        }
+        if($result > 0) 
+        {
+            $res = $this->accept($Callback, $this->type);
+            $this->onNewConnection($res);
+        }
 	}
     
     // accept a new external connection and create new socket object
@@ -221,13 +221,12 @@ abstract class SocketMaster implements iSocketMaster
 	}
 	
 	// loop for function refreshListen
-	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_UNKNOWN)
+	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_BASIC)
 	{
 		$this->listenClients = $clients;
 		while($this->endLoop == false)
 		{
 			$this->refreshListen($callback, $type);
-            $type = SCKM_UNKNOWN;
 			for($i=0; $i < count($this->listenClients); $i++)
 			{
 				$this->listenClients[$i]->refresh();
@@ -243,15 +242,15 @@ abstract class SocketMaster implements iSocketMaster
 	// recive a message by socket
 	final private function read()
 	{
-			$buf = null;
-			if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
-				throw new \Exception('Socket Read Failed :: '.$this->getError());
-			if($buf === '') // esto estaba literalmente así en la documentación
-			{ 
-				$this->onDisconnect();
-			} else {
-				$this->onReceiveMessage($buf);	
-			}
+        $buf = null;
+        if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
+            throw new \Exception('Socket Read Failed :: '.$this->getError());
+        if($buf === '') // esto estaba literalmente así en la documentación
+        { 
+            $this->onDisconnect();
+        } else {
+            $this->onReceiveMessage($buf);	
+        }
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
@@ -276,10 +275,10 @@ abstract class SocketMaster implements iSocketMaster
 	// call on new connection accepted by listen
 	abstract public function onNewConnection(SocketBridge $socket);
     
-    	// call on init send message
-    	abstract public function onSendRequest(&$cancel, $message);
-    	// call on finish send message
-    	abstract public function onSendComplete($message);
+    // call on init send message
+    abstract public function onSendRequest(&$cancel, $message);
+    // call on finish send message
+    abstract public function onSendComplete($message);
 
 	final private function getError()
 	{
