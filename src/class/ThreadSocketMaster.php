@@ -43,7 +43,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	protected $listenClients = null;
     protected $typeListen = false;
     
-    protected $type = SCKM_BASIC; // esto es seteado de forma erronea
+    protected $type = SCKM_UNKNOWN; // esto es seteado de forma erronea
     protected $domain = SCKM_INET;
     protected $protocol = SCKM_TCP;
     protected $connectionType = SCKM_UNKNOWN;

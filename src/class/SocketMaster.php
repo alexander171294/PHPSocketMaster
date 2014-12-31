@@ -106,13 +106,13 @@ abstract class SocketMaster implements iSocketMaster
 	// the wrapper of listen function
 	final private function listen_()
 	{
-        $this->type = SCKM_SERVER;
+        $this->connectionType = SCKM_SERVER;
 		// bindeamos el socket
 		if(socket_bind($this->socketRef, $this->address, $this->port) == false)
 			throw new \Exception('Failed to bind socket :: '.$this->getError());
 		if (socket_listen($this->socketRef, 5) === false)
 			throw new \Exception('Failed Listening :: '.$this->getError());
-        $this->state = true;
+        	$this->state = true;
 	}
 
 	// connect to host
@@ -124,7 +124,7 @@ abstract class SocketMaster implements iSocketMaster
 	// the wrapper of connect function
 	final private function connect_()
 	{
-        $this->type = SCKM_CLIENT;
+        $this->connectionType = SCKM_CLIENT;
 		if(socket_connect($this->socketRef, $this->address, $this->port)===false)
 			throw new \Exception('Failed to connect :: '.$this->getError());
         $this->state = true;		
@@ -180,7 +180,7 @@ abstract class SocketMaster implements iSocketMaster
 	//detect new request external connections
 	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
-        if($type !== SCKM_BASIC) $this->connectionType = $type;
+        if($type !== SCKM_BASIC) $this->Type = $type;
         $read = array($this->socketRef);
         $write = null;
         $exceptions = null;
