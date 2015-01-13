@@ -194,6 +194,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function refresh()
 	{
             //$this->lock();
+            $this->timeOut_refresh(); // support for trait TimeOut
 			$read = array($this->socketRef);
 			$write = null;
 			$exceptions = null;
@@ -229,32 +230,32 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	}
 
 	//detect new request external connections
-	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_UNKNOWN)
+	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
-            if($type !== SCKM_UNKNOWN) $this->type = $type;
-			$read = array($this->socketRef);
-			$write = null;
-			$exceptions = null;
-			if(($result = socket_select($read, $write, $exceptions, 0)) === false)
-            {
-                $this->state = false;
-				$this->onDisconnect();
-            }
-			if($result > 0) 
-			{
-				$res = $this->accept($Callback, $this->type);
-				$this->onNewConnection($res);
-			}
+        $Callback->timeOut_refresh(); // support for trait TimeOut
+        if($type !== SCKM_UNKNOWN) $this->type = $type;
+        $read = array($this->socketRef);
+        $write = null;
+        $exceptions = null;
+        if(($result = socket_select($read, $write, $exceptions, 0)) === false)
+        {
+            $this->state = false;
+            $this->onDisconnect();
+        }
+        if($result > 0) 
+        {
+                $res = $this->accept($Callback, $this->type);
+                $this->onNewConnection($res);
+        }
 	}
 	
 	// loop for function refreshListen
-	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_UNKNOWN)
+	final public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type = SCKM_BASIC)
 	{
 		$this->listenClients = $clients;
 		while($this->endLoop == false)
 		{
 			$this->refreshListen($callback, $type);
-            $type = SCKM_UNKNOWN;
 			for($i=0; $i < count($this->listenClients); $i++)
 			{
 				$this->listenClients[$i]->refresh();
