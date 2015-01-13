@@ -25,7 +25,6 @@ class SocketBridge extends SocketMaster implements iSocketBridge
     
     public function onRefresh()
     {
-        $this->ValidateObj(array($this->SocketEventReceptor, 'timeOut_refresh'));
         return $this->ValidateObj(array($this->SocketEventReceptor, 'onRefresh'));
     }
 
