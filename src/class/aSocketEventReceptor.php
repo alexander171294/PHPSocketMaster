@@ -17,7 +17,7 @@
  */
 abstract class SocketEventReceptor
 {
-
+    use timeOut;
 	/**
 	 * Var $bridge
 	 * @var object instance of SocketBridge

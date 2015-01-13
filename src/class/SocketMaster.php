@@ -32,7 +32,7 @@ define('SCKM_SERVER', 5);
 
 abstract class SocketMaster implements iSocketMaster
 {
-	use Property;
+	use Property, timeOut;
 
 	protected $address = 'localhost';
 	protected $port = 0;

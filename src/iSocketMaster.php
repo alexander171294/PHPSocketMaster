@@ -10,6 +10,11 @@ if(version_compare(phpversion(),'5.6.0','>='))
 else 
 	require('resources/singleton.php');
 
+if(version_compare(phpversion(),'5.6.0','>='))
+    require('resources/timeOut_php5.6.php');
+else
+    require('resources/timeOut.php');
+
 // use different definitions in different cases
 if(!defined('SCKM_THREAD')) // not threads
     require('class/SocketMaster.php');
