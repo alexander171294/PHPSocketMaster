@@ -194,6 +194,7 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	final public function refresh()
 	{
             //$this->lock();
+            $this->onRefresh();
             $this->timeOut_refresh(); // support for trait TimeOut
 			$read = array($this->socketRef);
 			$write = null;
@@ -232,7 +233,8 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
 	//detect new request external connections
 	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
-        $Callback->timeOut_refresh(); // support for trait TimeOut
+        $this->onRefresh();
+        $this->timeOut_refresh(); // support for trait TimeOut
         if($type !== SCKM_UNKNOWN) $this->type = $type;
         $read = array($this->socketRef);
         $write = null;
@@ -310,6 +312,8 @@ abstract class SocketMaster extends \Thread implements iSocketMaster
     abstract public function onSendRequest(&$cancel, $message);
     // call on finish send message
     abstract public function onSendComplete($message);
+    // call on refresh status
+    abstract public function onRefresh();
 
 
 	final private function getError()

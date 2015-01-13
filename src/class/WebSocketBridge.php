@@ -31,7 +31,7 @@ class WebSocketBridge extends SocketBridge implements iWebSocketBridge
 			// handshake finish
 		}
 	}
-	
+    
 	public function send($message, $readControl = false)
 	{
 		parent::send($this->Mask($message), $readControl);
