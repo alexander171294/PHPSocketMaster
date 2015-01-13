@@ -9,7 +9,7 @@ trait TimeOut
         $this->DatTimeOut[] = array('callback' => $callback, 'started' => microtime(), 'end' => microtime()+$time, 'loop' => $repeat, 'params' => $params, 'time' => $time);
     }
     
-    private function TimeOut_refresh()
+    public function TimeOut_refresh()
     {
         for($i = 0; $i<count($this->DatTimeOut); $i++)
         {
