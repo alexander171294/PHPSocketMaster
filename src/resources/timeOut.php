@@ -4,9 +4,9 @@ trait TimeOut
 {
     private $DatTimeOut = array();
     
-    private function setTimeOut($callback, $time, $repeat = false, $params = array())
+    protected function setTimeOut($callback, $time, $repeat = false, $params = array())
     {
-        $this->DatTimeOut[] = array('callback' => $callback, 'started' => microtime(), 'end' => microtime()+$time, 'loop' => $repeat, 'params' => $params, 'time' => $time);
+        $this->DatTimeOut[] = array('callback' => $callback, 'started' => microtime(true), 'end' => microtime(true)+$time, 'loop' => $repeat, 'params' => $params, 'time' => $time);
     }
     
     public function TimeOut_refresh()
@@ -14,7 +14,7 @@ trait TimeOut
         for($i = 0; $i<count($this->DatTimeOut); $i++)
         {
             $target = $this->DatTimeOut[$i];
-            if($target['end'] < microtime())
+            if($target['end'] < microtime(true))
             {
                 if($target['loop'])
                 {
@@ -23,7 +23,7 @@ trait TimeOut
                     unset($this->DatTimeOut[$i]);
                     $this->DatTimeOut = array_values($this->DatTimeOut);
                 }
-                call_user_func_array(array('this', $target['callback']), $target['params']);
+                call_user_func_array(array($this, $target['callback']), $target['params']);
             }
         }
     }
