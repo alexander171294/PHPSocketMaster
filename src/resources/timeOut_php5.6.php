@@ -23,7 +23,7 @@ trait TimeOut
                     unset($this->DatTimeOut[$i]);
                     $this->DatTimeOut = array_values($this->DatTimeOut);
                 }
-                call_user_func_array(array($this, $target['callback']), $target['params']);
+                call_user_func_array($target['callback'], $target['params']);
             }
         }
     }
