@@ -54,6 +54,9 @@ class Socket extends SocketMaster
    
   }
   
+  // esta funcion la veremos más adelante
+  public function onRefresh(){}
+  
 }
 
 // ahora creamos una instancia de nuestro socket

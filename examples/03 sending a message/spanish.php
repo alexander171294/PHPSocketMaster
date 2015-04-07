@@ -9,7 +9,7 @@ require('../../src/iSocketMaster.php');
 
 class Socket extends SocketMaster
 {
-	
+
 	public function onConnect()
 	{
 		echo '> Conectado correctamente';
@@ -23,6 +23,12 @@ class Socket extends SocketMaster
 	public function onReceiveMessage($message)
 	{
 		echo '< '.$message;
+    // supongamos que ahora le queremos responder el mensaje
+    // usamos la funcion para obtener el puente
+    // y luego la funcion para enviar un mensaje
+    $this->getBridge()->send('Hola');
+    // la otra forma es desde fuera de los eventos, 
+    // puede observar un ejemplo más abajo
 	}
 
 	public function onError($errorMessage)
@@ -32,12 +38,12 @@ class Socket extends SocketMaster
 	}
 
 	public function onNewConnection(SocketBridge $socket) { }
-  
+    
   public function onSendRequest(&$cancel, $message) 
   {
 
   }
-   
+  
   public function onSendComplete($message) 
   {
    
@@ -50,17 +56,6 @@ class Socket extends SocketMaster
 
 $sock = new Socket('localhost', '2026');
 $sock->connect();
-
-// a partir de este punto, el socket se actualizará y funcionará bajo las 
-// funciones establecidas en la clase de arriba
-//$socket->loop_refresh();
-
-/**
- * Podemos desarrollar nuestro propio bucle para hacer alguna accion entre cada refrezco del estado del bucle
- */
- 
- while(true)
- {
-    // hacer alguna acción aquí
-    $socket->refresh();
- }
+// suponiendo que quicieramos enviar un mensaje ahora mismo
+$sock->send('mi mensaje');
+$socket->loop_refresh();
