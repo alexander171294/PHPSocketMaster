@@ -195,7 +195,9 @@ abstract class SocketMaster implements iSocketMaster
         {
             $res = $this->accept($Callback, $this->type);
             $this->onNewConnection($res);
+            return true;
         }
+        return false;
 	}
     
     // loop for function refreshListen
