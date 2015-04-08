@@ -81,6 +81,7 @@ abstract class SocketMaster implements iSocketMaster
 	final private function disconnect_()
 	{
         $this->state = false;
+        $this->endLoop = true;
 		try
 		{
 			if(!empty($this->socketRef))
@@ -247,6 +248,7 @@ abstract class SocketMaster implements iSocketMaster
 	final private function read()
 	{
         $buf = null;
+        set_error_handler(array($this,'disconnect'), E_WARNING);
         if (false === ($len = socket_recv($this->socketRef, $buf, 2048, 0)))
             throw new \Exception('Socket Read Failed :: '.$this->getError());
         if($buf === '') // esto estaba literalmente así en la documentación
@@ -255,6 +257,7 @@ abstract class SocketMaster implements iSocketMaster
         } else {
             $this->onReceiveMessage($buf);	
         }
+        restore_error_handler();
 	}
 	
 	// wrapper try, agradecimientos a Destructor.cs por la idea
