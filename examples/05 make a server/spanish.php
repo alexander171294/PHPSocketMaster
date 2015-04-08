@@ -65,7 +65,15 @@ class receptor extends \PHPSocketMaster\SocketEventReceptor
     public function onError() {}
     
     // cuando se logre establecer la conexion recibida
-    public function onConnect() {}
+    public function onConnect() 
+    {
+      /*
+       a partir de la versión actual ya no es necesario utilizar
+       getBridge para enviar mensajes en el listener, si desea enviar un mensaje
+       en uno de estos eventos solo debe poner:
+       $this->send('mimensaje')
+      */
+    }
     
     // cuando se desconecte
     public function onDisconnect() {}
