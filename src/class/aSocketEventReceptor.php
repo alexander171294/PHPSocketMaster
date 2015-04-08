@@ -17,7 +17,7 @@
  */
 abstract class SocketEventReceptor
 {
-    use timeOut;
+  use timeOut;
 	/**
 	 * Var $bridge
 	 * @var object instance of SocketBridge
@@ -43,6 +43,17 @@ abstract class SocketEventReceptor
 	 * de forma que se puedan ejecutar acciones sobre el socket.
 	 */
 	final public function getBridge() { return $this->bridge; }
+  
+  // reescritura de métodos de socketmaster pero para el puente
+  final public function send($msg) 
+  {
+      $this->getBridge()->send($msg);
+  }
+  final public function disconnect() 
+  {
+      $this->getBridge()->disconnect();
+  }
+  // fin de reescritura de métodos de socketmaster
 
 	/**
 	 * Abstract Functions overwritables
@@ -52,7 +63,7 @@ abstract class SocketEventReceptor
 	abstract public function onDisconnect();
 	abstract public function onReceiveMessage($message);
     
-    abstract public function onSendRequest(&$cancel, $message);
-    abstract public function onSendComplete($message);
-    abstract public function onRefresh();
+  abstract public function onSendRequest(&$cancel, $message);
+  abstract public function onSendComplete($message);
+  abstract public function onRefresh();
 }
