@@ -182,7 +182,7 @@ abstract class SocketMaster implements iSocketMaster
 	final public function refreshListen(SocketEventReceptor $Callback, $type = SCKM_BASIC)
 	{
         $this->onRefresh();
-        if($type !== SCKM_BASIC) $this->Type = $type;
+        $this->Type = $type;
         $read = array($this->socketRef);
         $write = null;
         $exceptions = null;
