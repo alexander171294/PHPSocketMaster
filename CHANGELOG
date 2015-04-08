@@ -7,6 +7,8 @@ ADD: example 02 - make a client with loop
 ADD: example 03 - sending a message
 ADD: example 04 - using a timmer
 ADD: example 05 - make a server
+FIX: Bug line 236
+FIX: return value in refreshListen
 
 =====> IMPORTANT UPDATE!! <=====
 
