@@ -71,7 +71,7 @@ class receptor extends \PHPSocketMaster\SocketEventReceptor
     public function onDisconnect() {}
     
     // cuando se recibe un mensaje
-    public function onReceiveMessage($message) {}
+    public function onReceiveMessage($message) { echo $message; }
     
     // cuando se quiere enviar un mensaje al cliente
     public function onSendRequest(&$cancel, $message) {}

@@ -7,7 +7,7 @@ require('../../src/iSocketMaster.php');
  * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/onEvent-Funciones
  */
 
-class Socket extends SocketMaster
+class Socket extends \PHPSocketMaster\SocketMaster
 {
 	
 	public function onConnect()
@@ -31,7 +31,7 @@ class Socket extends SocketMaster
 		die();
 	}
 
-	public function onNewConnection(SocketBridge $socket) { }
+	public function onNewConnection(\PHPSocketMaster\SocketBridge $socket) { }
   
   public function onSendRequest(&$cancel, $message) 
   {
@@ -62,5 +62,5 @@ $sock->connect();
  while(true)
  {
     // hacer alguna acción aquí
-    $socket->refresh();
+    $sock->refresh();
  }
