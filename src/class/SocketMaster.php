@@ -3,8 +3,8 @@
 /**
  * @abstract SocketMaster
  * @author Alexander
- * @version 1.0
- * Clase diseÃ±ada como modelo de socket orientado a objetos
+ * @version 1.1
+ * Clase disenada como modelo de socket orientado a objetos
  * con eventos.
  * Cuenta con la finalidad de escuchar y conectarse.
  *
