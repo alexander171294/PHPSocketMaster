@@ -10,6 +10,8 @@ require('../../src/iSocketMaster.php');
 class Socket extends \PHPSocketMaster\SocketMaster
 {
 
+  use \PHPSocketMaster\timeOut; // primero aclarmos que vamos a usar TimeOut
+
 	public function onConnect()
 	{
 		echo '> Conectado correctamente';
