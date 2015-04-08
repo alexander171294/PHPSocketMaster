@@ -24,8 +24,7 @@ class Socket extends \PHPSocketMaster\SocketMaster
 	{
 		echo '< '.$message;
     // supongamos que ahora le queremos responder el mensaje
-    // usamos la funcion para obtener el puente
-    // y luego la funcion para enviar un mensaje
+    // usamos la funcion para enviar un mensaje
     $this->send('Hola');
     // la otra forma es desde fuera de los eventos, 
     // puede observar un ejemplo más abajo
