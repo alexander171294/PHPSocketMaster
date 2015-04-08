@@ -7,10 +7,10 @@ require('../../src/iSocketMaster.php');
  * @wiki https://github.com/alexander171294/PHPSocketMaster/wiki/onEvent-Funciones
  */
 
-class Socket extends SocketMaster
+class Socket extends \PHPSocketMaster\SocketMaster
 {
 
-  use timeOut; // primero aclarmos que vamos a usar TimeOut
+  use \PHPSocketMaster\timeOut; // primero aclarmos que vamos a usar TimeOut
 
 	public function onConnect()
 	{
@@ -57,7 +57,7 @@ class Socket extends SocketMaster
 		die();
 	}
 
-	public function onNewConnection(SocketBridge $socket) { }
+	public function onNewConnection(\PHPSocketMaster\SocketBridge $socket) { }
     
   public function onSendRequest(&$cancel, $message) 
   {
@@ -73,4 +73,4 @@ class Socket extends SocketMaster
 
 $sock = new Socket('localhost', '2026');
 $sock->connect();
-$socket->loop_refresh();
+$sock->loop_refresh();
