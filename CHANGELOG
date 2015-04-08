@@ -9,6 +9,9 @@ ADD: example 04 - using a timmer
 ADD: example 05 - make a server
 FIX: Bug line 236
 FIX: return value in refreshListen
+FIX: Bucle infinito en loop_refresh
+FIX: ahora si ocurre un error de lectura, el socket se desconecta automáticamente y ejecuta el protocolo de desconexion
+
 
 
 ATENCIÓN/WARNING: se realizaron unos ajustes relacionados con los siguientes cambios, que evitan incompatibilidad entre cliente instanciado directamente de socketmaster y cliente instanciado por un listener.
