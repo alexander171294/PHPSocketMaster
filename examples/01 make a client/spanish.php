@@ -8,7 +8,7 @@ require('../../src/iSocketMaster.php');
  */
 
 // ejemplo de la implementación de un socket
-class Socket extends SocketMaster
+class Socket extends \PHPSocketMaster\SocketMaster
 {
 	// funcion que se ejecuta cuando se conecta el socket
 	public function onConnect()
@@ -39,7 +39,7 @@ class Socket extends SocketMaster
 	}
 
   // esta función en este momento no nos interesa, sirve para socket en modo escucha (como servidor)
-	public function onNewConnection(SocketBridge $socket) { }
+	public function onNewConnection(\PHPSocketMaster\SocketBridge $socket) { }
   
   // esta funcion es ejecutada cuando nuestro cliente quiere enviar un mensaje
   // permite cancelar el envio del mensaje cambiando el valor de la variable $cancel a false  
@@ -69,4 +69,4 @@ $sock->connect();
 
 // a partir de este punto, el socket se actualizará y funcionará bajo las 
 // funciones establecidas en la clase de arriba
-$socket->loop_refresh();
+$sock->loop_refresh();

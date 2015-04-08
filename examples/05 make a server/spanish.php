@@ -20,11 +20,14 @@
  *  siguiente ejemplo.
  */
  
+require('../../src/iSocketMaster.php');
+ 
 // socket a la escucha
-class Listener extends PHPSocketMaster/SocketMaster
+class Listener extends \PHPSocketMaster\SocketMaster
 {
 	// nunca se ejecutarán estas funciones (se escriben por compatibilidad):
 	public function onConnect() {}
+  public function onRefresh() {}
 	public function onDisconnect()	{}
 	public function onReceiveMessage($message) {}
   public function onSendRequest(&$cancel, $message) {}
@@ -37,15 +40,26 @@ class Listener extends PHPSocketMaster/SocketMaster
 		die(); // finalizamos la ejecución
 	}
 
-	public function onNewConnection(SocketBridge $socket)
+	public function onNewConnection(\PHPSocketMaster\SocketBridge $socket)
 	{
-
+      /* aquí obtenemos que se conectó un nuevo cliente, y el objeto socket al que pertenece
+         si fuera un sistema con multiples conexiones deberíamos enviar este socket
+         al gestor de clientes.
+         Pero dado que en el ejemplo es solo un cliente, no necesitamos
+         que un gestor se encargue de refrezcar todos los clientes
+         de modo que podemos simplemente meter el bucle directamente aquí */
+         // refrezcamos el nuevo cliente
+         $socket->loop_refresh();
+         /*
+           si nosotros luego mantenemos el bucle del hilo principal (al final del codigo de este archivo)
+           de forma infinita sin terminarlo, podremos crear reconexiones
+         */
 	}
      
 }
 
 // creamos el receptor
-class receptor extends PHPSocketMaster/SocketEventReceptor
+class receptor extends \PHPSocketMaster\SocketEventReceptor
 {
     // cuando ocurra un error en nuestro cliente
     public function onError() {}
@@ -80,9 +94,6 @@ $receptor = new receptor();
 
 // refrezcamos hasta recibir la conexión
 while($listener->refreshListen($receptor) == false){}
-
-// refrezcamos el nuevo cliente
-$receptor->refresh_loop();
 
 /** puede crear un socket a la escucha para un websocket agregando un parametro SCKM_WEB y cambiando
  *  una de las clases, si decea recibir conexiones de websocket por favor revise la documentación
