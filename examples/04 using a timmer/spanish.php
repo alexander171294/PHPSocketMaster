@@ -38,7 +38,7 @@ class Socket extends \PHPSocketMaster\SocketMaster
   public function EnviarTiempo()
   {
       // ahora enviamos el mensaje hola
-      $this->getBridge()->send('Hola');
+      $this->send('Hola');
   }
   
   // esta función se ejecuta cada muy muy poco tiempo, cada vez que se refrezca este socket
