@@ -1,7 +1,7 @@
 {
     "name": "alexander171294/phpsocketmaster",
     "description": "PHP Socket library",
-    "version": "1.0.0-RC1",
+    "version": "1.1.0",
     "type": "library",
     "keywords": ["sockets", "threads", "client", "server"],
     "homepage": "https://github.com/alexander171294/PHPSocketMaster",

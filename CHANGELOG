@@ -10,9 +10,7 @@ ADD: example 05 - make a server
 FIX: Bug line 236
 FIX: return value in refreshListen
 
-=====> IMPORTANT UPDATE!! <=====
-
---> cambios de versiones anteriores <--
+=====> cambios de versiones anteriores <=====
 
 v1.0.1 : https://github.com/alexander171294/PHPSocketMaster/blob/73e9d15afbcf0440c957b7412b42b6a24134fb89/CHANGELOG
 v1.0   : https://github.com/alexander171294/PHPSocketMaster/blob/4e83b8994717ad3ed4e3723281ca4263f7737474/CHANGELOG
