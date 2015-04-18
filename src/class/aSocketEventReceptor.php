@@ -55,6 +55,11 @@ abstract class SocketEventReceptor
       $this->getBridge()->disconnect();
   }
   // fin de reescritura de métodos de socketmaster
+  
+  final public function isWebSocket()
+  {
+	return !$this->getBridge()->nsocket;
+  }
 
   /**
    * Abstract Functions overwritables
