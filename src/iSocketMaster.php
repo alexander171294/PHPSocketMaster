@@ -131,7 +131,7 @@ interface iSocketMaster
 	 * detect new incomming connections, and call accept using with args $callback
 	 * detectar nuevas conecciones entrantes y llamar a la funcion accept usando como argumentos $callback
 	 */
-        public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type);
+    public function loop_refreshListen(SocketEventReceptor $Callback, &$clients, $type);
         
 	
 	// GETTERS
@@ -175,7 +175,7 @@ interface iSocketMaster
 	 * EN ESTA FUNCIÓN EN PARTICULAR EL USO DE LA PROPIEDAD SIN LLAMAR A LA FUNCIÓN NO ESTÁ ACONCEJADO POR NO
 	 * UTILIZAR REFERENCIAS EN EL PROPERTY
 	 */
-        public function set_listenClients(&$newArray);
+    public function set_listenClients(&$newArray);
 	
 	/**
 	 * Function set_port

@@ -16,7 +16,7 @@
 define('SCKM_UNKNOWN', 0);
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
-define('SCKM_DUAL', 180415)
+define('SCKM_DUAL', 180415);
 
 // DOMAIN TYPES
 define('SCKM_INET', AF_INET);
