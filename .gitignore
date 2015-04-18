@@ -32,3 +32,6 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# KomodProjects
+*.komodoproject
