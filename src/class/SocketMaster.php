@@ -16,6 +16,7 @@
 define('SCKM_UNKNOWN', 0);
 define('SCKM_BASIC', 1);
 define('SCKM_WEB', 2);
+define('SCKM_DUAL', 180415)
 
 // DOMAIN TYPES
 define('SCKM_INET', AF_INET);
@@ -232,7 +233,9 @@ abstract class SocketMaster implements iSocketMaster
 		if($type == SCKM_BASIC)
 			$instance = new SocketBridge($newSocketRef, $Callback);
 		if($type == SCKM_WEB)
-			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);   
+			$instance = new WebSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
+		if($type == SCKM_DUAL)
+			$instance = new DualSocketBridge($newSocketRef, $Callback, $this->address, $this->port);
 		$Callback->setMother($instance);
 		$instance->onConnect();
 		return $instance;
