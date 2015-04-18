@@ -238,4 +238,8 @@ class DualSocketBridge extends SocketBridge implements iDualSocketBridge
 		return $out;
 	}
 	
+	// seteamos la propiedad como solo lectura
+	final public function get_nsocket() { return $this->nsocket; }
+	final public function set_nsocket($val) {}
+	
 }
