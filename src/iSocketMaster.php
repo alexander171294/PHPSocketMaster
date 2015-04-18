@@ -24,6 +24,7 @@ else // yes, i love threads xD
 require('class/aSocketEventReceptor.php');
 require('iSocketBridge.php');
 require('iWebSocketBridge.php');
+require('iDualSocketBridge.php');
 
 /**
  * @abstract SocketMaster
